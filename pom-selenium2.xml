@@ -1,27 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.salesforce.cqe</groupId>
-  <artifactId>java-test-utils</artifactId>
+  <artifactId>java-test-utils-selenium2</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Java Test Utilities</name>
-  <description>Our Java code to help run Customer Test Projects based on Selenium WebDriver v.3.x internally.</description>
+  <description>Our Java code to help run Customer Test Projects based on Selenium WebDriver v.2.x internally.</description>
 	<dependencies>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>3.8.1</version>
+			<version>2.53.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-firefox-driver -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-firefox-driver</artifactId>
-			<version>3.8.1</version>
+			<version>2.53.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-chrome-driver</artifactId>
-			<version>3.8.1</version>
+			<version>2.53.1</version>
 		</dependency>
         <dependency>
             <groupId>com.saucelabs</groupId>
@@ -35,7 +35,7 @@
         </dependency>
 		<dependency>
 			<groupId>com.salesforce.cqe</groupId>
-			<artifactId>test-drop-in-framework</artifactId>
+			<artifactId>test-drop-in-framework-selenium2</artifactId>
 			<version>2.0.0</version>
 		</dependency>
 	</dependencies>
