@@ -34,7 +34,6 @@ import org.openqa.selenium.remote.http.HttpClient.Factory;
 import org.openqa.selenium.remote.internal.ApacheHttpClient;
 
 import com.salesforce.selenium.support.event.EventFiringWebDriver;
-import com.salesforce.selenium.support.event.Log2TestCase;
 import com.saucelabs.saucerest.SauceREST;
 import org.testng.ITestResult;
 
