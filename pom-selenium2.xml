@@ -1,15 +1,89 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.salesforce.cqe</groupId>
-  <artifactId>java-test-utils-selenium2</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>Java Test Utilities</name>
-  <description>Our Java code to help run Customer Test Projects based on Selenium WebDriver v.2.x internally.</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.salesforce.cqe</groupId>
+	<artifactId>java-test-utils-selenium2</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Java Test Utilities</name>
+	<description>Our Java code to help run Customer Test Projects based on Selenium WebDriver v.2.x internally.</description>
+	<packaging>jar</packaging>
+
+	<developers>
+		<developer>
+			<name>Georg Neumann</name>
+			<roles>
+				<role>Member</role>
+			</roles>
+			<email>cqe-us@salesforce.com</email>
+			<organization>Salesforce</organization>
+		</developer>
+	</developers>
+
+	<properties>
+		<jdk.version>1.8</jdk.version>
+		<javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.0</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.4</version>
+				<configuration>
+					<bottom>Copyright (c) 2017, Salesforce.com, Inc. All rights
+						reserved. Licensed under
+						the BSD 3-Clause license. For full license
+						text, see the LICENSE.txt
+						file in the
+						repository.
+					</bottom>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 	<dependencies>
 		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>2.53.1</version>
+			<groupId>com.salesforce.cqe</groupId>
+			<artifactId>test-drop-in-framework-selenium2</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-firefox-driver -->
 		<dependency>
@@ -23,20 +97,15 @@
 			<artifactId>selenium-chrome-driver</artifactId>
 			<version>2.53.1</version>
 		</dependency>
-        <dependency>
-            <groupId>com.saucelabs</groupId>
-            <artifactId>saucerest</artifactId>
-            <version>1.0.35</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.6</version>
-        </dependency>
 		<dependency>
-			<groupId>com.salesforce.cqe</groupId>
-			<artifactId>test-drop-in-framework-selenium2</artifactId>
-			<version>2.0.0</version>
+			<groupId>com.saucelabs</groupId>
+			<artifactId>saucerest</artifactId>
+			<version>1.0.35</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.6</version>
 		</dependency>
 	</dependencies>
 </project>

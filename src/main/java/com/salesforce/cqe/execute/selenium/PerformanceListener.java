@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.salesforce.selenium.support;
+package com.salesforce.cqe.execute.selenium;
 
 import java.util.Set;
 
