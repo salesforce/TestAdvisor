@@ -175,7 +175,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 				System.out.println("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			}
 		}
-		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd().getShortCmdString() + "(" + step.getParam1() + ", \"" + step.getParam2() + "\")'";
+		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd().getLongCmdString() + "(" + step.getParam1() + ", \"" + step.getParam2() + "\")'";
 		System.out.println(result);
 	}
 
@@ -192,7 +192,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 				System.out.println("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			}
 		}
-		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd().getShortCmdString() + "()'";
+		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd().getLongCmdString() + "()'";
 		System.out.println(result);
 	}
 
@@ -210,12 +210,12 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	}
 
 	private void beforeGatherNoParams(Step step) {
-		String result = "Step " + step.getStepNumber() + ": gather '" + step.getCmd().getShortCmdString() + "()'";
+		String result = "Step " + step.getStepNumber() + ": gather '" + step.getCmd().getLongCmdString() + "()'";
 		System.out.println(result);
 	}
 
 	private void beforeGatherOneParam(Step step) {
-		String result = "Step " + step.getStepNumber() + ": gather '" + step.getCmd().getShortCmdString() + "(" + step.getParam1() + ")'";
+		String result = "Step " + step.getStepNumber() + ": gather '" + step.getCmd().getLongCmdString() + "(" + step.getParam1() + ")'";
 		System.out.println(result);
 	}
 
