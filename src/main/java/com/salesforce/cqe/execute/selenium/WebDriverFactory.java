@@ -68,23 +68,17 @@ public class WebDriverFactory {
 		WebDriver driver;
 
 		String proxyUrl = testContext.getOs_proxy_url();
-		if (browser == Browser.firefox) {
-			caps.setCapability("browserName", "firefox");
-			// caps.setCapability("version", "54.0"); -- Generated lots of
-			// "UnsupportedCommandException: mouseMoveTo" errors :(
-			caps.setCapability("version", "45.0");
-		} else if (browser == Browser.chrome) {
-			caps.setCapability("browserName", "chrome");
-			caps.setCapability("version", "60.0");
-		}
+		caps.setCapability("browserName", testContext.getBrowser().toString());
+		// For Firefox: version 54.0 generated lots of "UnsupportedCommandException: mouseMoveTo" errors :(
+		caps.setCapability("version", testContext.getBrowser_version());
 
 		if (context == TestContext.Type.saucelabs) {
 			System.out.println("Connecting to saucelabs.");
 			String URL = "https://" + sauceName + ":" + sauceKey + "@ondemand.saucelabs.com:443/wd/hub";
-			caps.setCapability("platform", "Windows 10");
-			caps.setCapability("screenResolution", "1920x1200");
-			caps.setCapability("timeZone", "Los Angeles");
-			caps.setCapability("name", "Schneider:" + testName);
+			caps.setCapability("platform", testContext.getOs_platform());
+			caps.setCapability("screenResolution", testContext.getBrowser_screenResolution());
+			caps.setCapability("timeZone", testContext.getOs_timeZone());
+			caps.setCapability("name", testName);
 
 			// Are we running in Jenkins? If so, set the Build value.
 			String jobName = System.getenv("JOB_NAME");
@@ -115,7 +109,6 @@ public class WebDriverFactory {
 			}
 			// Get a local browser.
 			if (browser == Browser.chrome) {
-				caps.setCapability("version", "63.0");
 				caps.setCapability("chrome.switches", Arrays.asList("--disable-extensions"));
 				driver = new ChromeDriver(caps);
 			} else {
@@ -144,8 +137,13 @@ public class WebDriverFactory {
 		TestContext.Type context = testContext.getContextType();
 		if (context == TestContext.Type.saucelabs) {
 			boolean passed = result.getStatus() == ITestResult.SUCCESS;
-			String jobId = ((RemoteWebDriver) driver).getSessionId().toString();
-			System.out.println("BaseExcutionClass.setPassed: " + jobId + " set to " + passed);
+			String jobId = null;
+			if (driver != null) {
+				jobId = ((RemoteWebDriver) driver).getSessionId().toString();
+				System.out.println("WebDriverFactory.setPassed: session " + jobId + " set to " + passed);
+			} else {
+				System.out.println("WebDriverFactory.setPassed: session <unknown> set to " + passed);
+			}
 			// Need to respect proxy if present.
 			SauceREST saucer;
 			if (StringUtils.isNotBlank(testContext.getOs_proxy_url())) {
@@ -157,10 +155,12 @@ public class WebDriverFactory {
 			} else {
 				saucer = new SauceREST(testContext.getSauceLab_userName(), testContext.getSauceLab_accessKey());
 			}
-			if (passed) {
-				saucer.jobPassed(jobId);
-			} else {
-				saucer.jobFailed(jobId);
+			if (jobId != null) {
+				if (passed) {
+					saucer.jobPassed(jobId);
+				} else {
+					saucer.jobFailed(jobId);
+				}
 			}
 		}
 	}

@@ -37,6 +37,7 @@ public class TestContext {
 	private String os_timeZone = "Los Angeles";
 
 	// proxy can be overridden by using system property "testcontext.proxy_url"
+	// for no proxy settings set "testcontext.proxy_url" to "none".
 	private String os_proxy_url = "public0-proxy1-0-prd.data.sfdc.net:8080";
 
 	public Type getContextType() {
@@ -49,9 +50,11 @@ public class TestContext {
 	public String getSauceLab_userName() {
 		return sauceLab_userName;
 	}
+	
 	public String getSauceLab_accessKey() {
 		return sauceLab_accessKey;
 	}
+	
 	public Browser getBrowser() {
 		String name = System.getProperty("testcontext.browser");
 		if (StringUtils.isNotBlank(name)) {
@@ -59,22 +62,30 @@ public class TestContext {
 		}
 		return browser;
 	}
+	
 	public String getBrowser_version() {
 		return browser_version;
 	}
+	
 	public String getBrowser_screenResolution() {
 		return browser_screenResolution;
 	}
+
 	public String getOs_platform() {
 		return os_platform;
 	}
+
 	public String getOs_timeZone() {
 		return os_timeZone;
 	}
+
 	public String getOs_proxy_url() {
 		String proxy = System.getProperty("testcontext.proxy_url");
 		if (StringUtils.isNotBlank(proxy)) {
 			os_proxy_url = proxy;
+			if ("none".equalsIgnoreCase(proxy)) {
+				os_proxy_url = "";
+			}
 		}
 		return os_proxy_url;
 	}
