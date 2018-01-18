@@ -24,9 +24,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.CommandInfo;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -71,13 +69,11 @@ public class WebDriverFactory {
 
 		String proxyUrl = testContext.getOs_proxy_url();
 		if (browser == Browser.firefox) {
-			FirefoxOptions firefoxOptions;
 			caps.setCapability("browserName", "firefox");
 			// caps.setCapability("version", "54.0"); -- Generated lots of
 			// "UnsupportedCommandException: mouseMoveTo" errors :(
 			caps.setCapability("version", "45.0");
 		} else if (browser == Browser.chrome) {
-			ChromeOptions options;
 			caps.setCapability("browserName", "chrome");
 			caps.setCapability("version", "60.0");
 		}
