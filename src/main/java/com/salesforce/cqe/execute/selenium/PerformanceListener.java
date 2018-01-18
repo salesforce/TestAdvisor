@@ -30,7 +30,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeGet(Step step, String url) {
-		beforeActionOneParam(step, step.getCmd().toString());
+		beforeActionOneParam(step);
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeTo(Step step, String url) {
-		beforeActionOneParam(step, "navigate()." + step.getCmd().toString());
+		beforeActionOneParam(step);
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeFrameByName(Step step, String frameName) {
-		beforeActionOneParam(step, "switchTo().frame");
+		beforeActionOneParam(step);
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeWindow(Step step, String windowName) {
-		beforeActionOneParam(step, "switchTo()." + step.getCmd().toString());
+		beforeActionOneParam(step);
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeClick(Step step, WebElement element) {
-		beforeActionOneParam(step, step.getCmd().toString());
+		beforeActionOneParam(step);
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeClear(Step step, WebElement element) {
-		beforeActionOneParam(step, step.getCmd().toString());
+		beforeActionOneParam(step);
 	}
 
 	@Override
@@ -170,12 +170,12 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	public void beforeSendKeys(Step step, WebElement element, CharSequence... keysToSend) {
 		if (step.getStepNumber() > 1) {
 			if (lastStep != null) {
-				System.out.println("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.getCmd() + "' in step " + lastStep.getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+				System.out.println("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.getCmd().getShortCmdString() + "' in step " + lastStep.getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			} else {
 				System.out.println("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			}
 		}
-		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd() + "(" + step.getParam1() + ", \"" + step.getParam2() + "\")'";
+		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd().getShortCmdString() + "(" + step.getParam1() + ", \"" + step.getParam2() + "\")'";
 		System.out.println(result);
 	}
 
@@ -187,19 +187,20 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	private void beforeActionNoParams(Step step) {
 		if (step.getStepNumber() > 1) {
 			if (lastStep != null) {
-				System.out.println("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.getCmd() + "' in step " + lastStep.getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+				System.out.println("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.getCmd().getShortCmdString() + "' in step " + lastStep.getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			} else {
 				System.out.println("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			}
 		}
-		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd() + "()'";
+		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd().getShortCmdString() + "()'";
 		System.out.println(result);
 	}
 
-	private void beforeActionOneParam(Step step, String cmdPrefix) {
+	private void beforeActionOneParam(Step step) {
+		String cmdPrefix = step.getCmd().getLongCmdString();
 		if (step.getStepNumber() > 1) {
 			if (lastStep != null) {
-				System.out.println("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.getCmd() + "' in step " + lastStep.getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+				System.out.println("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.getCmd().getShortCmdString() + "' in step " + lastStep.getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			} else {
 				System.out.println("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			}
@@ -209,18 +210,18 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	}
 
 	private void beforeGatherNoParams(Step step) {
-		String result = "Step " + step.getStepNumber() + ": '" + step.getCmd() + "()'";
+		String result = "Step " + step.getStepNumber() + ": gather '" + step.getCmd().getShortCmdString() + "()'";
 		System.out.println(result);
 	}
 
 	private void beforeGatherOneParam(Step step) {
-		String result = "Step " + step.getStepNumber() + ": '" + step.getCmd() + "(" + step.getParam1() + ")'";
+		String result = "Step " + step.getStepNumber() + ": gather '" + step.getCmd().getShortCmdString() + "(" + step.getParam1() + ")'";
 		System.out.println(result);
 	}
 
 	private void afterActionNoReturnValue(Step step) {
 		lastStep = step;
-		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd() + "' executed in " + Step.formattedNanoTime(step.getTimeElapsedStep());
+		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd().getShortCmdString() + "' executed in " + Step.formattedNanoTime(step.getTimeElapsedStep());
 		System.out.println(result);
 	}
 }

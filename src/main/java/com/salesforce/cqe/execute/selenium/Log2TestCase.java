@@ -33,7 +33,7 @@ public class Log2TestCase extends AbstractWebDriverEventListener {
 			code.append(varName);
 		}
 		// = webDriver.findElement(By.id("foo"));
-		code.append(" = ").append(step.getCmd().toString()).append("(").append(Step.getLocatorFromBy(by)).append(");");
+		code.append(" = ").append(step.getCmd().getShortCmdString()).append("(").append(Step.getLocatorFromBy(by)).append(");");
 		code.append(System.lineSeparator());
 	}
 
@@ -46,7 +46,7 @@ public class Log2TestCase extends AbstractWebDriverEventListener {
 			code.append("new ").append(WEBELEM_TYPE).append("(").append(locator).append(").").append(step.getCmd()).append("();");
 		} else {
 			// webElem2.click();
-			code.append(varName).append(".").append(step.getCmd().toString()).append("();");
+			code.append(varName).append(".").append(step.getCmd().getShortCmdString()).append("();");
 		}
 		code.append(System.lineSeparator());
 	}
@@ -66,10 +66,10 @@ public class Log2TestCase extends AbstractWebDriverEventListener {
 			// new WebElement(By.id("foo")).
 			code.append("new ").append(WEBELEM_TYPE).append("(").append(locator).append(").");
 			// sendKeys("some text");
-			code.append(step.getCmd()).append("(\"").append(textBuffer.toString()).append("\");");
+			code.append(step.getCmd().getShortCmdString()).append("(\"").append(textBuffer.toString()).append("\");");
 		} else {
 			// webElem2.sendKeys("some text");
-			code.append(varName).append(".").append(step.getCmd()).append("(\"").append(textBuffer.toString()).append("\");");
+			code.append(varName).append(".").append(step.getCmd().getShortCmdString()).append("(\"").append(textBuffer.toString()).append("\");");
 		}
 		code.append(System.lineSeparator());
 	}
