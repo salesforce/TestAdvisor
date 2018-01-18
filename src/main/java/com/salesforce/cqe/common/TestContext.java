@@ -8,6 +8,16 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Test Context information to be used for executing tests.
  * <p>
+ * Source SB ID - Org id of source sandbox
+ * Source SB Name - Name of source sandbox
+ * Target SB ID - Org id of target sandbox
+ * Target SB Name - Name of target sandbox
+ * Release of copied SB - 212/214/...; if revved up it indicates we have the first run after the release.
+ * Test repository name - Can be used in CI script to get test project code
+ * Test repository's active branch name - Usually "master" but could be different. CI could use the branch name for pulling test code. 
+ * Date of last SB copy - If there is a new SB copy this may have influence on test result comparison. 
+ * Date of last test project drop - Most of the time the latest change will come from CQE. If there is a new drop this may have influence on test result comparison. 
+ * <p>
  * Objects of this class can be instantiated by de-serializing a JSON file in the test project's root directory.
  * @author gneumann
  */
@@ -21,6 +31,17 @@ public class TestContext {
 		chrome, ie, firefox, safari
 	}
 
+	// generic test project information
+	private String sourceOrgId;
+	private String sourceOrgName;
+	private String targetOrgId;
+	private String targetOrgName;
+	private String releaseOfTargetOrg;
+	private String testRepoName;
+	private String testRepoBranch = "master";
+	private String dateOfLastSBCopy;
+	private String dateOfLastTestRepoDrop;
+	
 	// context type can be overridden by using system property "testcontext.remote"
 	private Type contextType = Type.local;
 
@@ -39,6 +60,42 @@ public class TestContext {
 	// proxy can be overridden by using system property "testcontext.proxy_url"
 	// for no proxy settings set "testcontext.proxy_url" to "none".
 	private String os_proxy_url = "public0-proxy1-0-prd.data.sfdc.net:8080";
+
+	public String getSourceOrgId() {
+		return sourceOrgId;
+	}
+	
+	public String getSourceOrgName() {
+		return sourceOrgName;
+	}
+	
+	public String getTargetOrgId() {
+		return targetOrgId;
+	}
+	
+	public String getTargetOrgName() {
+		return targetOrgName;
+	}
+	
+	public String getReleaseOfTargetOrg() {
+		return releaseOfTargetOrg;
+	}
+	
+	public String getTestRepoName() {
+		return testRepoName;
+	}
+	
+	public String getTestRepoBranch() {
+		return testRepoBranch;
+	}
+	
+	public String getDateOfLastSBCopy() {
+		return dateOfLastSBCopy;
+	}
+
+	public String getDateOfLastTestRepoDrop() {
+		return dateOfLastTestRepoDrop;
+	}
 
 	public Type getContextType() {
 		String typeName = System.getProperty("testcontext.remote");
