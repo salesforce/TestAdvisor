@@ -65,28 +65,31 @@ public class WebDriverFactory {
 		String sauceKey = testContext.getSauceLab_accessKey();
 
 		DesiredCapabilities caps = new DesiredCapabilities();
-		WebDriver driver;
+		WebDriver driver = null;
 
 		String proxyUrl = testContext.getOs_proxy_url();
 		caps.setCapability("browserName", testContext.getBrowser().toString());
 		// For Firefox: version 54.0 generated lots of "UnsupportedCommandException: mouseMoveTo" errors :(
 		caps.setCapability("version", testContext.getBrowser_version());
+		caps.setCapability("screenResolution", testContext.getBrowser_screenResolution());
+		caps.setCapability("timeZone", testContext.getOs_timeZone());
+		caps.setCapability("name", testName);
 
-		if (context == TestContext.Type.saucelabs) {
+		// Set the Jenkins build value.
+		String jobName = System.getenv("JOB_NAME");
+		if (StringUtils.isNotBlank(jobName)) {
+			String buildNumber = System.getenv("BUILD_NUMBER");
+			String jenkinsBuild = jobName + ":" + buildNumber;
+			caps.setCapability("build", jenkinsBuild);
+		}
+
+		switch (context) {
+		case saucelabs:
 			System.out.println("Connecting to saucelabs.");
 			String URL = "https://" + sauceName + ":" + sauceKey + "@ondemand.saucelabs.com:443/wd/hub";
+			// SacueLabs allows to choose the platform to run on
 			caps.setCapability("platform", testContext.getOs_platform());
-			caps.setCapability("screenResolution", testContext.getBrowser_screenResolution());
-			caps.setCapability("timeZone", testContext.getOs_timeZone());
-			caps.setCapability("name", testName);
 
-			// Are we running in Jenkins? If so, set the Build value.
-			String jobName = System.getenv("JOB_NAME");
-			if (StringUtils.isNotBlank(jobName)) {
-				String buildNumber = System.getenv("BUILD_NUMBER");
-				String jenkinsBuild = jobName + ":" + buildNumber;
-				caps.setCapability("build", jenkinsBuild);
-			}
 			try { // Promote to runtime exception since wrapping function is not setup to handle.
 				if (StringUtils.isBlank(proxyUrl)) {
 					driver = new RemoteWebDriver(new URL(URL), caps);
@@ -99,22 +102,35 @@ public class WebDriverFactory {
 			} catch (MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
-		} else {
-			if (context == TestContext.Type.privatecloud) {
-				org.openqa.selenium.Proxy proxy = new org.openqa.selenium.Proxy();
-				proxy.setHttpProxy(proxyUrl).setSslProxy(proxyUrl);
-				proxy.setFtpProxy(proxyUrl).setSocksProxy(proxyUrl);
-				caps.setCapability(CapabilityType.PROXY, proxy);
-				System.out.println("DEBUG: Setting up browser to use the proxy: " + proxyUrl);
+			break;
+		case privatecloud:
+			if (StringUtils.isEmpty(proxyUrl)) {
+				throw new IllegalArgumentException("Proxy needed in PrivateCloud");
 			}
-			// Get a local browser.
+			org.openqa.selenium.Proxy proxy = new org.openqa.selenium.Proxy();
+			proxy.setHttpProxy(proxyUrl).setSslProxy(proxyUrl);
+			proxy.setFtpProxy(proxyUrl).setSocksProxy(proxyUrl);
+			caps.setCapability(CapabilityType.PROXY, proxy);
+			// no BREAK here by design!
+		case local:
 			if (browser == Browser.chrome) {
 				caps.setCapability("chrome.switches", Arrays.asList("--disable-extensions"));
+				// Cannot use ChromeOptions because it's not available in WebDriver v2
 				driver = new ChromeDriver(caps);
 			} else {
+				// Cannot use FireFoxOptions because it's not available in WebDriver v2
 				driver = new FirefoxDriver(caps);
 			}
+			driver.manage().window().setSize(testContext.getScreenResolutionAsDimension());
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown or unsupported context " + context.name());
 		}
+
+		if (testContext.getImplicitTimeout() != -1) {
+			driver.manage().timeouts().implicitlyWait(testContext.getImplicitTimeout(), TimeUnit.SECONDS);
+		}
+
 		EventFiringWebDriver wd = new EventFiringWebDriver(driver, testName);
 		wd.register(new PerformanceListener());
 		wd.register(new Log2TestCase());

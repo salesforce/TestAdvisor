@@ -4,6 +4,9 @@
 package com.salesforce.cqe.common;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.Dimension;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Test Context information to be used for executing tests.
@@ -53,6 +56,7 @@ public class TestContext {
 	private Browser browser = Browser.firefox;
 	private String browser_version = "45.0";
 	private String browser_screenResolution = "1920x1200";
+	private String browser_implicitTimeout = "45";
 
 	private String os_platform = "Windows 10";
 	private String os_timeZone = "Los Angeles";
@@ -60,6 +64,12 @@ public class TestContext {
 	// proxy can be overridden by using system property "testcontext.proxy_url"
 	// for no proxy settings set "testcontext.proxy_url" to "none".
 	private String os_proxy_url = "public0-proxy1-0-prd.data.sfdc.net:8080";
+
+	// cached values of different types
+	@JsonIgnore
+	private int implicitTimeout = -1;
+	@JsonIgnore
+	private Dimension screenSize = null;
 
 	public String getSourceOrgId() {
 		return sourceOrgId;
@@ -123,9 +133,57 @@ public class TestContext {
 	public String getBrowser_version() {
 		return browser_version;
 	}
-	
+
+	/**
+	 * Gets the desired screen size as string value. The format of the value has already been validated.
+	 * @return proper screen size string value
+	 */
 	public String getBrowser_screenResolution() {
+		if (screenSize != null) {
+			// we have already checked the value
+			return browser_screenResolution;
+		}
+
+		if (browser_screenResolution != null && !browser_screenResolution.isEmpty()) {
+			String[] splittedRes = browser_screenResolution.split("x");
+			if (splittedRes.length != 2) {
+				throw new IllegalArgumentException("Can't parse browser_screenResolution '" + browser_screenResolution + "'! It has to be of format [width]'x'[height] e.g. '1920x1200'");
+			}
+			try {
+				screenSize = new Dimension(Integer.parseInt(splittedRes[0]), Integer.parseInt(splittedRes[1]));
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("Can't parse browser_screenResolution '" + browser_screenResolution + "'! It has to be of format [width]'x'[height] e.g. '1920x1200'");
+			}
+		}
 		return browser_screenResolution;
+	}
+	
+	public Dimension getScreenResolutionAsDimension() {
+		return screenSize;
+	}
+	
+	/**
+	 * Gets the implicit timeout value as string. The value has already been validated to be an integer.
+	 * @return proper seconds string value
+	 */
+	public String getBrowser_implicitTimeout() {
+		if (implicitTimeout != -1) {
+			// we have already checked the value
+			return browser_implicitTimeout;
+		}
+
+		if (browser_implicitTimeout != null && !browser_implicitTimeout.isEmpty()) {
+			try {
+				implicitTimeout = Integer.parseInt(browser_implicitTimeout);
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("Can't parse browser_implicitTimeout '" + browser_implicitTimeout + "'! It has to be of format [secs] e.g. '45'");
+			}
+		}
+		return browser_implicitTimeout;
+	}
+
+	public int getImplicitTimeout() {
+		return implicitTimeout;
 	}
 
 	public String getOs_platform() {
