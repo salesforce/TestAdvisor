@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Dimension;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.stream.MalformedJsonException;
 
 /**
  * Test Context information to be used for executing tests.
@@ -70,6 +71,23 @@ public class TestContext {
 	private int implicitTimeout = -1;
 	@JsonIgnore
 	private Dimension screenSize = null;
+
+	private TestContext() {
+		; // prohibit default constructor
+	}
+
+	/**
+	 * Reads JSON file "testcontext.json" from test project's root directory.
+	 * @return test context
+	 * @throws MalformedJsonException if .json file is not readable.
+	 */
+	public static TestContext getContext() throws MalformedJsonException {
+		TestContext testContext = JsonHelper.toObject(TestContext.JSON_FILENAME, TestContext.class);
+		if (testContext == null) {
+			throw new MalformedJsonException("Could not get test context information from JSON file " + TestContext.JSON_FILENAME);
+		}
+		return testContext;
+	}
 
 	public String getSourceOrgId() {
 		return sourceOrgId;

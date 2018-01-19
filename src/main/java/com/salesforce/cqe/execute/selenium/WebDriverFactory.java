@@ -33,7 +33,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.http.HttpClient.Factory;
 import org.openqa.selenium.remote.internal.ApacheHttpClient;
 
-import com.salesforce.cqe.common.JsonHelper;
+import com.google.gson.stream.MalformedJsonException;
 import com.salesforce.cqe.common.TestContext;
 import com.salesforce.cqe.common.TestContext.Browser;
 import com.salesforce.selenium.support.event.EventFiringWebDriver;
@@ -54,8 +54,10 @@ public class WebDriverFactory {
 	 * @return WebDriver instance
 	 */
 	public static WebDriver getWebDriver(String testName) {
-		TestContext testContext = JsonHelper.toObject(TestContext.JSON_FILENAME, TestContext.class);
-		if (testContext == null) {
+		TestContext testContext = null;
+		try {
+			testContext = TestContext.getContext();
+		} catch (MalformedJsonException mje) {
 			Assert.fail("Could not get test context information from JSON file " + TestContext.JSON_FILENAME);
 		}
 
@@ -75,7 +77,7 @@ public class WebDriverFactory {
 		caps.setCapability("timeZone", testContext.getOs_timeZone());
 		caps.setCapability("name", testName);
 
-		// Set the Jenkins build value.
+		// Set the Jenkins build value, if available
 		String jobName = System.getenv("JOB_NAME");
 		if (StringUtils.isNotBlank(jobName)) {
 			String buildNumber = System.getenv("BUILD_NUMBER");
@@ -144,8 +146,10 @@ public class WebDriverFactory {
 	 * @throws URISyntaxException
 	 */
 	public static void setPassed(ITestResult result, WebDriver driver) {
-		TestContext testContext = JsonHelper.toObject(TestContext.JSON_FILENAME, TestContext.class);
-		if (testContext == null) {
+		TestContext testContext = null;
+		try {
+			testContext = TestContext.getContext();
+		} catch (MalformedJsonException mje) {
 			// highly unlikely because a problem will already have lead to a fail() in getWebDriver(..)
 			Assert.fail("Could not get test context information from JSON file " + TestContext.JSON_FILENAME);
 		}

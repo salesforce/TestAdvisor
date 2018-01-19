@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.gson.stream.MalformedJsonException;
 
 /**
  * @author gneumann
@@ -25,21 +26,18 @@ public class JsonHelper {
 	 * @param clazz de-serialize JSON file as an object of this class
 	 * @return de-serialized object or null in case of any exception
 	 */
-	public static <T> T toObject(String fileName, Class<T> clazz) {
+	public static <T> T toObject(String fileName, Class<T> clazz) throws MalformedJsonException {
 		T retrievedObject = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			// Convert JSON string from file to Object
 			retrievedObject = mapper.readValue(new File(fileName), clazz);
 		} catch (JsonGenerationException e) {
-			System.err.println("Error while de-serializing object from JSON");
-			e.printStackTrace();
+			throw new MalformedJsonException("Error while de-serializing object from JSON file " + fileName, e);
 		} catch (JsonMappingException e) {
-			System.err.println("Error while de-serializing object from JSON");
-			e.printStackTrace();
+			throw new MalformedJsonException("Error while de-serializing object from JSON file " + fileName, e);
 		} catch (IOException e) {
-			System.err.println("Error while de-serializing object from JSON");
-			e.printStackTrace();
+			throw new MalformedJsonException("Error while de-serializing object from JSON file " + fileName, e);
 		}
 		return retrievedObject;
 	}
@@ -50,7 +48,7 @@ public class JsonHelper {
 	 * @param fileName JSON file with serialized object information
 	 * @param object to be serialized
 	 */
-	public static void toFile(String fileName, Object object) {
+	public static void toFile(String fileName, Object object) throws MalformedJsonException {
 		ObjectMapper objectMapper = new ObjectMapper();
     	// Set pretty printing of json
     	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -60,9 +58,7 @@ public class JsonHelper {
 		try {
 			logEntriesToJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
 		} catch (JsonProcessingException e1) {
-			System.err.println("Error while serializing object to JSON");
-			e1.printStackTrace();
-			return;
+			throw new MalformedJsonException("Error while serializing object to JSON file " + fileName, e1);
 		}
 
 		FileWriter fileWriter = null;
@@ -72,8 +68,7 @@ public class JsonHelper {
 			fileWriter.write(logEntriesToJson);
 			System.out.println("Done writing JSON file to " + fileName);
 		} catch (IOException e) {
-			System.err.println("Error while writing JSON file to " + fileName);
-			e.printStackTrace();
+			throw new MalformedJsonException("Error while serializing object to JSON file " + fileName, e);
 		} finally {
 			try {
 				if (fileWriter != null)
