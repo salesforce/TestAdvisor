@@ -40,7 +40,6 @@ import com.salesforce.selenium.support.event.EventFiringWebDriver;
 import com.saucelabs.saucerest.SauceREST;
 
 import org.testng.Assert;
-import org.testng.ITestResult;
 
 /**
  * Factory for creating an {@link EventFiringWebDriver} which works in Salesforce Central QE environment.
