@@ -140,12 +140,11 @@ public class WebDriverFactory {
 	}
 
 	/**
-	 * Used for propagating the test results to SauceLabs, using their REST API.
-	 * 
-	 * @param passed
-	 * @throws URISyntaxException
+	 * Used for propagating the test results to SauceLabs.
+	 * @param hasPassed
+	 * @param driver
 	 */
-	public static void setPassed(ITestResult result, WebDriver driver) {
+	public static void setPassed(boolean hasPassed, WebDriver driver) {
 		TestContext testContext = null;
 		try {
 			testContext = TestContext.getContext();
@@ -156,13 +155,12 @@ public class WebDriverFactory {
 
 		TestContext.Type context = testContext.getContextType();
 		if (context == TestContext.Type.saucelabs) {
-			boolean passed = result.getStatus() == ITestResult.SUCCESS;
 			String jobId = null;
 			if (driver != null) {
 				jobId = ((RemoteWebDriver) driver).getSessionId().toString();
-				System.out.println("WebDriverFactory.setPassed: session " + jobId + " set to " + passed);
+				System.out.println("WebDriverFactory.setPassed: session " + jobId + " set to " + hasPassed);
 			} else {
-				System.out.println("WebDriverFactory.setPassed: session <unknown> set to " + passed);
+				System.out.println("WebDriverFactory.setPassed: session <unknown> set to " + hasPassed);
 			}
 			// Need to respect proxy if present.
 			SauceREST saucer;
@@ -176,7 +174,7 @@ public class WebDriverFactory {
 				saucer = new SauceREST(testContext.getSauceLab_userName(), testContext.getSauceLab_accessKey());
 			}
 			if (jobId != null) {
-				if (passed) {
+				if (hasPassed) {
 					saucer.jobPassed(jobId);
 				} else {
 					saucer.jobFailed(jobId);
