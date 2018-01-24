@@ -155,12 +155,19 @@ public class WebDriverFactory {
 		TestContext.Type context = testContext.getContextType();
 		if (context == TestContext.Type.saucelabs) {
 			String jobId = null;
-			if (driver != null) {
-				jobId = ((RemoteWebDriver) driver).getSessionId().toString();
+			if (driver instanceof EventFiringWebDriver) {
+				WebDriver wrappedDriver = ((EventFiringWebDriver) driver).getWrappedDriver();
+				if (wrappedDriver instanceof RemoteWebDriver) {
+					jobId = ((RemoteWebDriver) wrappedDriver).getSessionId().toString();
+				}
+			}
+
+			if (jobId != null) { 
 				System.out.println("WebDriverFactory.setPassed: session " + jobId + " set to " + hasPassed);
 			} else {
 				System.out.println("WebDriverFactory.setPassed: session <unknown> set to " + hasPassed);
 			}
+
 			// Need to respect proxy if present.
 			SauceREST saucer;
 			if (StringUtils.isNotBlank(testContext.getOs_proxy_url())) {
