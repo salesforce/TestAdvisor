@@ -155,11 +155,13 @@ public class WebDriverFactory {
 		TestContext.Type context = testContext.getContextType();
 		if (context == TestContext.Type.saucelabs) {
 			String jobId = null;
+			WebDriver wrappedDriver = driver;
 			if (driver instanceof EventFiringWebDriver) {
-				WebDriver wrappedDriver = ((EventFiringWebDriver) driver).getWrappedDriver();
-				if (wrappedDriver instanceof RemoteWebDriver) {
-					jobId = ((RemoteWebDriver) wrappedDriver).getSessionId().toString();
-				}
+				wrappedDriver = ((EventFiringWebDriver) driver).getWrappedDriver();
+			}
+
+			if (wrappedDriver instanceof RemoteWebDriver) {
+				jobId = ((RemoteWebDriver) wrappedDriver).getSessionId().toString();
 			}
 
 			if (jobId != null) { 
