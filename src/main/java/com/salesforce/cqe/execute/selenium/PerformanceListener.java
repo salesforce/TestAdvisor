@@ -37,6 +37,17 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	public void afterGet(Step step, String url) {
 		afterActionNoReturnValue(step);
 	}
+	@Override
+	public void beforeFindElementByElement(Step step, By by, WebElement element) {
+		beforeGatherOneParam(step);
+	}
+
+	@Override
+	public void afterFindElementByElement(Step step, WebElement returnedElement, By by, WebElement element) {
+		String result = "Step " + step.getStepNumber() + ": executed in " + Step.formattedNanoTime(step.getTimeElapsedStep())
+			+ " and returned: WebElement [" + step.getReturnValue() + "]";
+		System.out.println(result);
+	}
 
 	@Override
 	public void beforeFindElementByWebDriver(Step step, By by) {

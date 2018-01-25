@@ -6,6 +6,7 @@
  */
 package com.salesforce.cqe.execute.selenium;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
@@ -134,7 +135,8 @@ public class WebDriverFactory {
 
 		EventFiringWebDriver wd = new EventFiringWebDriver(driver, testName);
 		wd.register(new PerformanceListener());
-		wd.register(new Log2TestCase());
+//		wd.register(new Log2TestCase());
+		wd.register(new StepsToReproduce(testName));
 		return wd;
 	}
 
