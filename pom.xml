@@ -5,6 +5,7 @@
 	<artifactId>java-test-utils</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Java Test Utilities</name>
+	<description>Our Java code to help run Customer Test Projects based on Selenium WebDriver v.3.x internally.</description>
 	<packaging>jar</packaging>
 
 	<developers>
@@ -61,7 +62,8 @@
 				<configuration>
 					<bottom>Copyright (c) 2017, Salesforce.com, Inc. All rights
 						reserved. Licensed under
-						the BSD 3-Clause license. For full license text, see the LICENSE.txt
+						the BSD 3-Clause license. For full license
+						text, see the LICENSE.txt
 						file in the
 						repository.
 					</bottom>
@@ -77,8 +79,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<description>Our Java code to help run Customer Test Projects based on Selenium WebDriver v.3.x internally.</description>
 	<dependencies>
 		<dependency>
 			<groupId>com.salesforce.cqe</groupId>
