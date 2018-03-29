@@ -104,13 +104,25 @@ public class ExcelStatsHandlerTest {
 	@Test(dependsOnGroups = { "open" })
 	public void getTestCaseNames() {
 		List<String> testCaseNamesFound = statsHandler.getTestCaseNames();
-		assertTrue(testCaseNamesFound.size() == 244, "Could not find all 244 test case names.");
+		assertTrue(testCaseNamesFound.size() == 246, "Could not find all 246 test case names.");
 	}
 
 	@Test(dependsOnGroups = { "open" })
 	public void getBuildIds() {
 		List<Integer> buildIdsFound = statsHandler.getBuildIds();
 		assertTrue(buildIdsFound.size() == 3, "Could not find all 3 build ID's.");
+	}
+
+	@Test(dependsOnGroups = { "open" })
+	public void getResultsByBuildId() {
+		List<Result> resultsFound = statsHandler.getResults(31);
+		assertTrue(resultsFound.size() == 244, "Could not find all 244 results for build ID 31.");
+	}
+
+	@Test(dependsOnGroups = { "open" })
+	public void getResultsByBuildIdAndState() {
+		List<Result> resultsFound = statsHandler.getResults(31, Result.State.FAIL);
+		assertTrue(resultsFound.size() == 44, "Could not find all 44 results for passing tests in build ID 31.");
 	}
 
 	@Test(groups = { "open" })

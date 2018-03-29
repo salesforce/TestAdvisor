@@ -107,6 +107,30 @@ public class ExcelStatsHandler implements IResultsHandler {
 		return filteredResults;
 	}
 
+	@Override
+	public List<Result> getResults(int buildId) {
+		// validate input parameter is > 0
+		if (buildId <= 0) {
+			return new ArrayList<>();
+		}
+
+		List<Result> filteredResults = results.stream().filter(result -> buildId == result.getBuildId())
+				.collect(Collectors.toList());
+		return filteredResults;
+	}
+
+	@Override
+	public List<Result> getResults(int buildId, Result.State state) {
+		// validate input parameter is not NULL
+		if (state == null) {
+			return new ArrayList<>();
+		}
+
+		List<Result> filteredResults = getResults(buildId).stream().filter(result -> state == result.getState())
+				.collect(Collectors.toList());
+		return filteredResults;
+	}
+
 	/**
 	 * Gets the results for a given test case and build ID or NULL, if no result could be found.
 	 */
@@ -129,6 +153,9 @@ public class ExcelStatsHandler implements IResultsHandler {
 	 */
 	@Override
 	public List<String> getTestCaseNames() {
+		if (testCaseNames == null) {
+			return new ArrayList<>();
+		}
 		List<String> clonedList = new ArrayList<>(testCaseNames.size());
 		clonedList.addAll(testCaseNames);
 		return clonedList;
@@ -140,6 +167,9 @@ public class ExcelStatsHandler implements IResultsHandler {
 	 */
 	@Override
 	public List<Integer> getBuildIds() {
+		if (buildIds == null) {
+			return new ArrayList<>();
+		}
 		Collections.sort(buildIds);
 		List<Integer> clonedList = new ArrayList<>(buildIds.size());
 		clonedList.addAll(buildIds);
@@ -183,6 +213,12 @@ public class ExcelStatsHandler implements IResultsHandler {
 			int timeSummands = 0;
 			for (Integer buildId : ids) {
 				Result res = getResult(testCaseName, buildId);
+				// for this particular test case and build no result exists,
+				// because this test got added in a later build perhaps?
+				if (res == null) {
+					columnNum = columnNum + 2;
+					continue;
+				}
 				if (res.getState() == Result.State.PASS) {
 					timeSum = timeSum + res.getTimeElapsedInMillisecs();
 					timeSummands = timeSummands + 1;
