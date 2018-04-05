@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -235,7 +235,7 @@ public class ExcelStatsHandler implements IResultsHandler {
 		FileOutputStream fos = new FileOutputStream(
 				resourceDir + File.separator + customerSuite + SUMMARY_FILE_POSTFIX);
 		summaryWb.write(fos);
-		fos.close();
+		summaryWb.close();
 	}
 
 	private void openAndRead(String customerSuite, String file) throws Exception {
@@ -337,11 +337,11 @@ public class ExcelStatsHandler implements IResultsHandler {
 	private String getCellValue(int row, int col) {
 		XSSFCell cell = sheet.getRow(row).getCell(col);
 		String celltext = null;
-		if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+		if (cell.getCellTypeEnum() == CellType.STRING) {
 			celltext = cell.getStringCellValue();
-		} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+		} else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
 			celltext = String.valueOf(cell.getNumericCellValue());
-		} else if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+		} else if (cell.getCellTypeEnum() == CellType.BLANK) {
 			celltext = "";
 		}
 		return celltext;
