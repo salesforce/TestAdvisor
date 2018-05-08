@@ -38,8 +38,10 @@ public class TestContext {
 	// generic test project information
 	private String sourceOrgId;
 	private String sourceOrgName;
+	private String sourcePod = "CSXX";
 	private String targetOrgId;
 	private String targetOrgName;
+	private String targetPod = "CS46";
 	private String releaseOfTargetOrg;
 	private String testRepoName;
 	private String testRepoBranch = "master";
@@ -97,12 +99,20 @@ public class TestContext {
 		return sourceOrgName;
 	}
 	
+	public String getSourcePod() {
+		return sourcePod;
+	}
+
 	public String getTargetOrgId() {
 		return targetOrgId;
 	}
 	
 	public String getTargetOrgName() {
 		return targetOrgName;
+	}
+
+	public String getTargetPod() {
+		return targetPod;
 	}
 	
 	public String getReleaseOfTargetOrg() {
