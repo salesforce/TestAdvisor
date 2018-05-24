@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.salesforce.cqe</groupId>
 	<artifactId>java-test-utils</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>Java Test Utilities</name>
 	<description>Our Java code to help run Customer Test Projects based on Selenium WebDriver v.3.x internally.</description>
 	<packaging>jar</packaging>

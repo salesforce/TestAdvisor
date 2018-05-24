@@ -1,5 +1,8 @@
-/**
- * 
+/* 
+ * Copyright (c) 2018, salesforce.com, inc.
+ * All rights reserved.
+ * Licensed under the BSD 3-Clause license. 
+ * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
  */
 package com.salesforce.cqe.common;
 
@@ -7,24 +10,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Dimension;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.google.gson.stream.MalformedJsonException;
 
-/**
- * Test Context information to be used for executing tests.
- * <p>
- * Source SB ID - Org id of source sandbox
- * Source SB Name - Name of source sandbox
- * Target SB ID - Org id of target sandbox
- * Target SB Name - Name of target sandbox
- * Release of copied SB - 212/214/...; if revved up it indicates we have the first run after the release.
- * Test repository name - Can be used in CI script to get test project code
- * Test repository's active branch name - Usually "master" but could be different. CI could use the branch name for pulling test code. 
- * Date of last SB copy - If there is a new SB copy this may have influence on test result comparison. 
- * Date of last test project drop - Most of the time the latest change will come from CQE. If there is a new drop this may have influence on test result comparison. 
- * <p>
- * Objects of this class can be instantiated by de-serializing a JSON file in the test project's root directory.
- * @author gneumann
- */
+// Class generated using http://www.jsonschema2pojo.org/
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+    "customer",
+    "productionOrgId",
+    "orgs",
+    "selenium"
+})
 public class TestContext {
 	public static final String JSON_FILENAME = "testcontext.json";
 
@@ -35,44 +34,14 @@ public class TestContext {
 		chrome, ie, firefox, safari
 	}
 
-	// generic test project information
-	private String sourceOrgId;
-	private String sourceOrgName;
-	private String sourcePod = "CSXX";
-	private String targetOrgId;
-	private String targetOrgName;
-	private String targetPod = "CS46";
-	private String releaseOfTargetOrg;
-	private String testRepoName;
-	private String testRepoBranch = "master";
-	private String dateOfLastSBCopy;
-	private String dateOfLastTestRepoDrop;
-	
-	// context type can be overridden by using system property "testcontext.remote"
-	private Type contextType = Type.local;
-
-	// default SauceLabs account is Tao's
-	private String sauceLab_userName = "tstarbow";
-	private String sauceLab_accessKey = "cf312d48-6250-40bf-82ad-a70991bdec72";
-
-	// browser name can be overridden by using system property "testcontext.browser"
-	private Browser browser = Browser.firefox;
-	private String browser_version = "45.0";
-	private String browser_screenResolution = "1920x1200";
-	private String browser_implicitTimeout = "45";
-
-	private String os_platform = "Windows 10";
-	private String os_timeZone = "Los Angeles";
-
-	// proxy can be overridden by using system property "testcontext.proxy_url"
-	// for no proxy settings set "testcontext.proxy_url" to "none".
-	private String os_proxy_url = "public0-proxy1-0-prd.data.sfdc.net:8080";
-
-	// cached values of different types
-	@JsonIgnore
-	private int implicitTimeout = -1;
-	@JsonIgnore
-	private Dimension screenSize = null;
+	@JsonProperty("customer")
+    private String customer;
+    @JsonProperty("productionOrgId")
+    private String productionOrgId;
+    @JsonProperty("orgs")
+    private Orgs orgs;
+    @JsonProperty("selenium")
+    private SeleniumEnvs seleniumEnvs;
 
 	private TestContext() {
 		; // prohibit default constructor
@@ -91,145 +60,360 @@ public class TestContext {
 		return testContext;
 	}
 
-	public String getSourceOrgId() {
-		return sourceOrgId;
-	}
-	
-	public String getSourceOrgName() {
-		return sourceOrgName;
-	}
-	
-	public String getSourcePod() {
-		return sourcePod;
-	}
+	@JsonProperty("customer")
+    public String getCustomer() {
+        return customer;
+    }
 
-	public String getTargetOrgId() {
-		return targetOrgId;
-	}
-	
-	public String getTargetOrgName() {
-		return targetOrgName;
-	}
+    @JsonProperty("customer")
+    public void setCustomer(String customer) {
+        this.customer = customer;
+    }
 
-	public String getTargetPod() {
-		return targetPod;
-	}
-	
-	public String getReleaseOfTargetOrg() {
-		return releaseOfTargetOrg;
-	}
-	
-	public String getTestRepoName() {
-		return testRepoName;
-	}
-	
-	public String getTestRepoBranch() {
-		return testRepoBranch;
-	}
-	
-	public String getDateOfLastSBCopy() {
-		return dateOfLastSBCopy;
-	}
+    @JsonProperty("productionOrgId")
+    public String getProductionOrgId() {
+        return productionOrgId;
+    }
 
-	public String getDateOfLastTestRepoDrop() {
-		return dateOfLastTestRepoDrop;
-	}
+    @JsonProperty("productionOrgId")
+    public void setProductionOrgId(String productionOrgId) {
+        this.productionOrgId = productionOrgId;
+    }
 
-	public Type getContextType() {
-		String typeName = System.getProperty("testcontext.remote");
-		if (StringUtils.isNotBlank(typeName)) {
-			contextType = Type.valueOf(typeName);
-		}
-		return contextType;
-	}
-	public String getSauceLab_userName() {
-		return sauceLab_userName;
-	}
-	
-	public String getSauceLab_accessKey() {
-		return sauceLab_accessKey;
-	}
-	
-	public Browser getBrowser() {
-		String name = System.getProperty("testcontext.browser");
-		if (StringUtils.isNotBlank(name)) {
-			browser = Browser.valueOf(name.toLowerCase());
-		}
-		return browser;
-	}
-	
-	public String getBrowser_version() {
-		return browser_version;
-	}
+    @JsonProperty("orgs")
+    public Orgs getOrgs() {
+        return orgs;
+    }
 
-	/**
-	 * Gets the desired screen size as string value. The format of the value has already been validated.
-	 * @return proper screen size string value
-	 */
-	public String getBrowser_screenResolution() {
-		if (screenSize != null) {
-			// we have already checked the value
-			return browser_screenResolution;
-		}
+    @JsonProperty("orgs")
+    public void setOrgs(Orgs orgs) {
+        this.orgs = orgs;
+    }
 
-		if (browser_screenResolution != null && !browser_screenResolution.isEmpty()) {
-			String[] splittedRes = browser_screenResolution.split("x");
-			if (splittedRes.length != 2) {
-				throw new IllegalArgumentException("Can't parse browser_screenResolution '" + browser_screenResolution + "'! It has to be of format [width]'x'[height] e.g. '1920x1200'");
-			}
-			try {
-				screenSize = new Dimension(Integer.parseInt(splittedRes[0]), Integer.parseInt(splittedRes[1]));
-			} catch (NumberFormatException e) {
-				throw new IllegalArgumentException("Can't parse browser_screenResolution '" + browser_screenResolution + "'! It has to be of format [width]'x'[height] e.g. '1920x1200'");
-			}
-		}
-		return browser_screenResolution;
-	}
-	
-	public Dimension getScreenResolutionAsDimension() {
-		return screenSize;
-	}
-	
-	/**
-	 * Gets the implicit timeout value as string. The value has already been validated to be an integer.
-	 * @return proper seconds string value
-	 */
-	public String getBrowser_implicitTimeout() {
-		if (implicitTimeout != -1) {
-			// we have already checked the value
-			return browser_implicitTimeout;
-		}
+    @JsonProperty("selenium")
+    public SeleniumEnvs getSeleniumEnvs() {
+        return seleniumEnvs;
+    }
 
-		if (browser_implicitTimeout != null && !browser_implicitTimeout.isEmpty()) {
-			try {
-				implicitTimeout = Integer.parseInt(browser_implicitTimeout);
-			} catch (NumberFormatException e) {
-				throw new IllegalArgumentException("Can't parse browser_implicitTimeout '" + browser_implicitTimeout + "'! It has to be of format [secs] e.g. '45'");
-			}
-		}
-		return browser_implicitTimeout;
-	}
+    @JsonProperty("selenium")
+    public void setSeleniumEnvs(SeleniumEnvs selenium) {
+        this.seleniumEnvs = selenium;
+    }
 
-	public int getImplicitTimeout() {
-		return implicitTimeout;
-	}
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonPropertyOrder({
+        "source",
+        "clone"
+    })
+    public static class Orgs {
+        @JsonProperty("source")
+        private Sandbox source;
+        @JsonProperty("clone")
+        private Sandbox clone;
 
-	public String getOs_platform() {
-		return os_platform;
-	}
+        @JsonProperty("source")
+        public Sandbox getSource() {
+            return source;
+        }
 
-	public String getOs_timeZone() {
-		return os_timeZone;
-	}
+        @JsonProperty("source")
+        public void setSource(Sandbox source) {
+            this.source = source;
+        }
 
-	public String getOs_proxy_url() {
-		String proxy = System.getProperty("testcontext.proxy_url");
-		if (StringUtils.isNotBlank(proxy)) {
-			os_proxy_url = proxy;
-			if ("none".equalsIgnoreCase(proxy)) {
-				os_proxy_url = "";
-			}
-		}
-		return os_proxy_url;
-	}
+        @JsonProperty("clone")
+        public Sandbox getClone() {
+            return clone;
+        }
+
+        @JsonProperty("clone")
+        public void setClone(Sandbox clone) {
+            this.clone = clone;
+        }
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonPropertyOrder({
+        "sandboxOrgId",
+        "sandboxOrgName",
+        "sandboxPod"
+    })
+    public static class Sandbox {
+        @JsonProperty("sandboxOrgId")
+        private String sandboxOrgId;
+        @JsonProperty("sandboxOrgName")
+        private String sandboxOrgName;
+        @JsonProperty("sandboxPod")
+        private String sandboxPod;
+
+        @JsonProperty("sandboxOrgId")
+        public String getSandboxOrgId() {
+            return sandboxOrgId;
+        }
+
+        @JsonProperty("sandboxOrgId")
+        public void setSandboxOrgId(String sandboxOrgId) {
+            this.sandboxOrgId = sandboxOrgId;
+        }
+
+        @JsonProperty("sandboxOrgName")
+        public String getSandboxOrgName() {
+            return sandboxOrgName;
+        }
+
+        @JsonProperty("sandboxOrgName")
+        public void setSandboxOrgName(String sandboxOrgName) {
+            this.sandboxOrgName = sandboxOrgName;
+        }
+
+        @JsonProperty("sandboxPod")
+        public String getSandboxPod() {
+            return sandboxPod;
+        }
+
+        @JsonProperty("sandboxPod")
+        public void setSandboxPod(String sandboxPod) {
+            this.sandboxPod = sandboxPod;
+        }
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonPropertyOrder({
+        "jenkins",
+        "local"
+    })
+    public static class SeleniumEnvs {
+        @JsonProperty("jenkins")
+        private Env jenkins;
+        @JsonProperty("local")
+        private Env local;
+
+        @JsonProperty("jenkins")
+        public Env getJenkins() {
+            return jenkins;
+        }
+
+        @JsonProperty("jenkins")
+        public void setJenkins(Env jenkins) {
+            this.jenkins = jenkins;
+        }
+
+        @JsonProperty("local")
+        public Env getLocal() {
+            return local;
+        }
+
+        @JsonProperty("local")
+        public void setLocal(Env local) {
+            this.local = local;
+        }
+    }
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonPropertyOrder({
+        "contextType",
+        "sauceLab_userName",
+        "sauceLab_accessKey",
+        "browser",
+        "browser_version",
+        "browser_screenResolution",
+        "browser_implicitTimeout",
+        "os_platform",
+        "os_timeZone",
+        "os_proxy_url"
+    })
+    public static class Env {
+    	// context type can be overridden by using system property "testcontext.remote"
+        @JsonProperty("contextType")
+        private Type contextType = Type.local;
+
+        // default SauceLabs account is Tao's
+        @JsonProperty("sauceLab_userName")
+        private String sauceLabUserName = "tstarbow";
+        @JsonProperty("sauceLab_accessKey")
+        private String sauceLabAccessKey = "cf312d48-6250-40bf-82ad-a70991bdec72";
+
+        // browser name can be overridden by using system property "testcontext.browser"
+        @JsonProperty("browser")
+        private Browser browser = Browser.firefox;
+        @JsonProperty("browser_version")
+        private String browserVersion = "45.0";
+        @JsonProperty("browser_screenResolution")
+        private String browserScreenResolution = "1920x1200";
+        @JsonProperty("browser_implicitTimeout")
+        private long browserImplicitTimeout = 45L;
+
+        @JsonProperty("os_platform")
+        private String osPlatform = "Windows 10";
+        @JsonProperty("os_timeZone")
+        private String osTimeZone = "Los Angeles";
+
+    	// proxy can be overridden by using system property "testcontext.proxy_url"
+    	// for no proxy settings set "testcontext.proxy_url" to "none".
+        @JsonProperty("os_proxy_url")
+        private String osProxyUrl = "public0-proxy1-0-prd.data.sfdc.net:8080";
+
+        @JsonProperty("contextType")
+        public void setContextType(Type type) {
+			// is type overridden?
+    		String typeName = System.getProperty("testcontext.remote");
+    		this.contextType = (StringUtils.isNotBlank(typeName)) ? Type.valueOf(typeName) : type;
+    	}
+
+        @JsonProperty("contextType")
+        public Type getContextType() {
+    		return this.contextType;
+    	}
+
+        @JsonProperty("sauceLab_userName")
+        public String getSauceLabUserName() {
+            return sauceLabUserName;
+        }
+
+        /*
+         * Accept value as-is.
+         */
+        @JsonProperty("sauceLab_userName")
+        public void setSauceLabUserName(String sauceLabUserName) {
+            this.sauceLabUserName = sauceLabUserName;
+        }
+
+        @JsonProperty("sauceLab_accessKey")
+        public String getSauceLabAccessKey() {
+            return sauceLabAccessKey;
+        }
+
+        /*
+         * Accept value as-is.
+         */
+        @JsonProperty("sauceLab_accessKey")
+        public void setSauceLabAccessKey(String sauceLabAccessKey) {
+            this.sauceLabAccessKey = sauceLabAccessKey;
+        }
+
+        @JsonProperty("browser")
+        public Browser getBrowser() {
+        	return this.browser;
+        }
+
+        @JsonProperty("browser")
+        public void setBrowser(Browser browser) {
+			// is browser overridden?
+    		String browserName = System.getProperty("testcontext.browser");
+    		this.browser = (StringUtils.isNotBlank(browserName)) ? Browser.valueOf(browserName.toLowerCase()) : browser;
+        }
+
+        @JsonProperty("browser_version")
+        public String getBrowserVersion() {
+            return browserVersion;
+        }
+
+        /*
+         * Accept value as-is.
+         */
+        @JsonProperty("browser_version")
+        public void setBrowserVersion(String browserVersion) {
+            this.browserVersion = browserVersion;
+        }
+
+        @JsonProperty("browser_screenResolution")
+        public String getBrowserScreenResolution() {
+            return browserScreenResolution;
+        }
+
+    	@JsonIgnore
+        public Dimension getBrowserScreenResolutionAsDimension() {
+        	Dimension browserScreenResolutionDimension = null;
+        	if (StringUtils.isNotEmpty(browserScreenResolution)) {
+				// splitting is OK; already validated in the setter
+    			String[] splittedRes = browserScreenResolution.split("x");
+    			try {
+    				// creating object is OK; already validated in the setter
+    				browserScreenResolutionDimension = new Dimension(Integer.parseInt(splittedRes[0]), Integer.parseInt(splittedRes[1]));
+    			} catch (NumberFormatException e) {
+    				;
+    			}
+    		}
+            return browserScreenResolutionDimension;
+        }
+
+        @JsonProperty("browser_screenResolution")
+        public void setBrowserScreenResolution(String browserScreenResolution) {
+        	if (StringUtils.isNotEmpty(browserScreenResolution)) {
+    			String[] splittedRes = browserScreenResolution.split("x");
+    			if (splittedRes.length != 2) {
+    				throw new IllegalArgumentException("Can't parse browser_screenResolution '" + browserScreenResolution + "'! It has to be of format [width]'x'[height] e.g. '1920x1200'");
+    			}
+    			try {
+    				// try to create a new Dimension object for validation
+    				new Dimension(Integer.parseInt(splittedRes[0]), Integer.parseInt(splittedRes[1]));
+    				// now we know all is OK with the screen resolution setting
+                	this.browserScreenResolution = browserScreenResolution;
+    			} catch (NumberFormatException e) {
+    				throw new IllegalArgumentException("Can't parse browser_screenResolution '" + browserScreenResolution + "'! It has to be of format [width]'x'[height] e.g. '1920x1200'");
+    			}
+    		}
+        }
+        
+        @JsonProperty("browser_implicitTimeout")
+        public long getBrowserImplicitTimeout() {
+            return browserImplicitTimeout;
+        }
+
+        @JsonProperty("browser_implicitTimeout")
+        public void setBrowserImplicitTimeout(long browserImplicitTimeout) {
+    		this.browserImplicitTimeout = browserImplicitTimeout;
+        }
+
+        @JsonProperty("os_platform")
+        public String getOsPlatform() {
+            return osPlatform;
+        }
+
+        /*
+         * Accept value as-is.
+         */
+        @JsonProperty("os_platform")
+        public void setOsPlatform(String osPlatform) {
+            this.osPlatform = osPlatform;
+        }
+
+        @JsonProperty("os_timeZone")
+        public String getOsTimeZone() {
+            return osTimeZone;
+        }
+
+        /*
+         * Accept value as-is.
+         */
+        @JsonProperty("os_timeZone")
+        public void setOsTimeZone(String osTimeZone) {
+            this.osTimeZone = osTimeZone;
+        }
+
+        @JsonProperty("os_proxy_url")
+        public String getOsProxyUrl() {
+			// is proxy overridden?
+    		String proxy = System.getProperty("testcontext.proxy_url");
+    		if (StringUtils.isNotBlank(proxy)) {
+    			osProxyUrl = proxy;
+    			if ("none".equalsIgnoreCase(proxy)) {
+    				osProxyUrl = "";
+    			}
+    		}
+    		return osProxyUrl;
+        }
+
+        @JsonProperty("os_proxy_url")
+        public void setOsProxyUrl(String osProxyUrl) {
+			// is proxy overridden?
+    		String proxy = System.getProperty("testcontext.proxy_url");
+    		if (StringUtils.isNotBlank(proxy)) {
+    			osProxyUrl = proxy;
+    			if ("none".equalsIgnoreCase(proxy)) {
+    				osProxyUrl = "";
+    			}
+    		} // otherwise keep default value
+            this.osProxyUrl = osProxyUrl;
+        }
+    }
 }

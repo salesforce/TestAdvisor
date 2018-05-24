@@ -29,9 +29,8 @@ public class JsonHelper {
 	public static <T> T toObject(String fileName, Class<T> clazz) throws MalformedJsonException {
 		T retrievedObject = null;
 		try {
-			ObjectMapper mapper = new ObjectMapper();
 			// Convert JSON string from file to Object
-			retrievedObject = mapper.readValue(new File(fileName), clazz);
+			retrievedObject = new ObjectMapper().readValue(new File(fileName), clazz);
 		} catch (JsonGenerationException e) {
 			throw new MalformedJsonException("Error while de-serializing object from JSON file " + fileName, e);
 		} catch (JsonMappingException e) {
