@@ -142,8 +142,8 @@ public class WebDriverFactory {
 
 	/**
 	 * Used for propagating the test results to SauceLabs.
-	 * @param hasPassed
-	 * @param driver
+	 * @param hasPassed true = passed, false= failed
+	 * @param driver web driver
 	 */
 	public static void setPassed(boolean hasPassed, WebDriver driver) {
 		TestContext testContext = null;

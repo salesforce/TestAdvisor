@@ -22,9 +22,11 @@ public class JsonHelper {
 	/**
 	 * Constructs instance of give type from JSON file.
 	 * 
+	 * @param <T> template type
 	 * @param fileName JSON file to de-serialize.
 	 * @param clazz de-serialize JSON file as an object of this class
 	 * @return de-serialized object or null in case of any exception
+	 * @throws MalformedJsonException
 	 */
 	public static <T> T toObject(String fileName, Class<T> clazz) throws MalformedJsonException {
 		T retrievedObject = null;
@@ -47,6 +49,7 @@ public class JsonHelper {
 	 *  
 	 * @param fileName JSON file with serialized object information
 	 * @param object to be serialized
+	 * @throws MalformedJsonException
 	 */
 	public static void toFile(String fileName, Object object) throws MalformedJsonException {
 		ObjectMapper objectMapper = new ObjectMapper();

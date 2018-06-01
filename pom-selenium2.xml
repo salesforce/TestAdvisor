@@ -4,7 +4,7 @@
 	<groupId>com.salesforce.cqe</groupId>
 	<artifactId>java-test-utils-selenium2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Java Test Utilities</name>
+	<name>Java Test Utilities for Selenium WebDriver v.2</name>
 	<description>Our Java code to help run Customer Test Projects based on Selenium WebDriver v.2.x internally.</description>
 	<packaging>jar</packaging>
 
