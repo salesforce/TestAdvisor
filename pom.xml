@@ -116,7 +116,7 @@
                     <arguments>-B</arguments>
                 </configuration>
             </plugin>
-      		
+
 		</plugins>
 	</build>
 	<dependencies>
@@ -162,7 +162,7 @@
 	</dependencies>
 
 	<scm>
-        <developerConnection>scm:git@git.soma.salesforce.com:cqe/java-test-utils.git</developerConnection>
+        <developerConnection>scm:git:git@git.soma.salesforce.com:cqe/java-test-utils.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
