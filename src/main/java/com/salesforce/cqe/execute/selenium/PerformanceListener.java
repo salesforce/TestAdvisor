@@ -30,7 +30,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeGet(Step step, String url) {
-		beforeActionOneParam(step);
+		beforeActionOneStringParam(step);
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeTo(Step step, String url) {
-		beforeActionOneParam(step);
+		beforeActionOneStringParam(step);
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeFrameByName(Step step, String frameName) {
-		beforeActionOneParam(step);
+		beforeActionOneStringParam(step);
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeWindow(Step step, String windowName) {
-		beforeActionOneParam(step);
+		beforeActionOneStringParam(step);
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeClick(Step step, WebElement element) {
-		beforeActionOneParam(step);
+		beforeActionOneWebElementParam(step);
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeClear(Step step, WebElement element) {
-		beforeActionOneParam(step);
+		beforeActionOneWebElementParam(step);
 	}
 
 	@Override
@@ -207,7 +207,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 		System.out.println(result);
 	}
 
-	private void beforeActionOneParam(Step step) {
+	private void beforeActionOneWebElementParam(Step step) {
 		String cmdPrefix = step.getCmd().getLongCmdString();
 		if (step.getStepNumber() > 1) {
 			if (lastStep != null) {
@@ -217,6 +217,19 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 			}
 		}
 		String result = "Step " + step.getStepNumber() + ": action '" + cmdPrefix + "(" + step.getParam1() + ")'";
+		System.out.println(result);
+	}
+
+	private void beforeActionOneStringParam(Step step) {
+		String cmdPrefix = step.getCmd().getLongCmdString();
+		if (step.getStepNumber() > 1) {
+			if (lastStep != null) {
+				System.out.println("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.getCmd().getShortCmdString() + "' in step " + lastStep.getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+			} else {
+				System.out.println("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+			}
+		}
+		String result = "Step " + step.getStepNumber() + ": action '" + cmdPrefix + "(\"" + step.getParam1() + "\")'";
 		System.out.println(result);
 	}
 
