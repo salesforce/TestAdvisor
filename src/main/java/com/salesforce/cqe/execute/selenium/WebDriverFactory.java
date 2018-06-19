@@ -78,7 +78,6 @@ public class WebDriverFactory {
 		Browser browser = env.getBrowser();
 		String proxyUrl = env.getOsProxyUrl();
 		caps.setCapability("browserName", env.getBrowser().toString());
-		// For Firefox: version 54.0 generated lots of "UnsupportedCommandException: mouseMoveTo" errors :(
 		caps.setCapability("version", env.getBrowserVersion());
 		caps.setCapability("screenResolution", env.getBrowserScreenResolution());
 		caps.setCapability("timeZone", env.getOsTimeZone());
@@ -90,7 +89,7 @@ public class WebDriverFactory {
 			String sauceName = env.getSauceLabUserName();
 			String sauceKey = env.getSauceLabAccessKey();
 
-			System.out.println("Connecting to saucelabs.");
+			printMsg("Connecting to saucelabs.");
 			String URL = "https://" + sauceName + ":" + sauceKey + "@ondemand.saucelabs.com:443/wd/hub";
 			// SauceLabs allows to choose the platform to run on
 			caps.setCapability("platform", env.getOsPlatform());
@@ -172,9 +171,9 @@ public class WebDriverFactory {
 			}
 
 			if (jobId != null) { 
-				System.out.println("WebDriverFactory.setPassed: session " + jobId + " set to " + hasPassed);
+				printMsg("WebDriverFactory.setPassed: session " + jobId + " set to " + hasPassed);
 			} else {
-				System.out.println("WebDriverFactory.setPassed: session <unknown> set to " + hasPassed);
+				printMsg("WebDriverFactory.setPassed: session <unknown> set to " + hasPassed);
 			}
 
 			// Need to respect proxy if present.
@@ -238,5 +237,9 @@ public class WebDriverFactory {
 
 	private static boolean isRunningOnJenkins() {
 		return StringUtils.isNotBlank(System.getenv("JOB_NAME"));
+	}
+
+	private static void printMsg(String msg) {
+		System.out.printf("[%d] %s", Thread.currentThread().getId(), msg);
 	}
 }
