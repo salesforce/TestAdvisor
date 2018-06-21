@@ -240,6 +240,6 @@ public class WebDriverFactory {
 	}
 
 	private static void printMsg(String msg) {
-		System.out.printf("[%d] %s", Thread.currentThread().getId(), msg);
+		System.out.printf("[%d] %s%n", Thread.currentThread().getId(), msg);
 	}
 }
