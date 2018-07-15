@@ -211,6 +211,12 @@ public class WebDriverFactory {
 		public org.openqa.selenium.remote.http.HttpClient createClient(URL url) {
 			return new ApacheHttpClient(client, url);
 		}
+
+		// Don't tag with @Override to allow code to run with older Selenium versions  
+//		@Override
+		public void cleanupIdleClients() {
+			; // no-op
+		}
 	}
 
 	private static class ProxiedSauce extends SauceREST {
