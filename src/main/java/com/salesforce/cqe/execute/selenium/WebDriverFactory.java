@@ -47,7 +47,7 @@ import org.testng.Assert;
  */
 public class WebDriverFactory {
 	/**
-	 * Instantiates a WebDriver instance for the test context defined under "selenium" > "jenkins"|"local" in testcontext.json.
+	 * Instantiates a WebDriver instance for the test context defined under "selenium"/"jenkins"|"local" in testcontext.json.
 	 * This file has to be present in the root of the test directory.
 	 * 
 	 * @param testName name of the current test
@@ -144,8 +144,8 @@ public class WebDriverFactory {
 
 	/**
 	 * Used for propagating the test results to SauceLabs.
-	 * @param hasPassed
-	 * @param driver
+	 * @param hasPassed true if test has passed, otherwise false
+	 * @param driver WebDriver instance currently driving the test
 	 */
 	public synchronized static void setPassed(boolean hasPassed, WebDriver driver) {
 		TestContext testContext = null;

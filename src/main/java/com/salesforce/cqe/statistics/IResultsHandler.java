@@ -13,27 +13,27 @@ import java.util.List;
 public interface IResultsHandler {
 	/**
 	 * Open connection or file and read results for given customer suite.
-	 * @param customerSuite
+	 * @param customerSuite name of the customer suite to load
 	 * @throws Exception if IO operation or result parsing encountered a problem.
 	 */
 	void open(String customerSuite) throws Exception;
 	/**
 	 * Gets the results for the various builds in which the given test
 	 * was executed.
-	 * @param testName
+	 * @param testName name of the test to get results for
 	 * @return list of results or empty list
 	 */
 	List<Result> getResults(String testName);
 	/**
 	 * Gets the results for all tests executed in the given build.
-	 * @param buildId
+	 * @param buildId build id to get results for
 	 * @return list of results or empty list
 	 */
 	List<Result> getResults(int buildId);
 	/**
 	 * Gets the results for all tests executed in the given build
 	 * which had the given outcome.
-	 * @param buildId
+	 * @param buildId build id to get results for
 	 * @param state "pass" or "fail"
 	 * @return list of results or empty list
 	 */
@@ -41,11 +41,11 @@ public interface IResultsHandler {
 	/**
 	 * Gets the result for the given build in which the given test
 	 * was executed.
-	 * @param testName
-	 * @param buildId
+	 * @param testName name of the test to get results for
+	 * @param buildId build id to get results for
 	 * @return result or NULL
 	 */
-	Result getResult(String testName, int buildID);
+	Result getResult(String testName, int buildId);
 	/**
 	 * Gets the list of test cases executed in any of the builds.
 	 * <p>
