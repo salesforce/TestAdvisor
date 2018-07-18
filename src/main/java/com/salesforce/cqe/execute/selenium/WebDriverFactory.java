@@ -53,7 +53,7 @@ public class WebDriverFactory {
 	 * @param testName name of the current test
 	 * @return WebDriver instance
 	 */
-	public static WebDriver getWebDriver(String testName) {
+	public synchronized static WebDriver getWebDriver(String testName) {
 		TestContext testContext = null;
 
 		try {
@@ -147,7 +147,7 @@ public class WebDriverFactory {
 	 * @param hasPassed
 	 * @param driver
 	 */
-	public static void setPassed(boolean hasPassed, WebDriver driver) {
+	public synchronized static void setPassed(boolean hasPassed, WebDriver driver) {
 		TestContext testContext = null;
 
 		try {
