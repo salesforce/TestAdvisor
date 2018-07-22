@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.salesforce.cqe</groupId>
 	<artifactId>java-test-utils</artifactId>
@@ -76,45 +78,46 @@
 					</execution>
 				</executions>
 			</plugin>
-            <!-- Nexus deploy settings: disable standard plugin and use the nexus-staging plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <skipStaging>true</skipStaging>
-                </configuration>
-            </plugin>
+			<!-- Nexus deploy settings: disable standard plugin and use the nexus-staging 
+				plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<skipStaging>true</skipStaging>
+				</configuration>
+			</plugin>
 
-            <!-- Nexus release settings -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <goals>deploy</goals>
-                    <localCheckout>true</localCheckout>
-                    <pushChanges>false</pushChanges>
-                    <tagNameFormat>v@{project.version}</tagNameFormat>
-                    <arguments>-B</arguments>
-                </configuration>
-            </plugin>
+			<!-- Nexus release settings -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<useReleaseProfile>false</useReleaseProfile>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<goals>deploy</goals>
+					<localCheckout>true</localCheckout>
+					<pushChanges>false</pushChanges>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<arguments>-B</arguments>
+				</configuration>
+			</plugin>
 
 		</plugins>
 	</build>
@@ -123,18 +126,6 @@
 			<groupId>com.salesforce.cqe</groupId>
 			<artifactId>test-drop-in-framework</artifactId>
 			<version>2.0.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-firefox-driver -->
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-firefox-driver</artifactId>
-			<version>3.8.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-chrome-driver</artifactId>
-			<version>3.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.saucelabs</groupId>
@@ -161,18 +152,18 @@
 	</dependencies>
 
 	<scm>
-        <developerConnection>scm:git:git@git.soma.salesforce.com:cqe/java-test-utils.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
+		<developerConnection>scm:git:git@git.soma.salesforce.com:cqe/java-test-utils.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
 
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <url>https://nexus.soma.salesforce.com/nexus/content/repositories/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <url>https://nexus.soma.salesforce.com/nexus/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+	<distributionManagement>
+		<repository>
+			<id>nexus</id>
+			<url>https://nexus.soma.salesforce.com/nexus/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus</id>
+			<url>https://nexus.soma.salesforce.com/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
