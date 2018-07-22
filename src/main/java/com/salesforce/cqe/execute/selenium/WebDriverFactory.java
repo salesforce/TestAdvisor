@@ -6,7 +6,6 @@
  */
 package com.salesforce.cqe.execute.selenium;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
@@ -37,6 +36,7 @@ import org.openqa.selenium.remote.internal.ApacheHttpClient;
 import com.google.gson.stream.MalformedJsonException;
 import com.salesforce.cqe.common.TestContext;
 import com.salesforce.cqe.common.TestContext.Browser;
+import com.salesforce.cqe.common.TestContext.Env;
 import com.salesforce.selenium.support.event.EventFiringWebDriver;
 import com.saucelabs.saucerest.SauceREST;
 
@@ -47,50 +47,52 @@ import org.testng.Assert;
  */
 public class WebDriverFactory {
 	/**
-	 * Instantiates a WebDriver instance for the test context defined in testcontext.json. This file has
-	 * to be present in the root of the test directory.
+	 * Instantiates a WebDriver instance for the test context defined under "selenium"/"jenkins"|"local" in testcontext.json.
+	 * This file has to be present in the root of the test directory.
 	 * 
 	 * @param testName name of the current test
 	 * @return WebDriver instance
 	 */
-	public static WebDriver getWebDriver(String testName) {
+	public synchronized static WebDriver getWebDriver(String testName) {
 		TestContext testContext = null;
+
 		try {
 			testContext = TestContext.getContext();
 		} catch (MalformedJsonException mje) {
 			Assert.fail("Could not get test context information from JSON file " + TestContext.JSON_FILENAME);
 		}
 
-		TestContext.Type context = testContext.getContextType();
-		Browser browser = testContext.getBrowser();
-		String sauceName = testContext.getSauceLab_userName();
-		String sauceKey = testContext.getSauceLab_accessKey();
-
+		Env env = null;
 		DesiredCapabilities caps = new DesiredCapabilities();
-		WebDriver driver = null;
 
-		String proxyUrl = testContext.getOs_proxy_url();
-		caps.setCapability("browserName", testContext.getBrowser().toString());
-		// For Firefox: version 54.0 generated lots of "UnsupportedCommandException: mouseMoveTo" errors :(
-		caps.setCapability("version", testContext.getBrowser_version());
-		caps.setCapability("screenResolution", testContext.getBrowser_screenResolution());
-		caps.setCapability("timeZone", testContext.getOs_timeZone());
+		// Set env and the Jenkins build value, if available
+		if (isRunningOnJenkins()) {
+			env = testContext.getSeleniumEnvs().getJenkins();
+			String buildNumber = System.getenv("BUILD_NUMBER");
+			String jenkinsBuild = System.getenv("JOB_NAME") + ":" + buildNumber;
+			caps.setCapability("build", jenkinsBuild);
+		} else {
+			env = testContext.getSeleniumEnvs().getLocal();
+		}
+		
+		Browser browser = env.getBrowser();
+		String proxyUrl = env.getOsProxyUrl();
+		caps.setCapability("browserName", env.getBrowser().toString());
+		caps.setCapability("version", env.getBrowserVersion());
+		caps.setCapability("screenResolution", env.getBrowserScreenResolution());
+		caps.setCapability("timeZone", env.getOsTimeZone());
 		caps.setCapability("name", testName);
 
-		// Set the Jenkins build value, if available
-		String jobName = System.getenv("JOB_NAME");
-		if (StringUtils.isNotBlank(jobName)) {
-			String buildNumber = System.getenv("BUILD_NUMBER");
-			String jenkinsBuild = jobName + ":" + buildNumber;
-			caps.setCapability("build", jenkinsBuild);
-		}
-
-		switch (context) {
+		WebDriver driver = null;
+		switch (env.getContextType()) {
 		case saucelabs:
-			System.out.println("Connecting to saucelabs.");
+			String sauceName = env.getSauceLabUserName();
+			String sauceKey = env.getSauceLabAccessKey();
+
+			printMsg("Connecting to saucelabs.");
 			String URL = "https://" + sauceName + ":" + sauceKey + "@ondemand.saucelabs.com:443/wd/hub";
-			// SacueLabs allows to choose the platform to run on
-			caps.setCapability("platform", testContext.getOs_platform());
+			// SauceLabs allows to choose the platform to run on
+			caps.setCapability("platform", env.getOsPlatform());
 
 			try { // Promote to runtime exception since wrapping function is not setup to handle.
 				if (StringUtils.isBlank(proxyUrl)) {
@@ -123,14 +125,14 @@ public class WebDriverFactory {
 				// Cannot use FireFoxOptions because it's not available in WebDriver v2
 				driver = new FirefoxDriver(caps);
 			}
-			driver.manage().window().setSize(testContext.getScreenResolutionAsDimension());
+			driver.manage().window().setSize(env.getBrowserScreenResolutionAsDimension());
 			break;
 		default:
-			throw new IllegalArgumentException("Unknown or unsupported context " + context.name());
+			// can't happen because validation was already done during reading json file
 		}
 
-		if (testContext.getImplicitTimeout() != -1) {
-			driver.manage().timeouts().implicitlyWait(testContext.getImplicitTimeout(), TimeUnit.SECONDS);
+		if (env.getBrowserImplicitTimeout() != -1) {
+			driver.manage().timeouts().implicitlyWait(env.getBrowserImplicitTimeout(), TimeUnit.SECONDS);
 		}
 
 		EventFiringWebDriver wd = new EventFiringWebDriver(driver, testName);
@@ -142,11 +144,12 @@ public class WebDriverFactory {
 
 	/**
 	 * Used for propagating the test results to SauceLabs.
-	 * @param hasPassed true = passed, false= failed
-	 * @param driver web driver
+	 * @param hasPassed true if test has passed, otherwise false
+	 * @param driver WebDriver instance currently driving the test
 	 */
-	public static void setPassed(boolean hasPassed, WebDriver driver) {
+	public synchronized static void setPassed(boolean hasPassed, WebDriver driver) {
 		TestContext testContext = null;
+
 		try {
 			testContext = TestContext.getContext();
 		} catch (MalformedJsonException mje) {
@@ -154,8 +157,9 @@ public class WebDriverFactory {
 			Assert.fail("Could not get test context information from JSON file " + TestContext.JSON_FILENAME);
 		}
 
-		TestContext.Type context = testContext.getContextType();
-		if (context == TestContext.Type.saucelabs) {
+		Env env = isRunningOnJenkins() ? testContext.getSeleniumEnvs().getJenkins() : testContext.getSeleniumEnvs().getLocal();
+
+		if (env.getContextType() == TestContext.Type.saucelabs) {
 			String jobId = null;
 			WebDriver wrappedDriver = driver;
 			if (driver instanceof EventFiringWebDriver) {
@@ -167,21 +171,21 @@ public class WebDriverFactory {
 			}
 
 			if (jobId != null) { 
-				System.out.println("WebDriverFactory.setPassed: session " + jobId + " set to " + hasPassed);
+				printMsg("WebDriverFactory.setPassed: session " + jobId + " set to " + hasPassed);
 			} else {
-				System.out.println("WebDriverFactory.setPassed: session <unknown> set to " + hasPassed);
+				printMsg("WebDriverFactory.setPassed: session <unknown> set to " + hasPassed);
 			}
 
 			// Need to respect proxy if present.
 			SauceREST saucer;
-			if (StringUtils.isNotBlank(testContext.getOs_proxy_url())) {
+			if (StringUtils.isNotBlank(env.getOsProxyUrl())) {
 				try {
-					saucer = new ProxiedSauce(testContext.getSauceLab_userName(), testContext.getSauceLab_accessKey(), testContext.getOs_proxy_url());
+					saucer = new ProxiedSauce(env.getSauceLabUserName(), env.getSauceLabAccessKey(), env.getOsProxyUrl());
 				} catch (URISyntaxException e) {
 					throw new RuntimeException(e);
 				}
 			} else {
-				saucer = new SauceREST(testContext.getSauceLab_userName(), testContext.getSauceLab_accessKey());
+				saucer = new SauceREST(env.getSauceLabUserName(), env.getSauceLabAccessKey());
 			}
 			if (jobId != null) {
 				if (hasPassed) {
@@ -207,6 +211,12 @@ public class WebDriverFactory {
 		public org.openqa.selenium.remote.http.HttpClient createClient(URL url) {
 			return new ApacheHttpClient(client, url);
 		}
+
+		// Don't tag with @Override to allow code to run with older Selenium versions  
+//		@Override
+		public void cleanupIdleClients() {
+			; // no-op
+		}
 	}
 
 	private static class ProxiedSauce extends SauceREST {
@@ -229,5 +239,13 @@ public class WebDriverFactory {
 			con.setConnectTimeout((int) TimeUnit.SECONDS.toMillis(10));
 			return con;
 		}
+	}
+
+	private static boolean isRunningOnJenkins() {
+		return StringUtils.isNotBlank(System.getenv("JOB_NAME"));
+	}
+
+	private static void printMsg(String msg) {
+		System.out.printf("[%d] %s%n", Thread.currentThread().getId(), msg);
 	}
 }

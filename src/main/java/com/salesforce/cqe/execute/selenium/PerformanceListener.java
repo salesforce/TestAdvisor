@@ -12,7 +12,7 @@ import com.salesforce.selenium.support.event.AbstractWebDriverEventListener;
 import com.salesforce.selenium.support.event.Step;
 
 public class PerformanceListener extends AbstractWebDriverEventListener {
-	private Step lastStep = null;
+	private ThreadLocal<Step> lastStep = new ThreadLocal<Step>();
 
 	public void closeListener() {
 		; // empty implementation
@@ -30,7 +30,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeGet(Step step, String url) {
-		beforeActionOneParam(step);
+		beforeActionOneStringParam(step);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	public void afterFindElementByElement(Step step, WebElement returnedElement, By by, WebElement element) {
 		String result = "Step " + step.getStepNumber() + ": executed in " + Step.formattedNanoTime(step.getTimeElapsedStep())
 			+ " and returned: WebElement [" + step.getReturnValue() + "]";
-		System.out.println(result);
+		printMsg(result);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	public void afterFindElementByWebDriver(Step step, WebElement returnedElement, By by) {
 		String result = "Step " + step.getStepNumber() + ": executed in " + Step.formattedNanoTime(step.getTimeElapsedStep())
 				+ " and returned: WebElement [" + step.getReturnValue() + "]";
-		System.out.println(result);
+		printMsg(result);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	public void afterGetWindowHandle(Step step, String handle) {
 		String result = "Step " + step.getStepNumber() + ": executed in " + Step.formattedNanoTime(step.getTimeElapsedStep())
 		+ " and returned: Window ID [" + step.getReturnValue() + "]";
-		System.out.println(result);
+		printMsg(result);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	public void afterGetWindowHandles(Step step, Set<String> handles) {
 		String result = "Step " + step.getStepNumber() + ": executed in " + Step.formattedNanoTime(step.getTimeElapsedStep())
 		+ " and returned: Window ID's [" + step.getReturnValue() + "]";
-		System.out.println(result);
+		printMsg(result);
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeTo(Step step, String url) {
-		beforeActionOneParam(step);
+		beforeActionOneStringParam(step);
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeFrameByName(Step step, String frameName) {
-		beforeActionOneParam(step);
+		beforeActionOneStringParam(step);
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeWindow(Step step, String windowName) {
-		beforeActionOneParam(step);
+		beforeActionOneStringParam(step);
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeClick(Step step, WebElement element) {
-		beforeActionOneParam(step);
+		beforeActionOneWebElementParam(step);
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeClear(Step step, WebElement element) {
-		beforeActionOneParam(step);
+		beforeActionOneWebElementParam(step);
 	}
 
 	@Override
@@ -174,20 +174,20 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	public void afterGetText(Step step, String text, WebElement element) {
 		String result = "Step " + step.getStepNumber() + ": executed in " + Step.formattedNanoTime(step.getTimeElapsedStep())
 				+ " and returned: '" + step.getReturnValue() + "'";
-		System.out.println(result);
+		printMsg(result);
 	}
 
 	@Override
 	public void beforeSendKeys(Step step, WebElement element, CharSequence... keysToSend) {
 		if (step.getStepNumber() > 1) {
 			if (lastStep != null) {
-				System.out.println("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.getCmd().getShortCmdString() + "' in step " + lastStep.getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+				printMsg("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.get().getCmd().getShortCmdString() + "' in step " + lastStep.get().getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			} else {
-				System.out.println("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+				printMsg("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			}
 		}
 		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd().getLongCmdString() + "(" + step.getParam1() + ", \"" + step.getParam2() + "\")'";
-		System.out.println(result);
+		printMsg(result);
 	}
 
 	@Override
@@ -198,41 +198,58 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	private void beforeActionNoParams(Step step) {
 		if (step.getStepNumber() > 1) {
 			if (lastStep != null) {
-				System.out.println("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.getCmd().getShortCmdString() + "' in step " + lastStep.getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+				printMsg("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.get().getCmd().getShortCmdString() + "' in step " + lastStep.get().getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			} else {
-				System.out.println("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+				printMsg("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			}
 		}
 		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd().getLongCmdString() + "()'";
-		System.out.println(result);
+		printMsg(result);
 	}
 
-	private void beforeActionOneParam(Step step) {
+	private void beforeActionOneWebElementParam(Step step) {
 		String cmdPrefix = step.getCmd().getLongCmdString();
 		if (step.getStepNumber() > 1) {
 			if (lastStep != null) {
-				System.out.println("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.getCmd().getShortCmdString() + "' in step " + lastStep.getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+				printMsg("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.get().getCmd().getShortCmdString() + "' in step " + lastStep.get().getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			} else {
-				System.out.println("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+				printMsg("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			}
 		}
 		String result = "Step " + step.getStepNumber() + ": action '" + cmdPrefix + "(" + step.getParam1() + ")'";
-		System.out.println(result);
+		printMsg(result);
+	}
+
+	private void beforeActionOneStringParam(Step step) {
+		String cmdPrefix = step.getCmd().getLongCmdString();
+		if (step.getStepNumber() > 1) {
+			if (lastStep != null) {
+				printMsg("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.get().getCmd().getShortCmdString() + "' in step " + lastStep.get().getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+			} else {
+				printMsg("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
+			}
+		}
+		String result = "Step " + step.getStepNumber() + ": action '" + cmdPrefix + "(\"" + step.getParam1() + "\")'";
+		printMsg(result);
 	}
 
 	private void beforeGatherNoParams(Step step) {
 		String result = "Step " + step.getStepNumber() + ": gather '" + step.getCmd().getLongCmdString() + "()'";
-		System.out.println(result);
+		printMsg(result);
 	}
 
 	private void beforeGatherOneParam(Step step) {
 		String result = "Step " + step.getStepNumber() + ": gather '" + step.getCmd().getLongCmdString() + "(" + step.getParam1() + ")'";
-		System.out.println(result);
+		printMsg(result);
 	}
 
 	private void afterActionNoReturnValue(Step step) {
-		lastStep = step;
+		lastStep.set(step);
 		String result = "Step " + step.getStepNumber() + ": action '" + step.getCmd().getShortCmdString() + "' executed in " + Step.formattedNanoTime(step.getTimeElapsedStep());
-		System.out.println(result);
+		printMsg(result);
+	}
+
+	private static void printMsg(String msg) {
+		System.out.printf("[%d] %s%n", Thread.currentThread().getId(), msg);
 	}
 }

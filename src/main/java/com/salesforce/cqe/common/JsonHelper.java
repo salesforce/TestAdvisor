@@ -22,18 +22,17 @@ public class JsonHelper {
 	/**
 	 * Constructs instance of give type from JSON file.
 	 * 
-	 * @param <T> template type
+	 * @param <T> class to be de-serialized
 	 * @param fileName JSON file to de-serialize.
 	 * @param clazz de-serialize JSON file as an object of this class
 	 * @return de-serialized object or null in case of any exception
-	 * @throws MalformedJsonException
+	 * @throws MalformedJsonException if file got corrupted or does not fit the class to de-serialize
 	 */
 	public static <T> T toObject(String fileName, Class<T> clazz) throws MalformedJsonException {
 		T retrievedObject = null;
 		try {
-			ObjectMapper mapper = new ObjectMapper();
 			// Convert JSON string from file to Object
-			retrievedObject = mapper.readValue(new File(fileName), clazz);
+			retrievedObject = new ObjectMapper().readValue(new File(fileName), clazz);
 		} catch (JsonGenerationException e) {
 			throw new MalformedJsonException("Error while de-serializing object from JSON file " + fileName, e);
 		} catch (JsonMappingException e) {
@@ -49,7 +48,7 @@ public class JsonHelper {
 	 *  
 	 * @param fileName JSON file with serialized object information
 	 * @param object to be serialized
-	 * @throws MalformedJsonException
+	 * @throws MalformedJsonException if object could not be serialized to file
 	 */
 	public static void toFile(String fileName, Object object) throws MalformedJsonException {
 		ObjectMapper objectMapper = new ObjectMapper();
