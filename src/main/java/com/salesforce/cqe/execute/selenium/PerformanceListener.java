@@ -180,7 +180,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	@Override
 	public void beforeSendKeys(Step step, WebElement element, CharSequence... keysToSend) {
 		if (step.getStepNumber() > 1) {
-			if (lastStep != null) {
+			if (lastStep.get() != null) {
 				printMsg("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.get().getCmd().getShortCmdString() + "' in step " + lastStep.get().getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			} else {
 				printMsg("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
@@ -197,7 +197,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 
 	private void beforeActionNoParams(Step step) {
 		if (step.getStepNumber() > 1) {
-			if (lastStep != null) {
+			if (lastStep.get() != null) {
 				printMsg("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.get().getCmd().getShortCmdString() + "' in step " + lastStep.get().getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			} else {
 				printMsg("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
@@ -210,7 +210,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	private void beforeActionOneWebElementParam(Step step) {
 		String cmdPrefix = step.getCmd().getLongCmdString();
 		if (step.getStepNumber() > 1) {
-			if (lastStep != null) {
+			if (lastStep.get() != null) {
 				printMsg("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.get().getCmd().getShortCmdString() + "' in step " + lastStep.get().getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			} else {
 				printMsg("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
@@ -223,7 +223,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	private void beforeActionOneStringParam(Step step) {
 		String cmdPrefix = step.getCmd().getLongCmdString();
 		if (step.getStepNumber() > 1) {
-			if (lastStep != null) {
+			if (lastStep.get() != null) {
 				printMsg("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.get().getCmd().getShortCmdString() + "' in step " + lastStep.get().getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
 			} else {
 				printMsg("Step " + step.getStepNumber() + ": Time elapsed between actions: " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
