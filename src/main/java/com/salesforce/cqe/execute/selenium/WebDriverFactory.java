@@ -24,7 +24,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.CommandInfo;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -54,25 +56,14 @@ public class WebDriverFactory {
 	 * @return WebDriver instance
 	 */
 	public synchronized static WebDriver getWebDriver(String testName) {
-		TestContext testContext = null;
-
-		try {
-			testContext = TestContext.getContext();
-		} catch (MalformedJsonException mje) {
-			Assert.fail("Could not get test context information from JSON file " + TestContext.JSON_FILENAME);
-		}
-
-		Env env = null;
+		Env env = getSeleniumTestContext();
 		DesiredCapabilities caps = new DesiredCapabilities();
 
 		// Set env and the Jenkins build value, if available
 		if (isRunningOnJenkins()) {
-			env = testContext.getSeleniumEnvs().getJenkins();
 			String buildNumber = System.getenv("BUILD_NUMBER");
 			String jenkinsBuild = System.getenv("JOB_NAME") + ":" + buildNumber;
 			caps.setCapability("build", jenkinsBuild);
-		} else {
-			env = testContext.getSeleniumEnvs().getLocal();
 		}
 		
 		Browser browser = env.getBrowser();
@@ -119,11 +110,9 @@ public class WebDriverFactory {
 		case local:
 			if (browser == Browser.chrome) {
 				caps.setCapability("chrome.switches", Arrays.asList("--disable-extensions"));
-				// Cannot use ChromeOptions because it's not available in WebDriver v2
-				driver = new ChromeDriver(caps);
+				driver = new ChromeDriver(new ChromeOptions().merge(caps));
 			} else {
-				// Cannot use FireFoxOptions because it's not available in WebDriver v2
-				driver = new FirefoxDriver(caps);
+				driver = new FirefoxDriver(new FirefoxOptions().merge(caps));
 			}
 			driver.manage().window().setSize(env.getBrowserScreenResolutionAsDimension());
 			break;
@@ -148,16 +137,7 @@ public class WebDriverFactory {
 	 * @param driver WebDriver instance currently driving the test
 	 */
 	public synchronized static void setPassed(boolean hasPassed, WebDriver driver) {
-		TestContext testContext = null;
-
-		try {
-			testContext = TestContext.getContext();
-		} catch (MalformedJsonException mje) {
-			// highly unlikely because a problem will already have lead to a fail() in getWebDriver(..)
-			Assert.fail("Could not get test context information from JSON file " + TestContext.JSON_FILENAME);
-		}
-
-		Env env = isRunningOnJenkins() ? testContext.getSeleniumEnvs().getJenkins() : testContext.getSeleniumEnvs().getLocal();
+		Env env = getSeleniumTestContext();
 
 		if (env.getContextType() == TestContext.Type.saucelabs) {
 			String jobId = null;
@@ -187,7 +167,8 @@ public class WebDriverFactory {
 			} else {
 				saucer = new SauceREST(env.getSauceLabUserName(), env.getSauceLabAccessKey());
 			}
-			if (jobId != null) {
+			// Last line of defense: include a check if webDriver instance is still available
+			if (jobId != null && wrappedDriver != null) {
 				if (hasPassed) {
 					saucer.jobPassed(jobId);
 				} else {
@@ -195,6 +176,18 @@ public class WebDriverFactory {
 				}
 			}
 		}
+	}
+	
+	public static TestContext.Env getSeleniumTestContext() {
+		TestContext testContext = null;
+
+		try {
+			testContext = TestContext.getContext();
+		} catch (MalformedJsonException mje) {
+			Assert.fail("Could not get test context information from JSON file " + TestContext.JSON_FILENAME);
+		}
+
+		return isRunningOnJenkins() ? testContext.getSeleniumEnvs().getJenkins() : testContext.getSeleniumEnvs().getLocal();
 	}
 
 	private static class ProxiedHttpClientFactory implements org.openqa.selenium.remote.http.HttpClient.Factory {
