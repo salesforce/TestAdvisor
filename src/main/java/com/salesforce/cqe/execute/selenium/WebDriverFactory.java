@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -167,12 +168,18 @@ public class WebDriverFactory {
 			} else {
 				saucer = new SauceREST(env.getSauceLabUserName(), env.getSauceLabAccessKey());
 			}
-			// Last line of defense: include a check if webDriver instance is still available
-			if (jobId != null && wrappedDriver != null) {
-				if (hasPassed) {
-					saucer.jobPassed(jobId);
-				} else {
-					saucer.jobFailed(jobId);
+			if (jobId != null) {
+				try {
+					if (hasPassed) {
+						saucer.jobPassed(jobId);
+					} else {
+						saucer.jobFailed(jobId);
+					}
+				} catch (UnsupportedCommandException uce) {
+					// The webDriver instance has already been shutdown and can't take
+					// any further commands. Just log this situation and prevent exception
+					// from bubbling up. Further actions are neither necessary nor possible.
+					printMsg(uce.getMessage());
 				}
 			}
 		}
