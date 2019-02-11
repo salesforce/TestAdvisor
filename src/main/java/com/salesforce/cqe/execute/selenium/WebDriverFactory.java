@@ -13,8 +13,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.net.Proxy;
 
@@ -85,6 +85,9 @@ public class WebDriverFactory {
 			String URL = "https://" + sauceName + ":" + sauceKey + "@ondemand.saucelabs.com:443/wd/hub";
 			// SauceLabs allows to choose the platform to run on
 			caps.setCapability("platform", env.getOsPlatform());
+			if(browser == Browser.chrome) {
+				caps.setCapability(ChromeOptions.CAPABILITY, disableShowNotificationsForChrome());
+			}
 
 			try { // Promote to runtime exception since wrapping function is not setup to handle.
 				if (StringUtils.isBlank(proxyUrl)) {
@@ -110,8 +113,7 @@ public class WebDriverFactory {
 			// no BREAK here by design!
 		case local:
 			if (browser == Browser.chrome) {
-				caps.setCapability("chrome.switches", Arrays.asList("--disable-extensions"));
-				driver = new ChromeDriver(new ChromeOptions().merge(caps));
+				driver = new ChromeDriver(disableShowNotificationsForChrome().merge(caps));
 			} else {
 				driver = new FirefoxDriver(new FirefoxOptions().merge(caps));
 			}
@@ -130,6 +132,14 @@ public class WebDriverFactory {
 //		wd.register(new Log2TestCase());
 		wd.register(new StepsToReproduce(testName));
 		return wd;
+	}
+
+	private static ChromeOptions disableShowNotificationsForChrome() {
+		Map<String, Object> prefs = new HashMap<String, Object>();
+		prefs.put("profile.default_content_setting_values.notifications", 2);
+		ChromeOptions options = new ChromeOptions();
+		options.setExperimentalOption("prefs", prefs);
+		return options;
 	}
 
 	/**
