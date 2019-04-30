@@ -266,7 +266,7 @@ public class TestContext {
 
         @JsonProperty("sauceLab_userName")
         public String getSauceLabUserName() {
-            return sauceLabUserName;
+        	return System.getProperty("testcontext.sauce_name", sauceLabUserName);
         }
 
         /*
@@ -279,7 +279,7 @@ public class TestContext {
 
         @JsonProperty("sauceLab_accessKey")
         public String getSauceLabAccessKey() {
-            return sauceLabAccessKey;
+        	return System.getProperty("testcontext.sauce_key", sauceLabAccessKey);
         }
 
         /*
