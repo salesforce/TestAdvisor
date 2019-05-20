@@ -108,7 +108,7 @@ public class ExcelUtil {
 	/**
 	 * Gets string from cell.
 	 * <p>
-	 * This method assumes that you have loaded the spreadsheet using {@link ExcelUtil#open(String, String)} or
+	 * This method assumes that you have loaded the spreadsheet using {@link ExcelUtil#load(String, String)} or
 	 * {@link #setSheetName(String)} where you define the spreadsheet name.
 	 * <p>
 	 * Fails the calling test if Excel file could not be opened.
@@ -163,14 +163,14 @@ public class ExcelUtil {
 	/**
 	 * Sets cell to given string value and saves the file to disk.
 	 * <p>
-	 * This method assumes that you have loaded the spreadsheet using {@link ExcelUtil#open(String, String)} or
+	 * This method assumes that you have loaded the spreadsheet using {@link ExcelUtil#load(String, String)} or
 	 * {@link #setSheetName(String)} where you define the spreadsheet name.
 	 * <p>
 	 * Fails the calling test if Excel file could not be opened or written to.
 	 *  
 	 * @param rowNum row number, 0-based
 	 * @param colNum column number, 0-based
-	 * @param value
+	 * @param value the string value to write to given cell (see also {@link Cell#setCellValue(String)})
 	 */
 	public void setCellData(int rowNum, int colNum, String value) {
 		setCellData(sheetName, rowNum, colNum, value);
@@ -184,8 +184,7 @@ public class ExcelUtil {
 	 * @param sheetName name of the spreadsheet to access
 	 * @param rowNum row number, 0-based
 	 * @param colNum column number, 0-based
-	 * @param value
-	 * @throws Exception in case of file-not-found or other issues during writing of Excel file
+	 * @param value the string value to write to given cell (see also {@link Cell#setCellValue(String)})
 	 */
 	public void setCellData(String sheetName, int rowNum, int colNum, String value) {
 		if (Strings.isNullOrEmpty(fileName)) {
