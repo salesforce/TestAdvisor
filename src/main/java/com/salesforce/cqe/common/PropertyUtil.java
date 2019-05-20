@@ -25,6 +25,7 @@ public class PropertyUtil {
 	 * <p>
 	 * Fails the calling test if properties file could not be loaded.
 	 * @param fileName path of file; must not be null or empty
+	 * @return existing instance, if file has been opened before, or a fresh instance 
 	 */
 	public static PropertyUtil load(String fileName) {
 		if (Strings.isNullOrEmpty(fileName)) {

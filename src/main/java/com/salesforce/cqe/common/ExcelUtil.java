@@ -40,6 +40,7 @@ public class ExcelUtil {
 	 * Fails the calling test if Excel file could not be loaded.
 	 * 
 	 * @param fileName name of the spreadsheet file
+	 * @return existing instance, if file has been opened before, or a fresh instance 
 	 */
 	public static ExcelUtil load(String fileName) {
 		return load(fileName, "Sheet1");
@@ -57,6 +58,7 @@ public class ExcelUtil {
 	 * @param fileName name of the spreadsheet file
 	 * @param sheetName the name of the spreadsheet to use in calls {@link #getValue(int, int)}
 	 * and {@link #setCellData(int, int, String)}
+	 * @return existing instance, if file has been opened before, or a fresh instance 
 	 */
 	public static ExcelUtil load(String fileName, String sheetName) {
 		if (Strings.isNullOrEmpty(fileName)) {
