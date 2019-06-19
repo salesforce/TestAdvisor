@@ -21,6 +21,7 @@ import com.google.gson.stream.MalformedJsonException;
 @JsonPropertyOrder({
     "customer",
     "productionOrgId",
+    "productionOrgId2",
     "orgs",
     "selenium"
 })
@@ -38,6 +39,8 @@ public class TestContext {
     private String customer;
     @JsonProperty("productionOrgId")
     private String productionOrgId;
+    @JsonProperty("productionOrgId2")
+    private String productionOrgId2;
     @JsonProperty("orgs")
     private Orgs orgs;
     @JsonProperty("selenium")
@@ -53,11 +56,17 @@ public class TestContext {
 	 * @throws MalformedJsonException if .json file is not readable.
 	 */
 	public static TestContext getContext() throws MalformedJsonException {
-		TestContext testContext = JsonHelper.toObject(TestContext.JSON_FILENAME, TestContext.class);
-		if (testContext == null) {
-			throw new MalformedJsonException("Could not get test context information from JSON file " + TestContext.JSON_FILENAME);
-		}
-		return testContext;
+		return getContext(TestContext.JSON_FILENAME);
+	}
+
+	/**
+	 * Reads JSON file from given path.
+	 * @param fileName file to open, including relative or absolute path
+	 * @return test context
+	 * @throws MalformedJsonException if .json file is not readable.
+	 */
+	public static TestContext getContext(String fileName) throws MalformedJsonException {
+		return JsonHelper.toObject(fileName, TestContext.class);
 	}
 
 	@JsonProperty("customer")
@@ -78,6 +87,16 @@ public class TestContext {
     @JsonProperty("productionOrgId")
     public void setProductionOrgId(String productionOrgId) {
         this.productionOrgId = productionOrgId;
+    }
+
+    @JsonProperty("productionOrgId2")
+    public String getProductionOrgId2() {
+        return productionOrgId2;
+    }
+
+    @JsonProperty("productionOrgId2")
+    public void setProductionOrgId2(String productionOrgId2) {
+        this.productionOrgId2 = productionOrgId2;
     }
 
     @JsonProperty("orgs")
@@ -108,8 +127,12 @@ public class TestContext {
     public static class Orgs {
         @JsonProperty("source")
         private Sandbox source;
+        @JsonProperty("source2")
+        private Sandbox source2;
         @JsonProperty("clone")
         private Sandbox clone;
+        @JsonProperty("clone2")
+        private Sandbox clone2;
 
         @JsonProperty("source")
         public Sandbox getSource() {
@@ -121,6 +144,16 @@ public class TestContext {
             this.source = source;
         }
 
+        @JsonProperty("source2")
+        public Sandbox getSource2() {
+            return source2;
+        }
+
+        @JsonProperty("source2")
+        public void setSource2(Sandbox source2) {
+            this.source2 = source2;
+        }
+
         @JsonProperty("clone")
         public Sandbox getClone() {
             return clone;
@@ -129,6 +162,16 @@ public class TestContext {
         @JsonProperty("clone")
         public void setClone(Sandbox clone) {
             this.clone = clone;
+        }
+
+        @JsonProperty("clone2")
+        public Sandbox getClone2() {
+            return clone2;
+        }
+
+        @JsonProperty("clone2")
+        public void setClone2(Sandbox clone2) {
+            this.clone2 = clone2;
         }
     }
 

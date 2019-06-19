@@ -1,0 +1,53 @@
+{
+	"customer": "JCI",
+	"productionOrgId": "00D200000006v0a",
+	"productionOrgId2": "00DG0000000hBll",
+	"orgs": {
+		"source": {
+			"sandboxOrgId": "00D0E0000004cpE",
+			"sandboxOrgName": "DevInfosys",
+			"sandboxPod": "CS89"
+		},
+		"source2": {
+			"sandboxOrgId": "00D190000004lAl",
+			"sandboxOrgName": "jcibst",
+			"sandboxPod": "CS24"
+		},
+		"clone": {
+			"sandboxOrgId": "00D0u0000008bBK",
+			"sandboxOrgName": "PleaseKeep",
+			"sandboxPod": "CS49"
+		},
+		"clone2": {
+			"sandboxOrgId": "00D0u0000008bAG",
+			"sandboxOrgName": "PleaseKeep",
+			"sandboxPod": "CS49"
+		}
+	},
+	"selenium": {
+		"jenkins": {
+			"contextType": "saucelabs",
+			"sauceLab_userName": "gneumann",
+			"sauceLab_accessKey": "4608db0d-b261-48ba-8044-a0eea4291ea4",
+			"browser": "chrome",
+			"browser_version": "latest",
+			"browser_screenResolution": "1920x1200",
+			"browser_implicitTimeout": 45,
+			"os_platform": "Windows 10",
+			"os_timeZone": "Los Angeles",
+			"os_proxy_url": "public0-proxy1-0-prd.data.sfdc.net:8080"
+		},
+		"local": {
+			"contextType": "local",
+			"sauceLab_userName": "gneumann",
+			"sauceLab_accessKey": "4608db0d-b261-48ba-8044-a0eea4291ea4",
+			"browser": "chrome",
+			"browser_version": "latest",
+			"browser_screenResolution": "1920x1200",
+			"browser_implicitTimeout": 45,
+			"os_platform": "Windows 10",
+			"os_timeZone": "Berlin",
+			"os_proxy_url": ""
+		}
+	}
+}
