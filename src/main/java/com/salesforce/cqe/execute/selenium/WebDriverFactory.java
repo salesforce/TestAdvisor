@@ -22,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -50,8 +49,8 @@ import org.testng.Assert;
  */
 public class WebDriverFactory {
 	/**
-	 * Instantiates a WebDriver instance for the test context defined under "selenium"/"jenkins"|"local" in testcontext.json.
-	 * This file has to be present in the root of the test directory.
+	 * Instantiates a WebDriver instance for the test context defined under "selenium"/"jenkins"|"local"
+	 * in testcontext.json. This file has to be present in the root of the test directory.
 	 * 
 	 * @param testName name of the current test
 	 * @return WebDriver instance
@@ -129,7 +128,6 @@ public class WebDriverFactory {
 
 		EventFiringWebDriver wd = new EventFiringWebDriver(driver, testName);
 		wd.register(new PerformanceListener());
-//		wd.register(new Log2TestCase());
 		wd.register(new StepsToReproduce(testName));
 		return wd;
 	}
@@ -143,11 +141,13 @@ public class WebDriverFactory {
 	}
 
 	/**
-	 * Used for propagating the test results to SauceLabs.
+	 * Propagates the test results to SauceLabs by setting the job status.
 	 * @param hasPassed true if test has passed, otherwise false
 	 * @param driver WebDriver instance currently driving the test
+	 * @return false if setting SauceLabs job status failed; otherwise true
 	 */
-	public synchronized static void setPassed(boolean hasPassed, WebDriver driver) {
+	public synchronized static boolean setPassed(boolean hasPassed, WebDriver driver) {
+		boolean isReportedSuccessfully = true;
 		Env env = getSeleniumTestContext();
 
 		if (env.getContextType() == TestContext.Type.saucelabs) {
@@ -185,14 +185,17 @@ public class WebDriverFactory {
 					} else {
 						saucer.jobFailed(jobId);
 					}
-				} catch (UnsupportedCommandException uce) {
-					// The webDriver instance has already been shutdown and can't take
-					// any further commands. Just log this situation and prevent exception
-					// from bubbling up. Further actions are neither necessary nor possible.
-					printMsg(uce.getMessage());
+				} catch (Exception e) {
+					// The webDriver instance has either already been shutdown and can't take any
+					// further commands, or has hit a different exception like SocketTimeoutException.
+					// Just log this situation and prevent exception from bubbling up. Further actions
+					// are neither necessary nor possible.
+					printMsg(e.getMessage());
+					isReportedSuccessfully = false;
 				}
 			}
 		}
+		return isReportedSuccessfully;
 	}
 	
 	public static TestContext.Env getSeleniumTestContext() {
