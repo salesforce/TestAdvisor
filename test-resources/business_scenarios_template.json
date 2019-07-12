@@ -1,25 +1,20 @@
 {
   "customer" : "My Test Customer",
-  "numOfScenarios" : 2,
-  "allScenarios" : {
-    "scenario" : [ {
-      "scenarioName" : "Scenario 1",
-      "tests" : [ {
-        "testName" : "My first test",
-        "status" : "pass"
-      }, {
-        "testName" : "My second test",
-        "status" : "fail"
-      } ]
+  "numOfScenarios" : 0,
+  "numOfScenariosNotCovered" : 0,
+  "allScenarios" : [ {
+    "scenarioName" : "Scenario 1",
+    "tests" : [ {
+      "testName" : "My first test"
     }, {
-      "scenarioName" : "Scenario 2",
-      "tests" : [ {
-        "testName" : "My third test",
-        "status" : "pass"
-      }, {
-        "testName" : "My fourth test",
-        "status" : "fail"
-      } ]
+      "testName" : "My second test"
     } ]
-  }
+  }, {
+    "scenarioName" : "Scenario 2",
+    "tests" : [ {
+      "testName" : "My third test"
+    }, {
+      "testName" : "My fourth test"
+    } ]
+  } ]
 }

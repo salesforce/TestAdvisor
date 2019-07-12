@@ -3,8 +3,13 @@
  */
 package com.salesforce.cqe.common;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.testng.ITestResult;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -14,18 +19,51 @@ import com.google.gson.stream.MalformedJsonException;
  * @author gneumann
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "customer", "numOfScenarios", "allScenarios" })
+@JsonPropertyOrder({ "customer", "numOfScenarios", "numOfScenariosNotCovered", "allScenarios" })
 public class BusinessScenarioMgr {
+	public enum Status { 
+		SUCCESS, FAILURE, SKIP, SUCCESS_PERCENTAGE_FAILURE, STARTED, UNKNOW;
+
+		public static Status valueOftestNgStatus(int statusValue) {
+			Status status = Status.UNKNOW;
+			switch (statusValue) {
+			case ITestResult.SUCCESS:
+				status = Status.SUCCESS;
+				break;
+			case ITestResult.FAILURE:
+				status = Status.FAILURE;
+				break;
+			case ITestResult.SKIP:
+				status = Status.SKIP;
+				break;
+			case ITestResult.SUCCESS_PERCENTAGE_FAILURE:
+				status = Status.SUCCESS_PERCENTAGE_FAILURE;
+				break;
+			case ITestResult.STARTED:
+				status = Status.STARTED;
+				break;
+			default:
+			}
+			return status;
+		}
+	}
+
 	private static final String FILE_PREFIX = "business_scenarios_";
 	private static final String FILE_TEMPLATE_POSTFIX = "template.json";
 	private static final String FILE_RESULT_POSTFIX = "result.json";
+	private static final String UNKNOWN_SCENARIO = "Unknown Scenario";
 
 	@JsonProperty("customer")
 	private String customer;
 	@JsonProperty("numOfScenarios")
 	private int numOfScenarios;
+	@JsonProperty("numOfScenariosNotCovered")
+	private int numOfScenariosNotCovered;
 	@JsonProperty("allScenarios")
-	private AllScenarios allScenarios;
+	private List<Scenario> allScenarios = null;
+
+	@JsonIgnore
+	private List<TestStatus> unknownScenario = new ArrayList<>();
 
 	@JsonProperty("customer")
 	public String getCustomer() {
@@ -47,54 +85,123 @@ public class BusinessScenarioMgr {
 		this.numOfScenarios = numOfScenarios;
 	}
 
+	@JsonProperty("numOfScenariosNotCovered")
+	public int getNumOfScenariosNotCovered() {
+		return numOfScenariosNotCovered;
+	}
+
+	@JsonProperty("numOfScenariosNotCovered")
+	public void setNumOfScenariosNotCovered(int numOfScenariosNotCovered) {
+		this.numOfScenariosNotCovered = numOfScenariosNotCovered;
+	}
+
 	@JsonProperty("allScenarios")
-	public AllScenarios getAllScenarios() {
+	public List<Scenario> getAllScenarios() {
 		return allScenarios;
 	}
 
 	@JsonProperty("allScenarios")
-	public void setAllScenarios(AllScenarios allScenarios) {
-		this.allScenarios = allScenarios;
+	public void setAllScenarios(List<Scenario> scenario) {
+		this.allScenarios = scenario;
 	}
 
 	public BusinessScenarioMgr() {
 	}
 
 	public static BusinessScenarioMgr readTemplate() {
+		return readTemplate(FILE_PREFIX + FILE_TEMPLATE_POSTFIX);
+	}
+
+	public static BusinessScenarioMgr readTemplate(String file) {
 		BusinessScenarioMgr mgr = null;
 		try {
-			mgr = JsonHelper.toObject(FILE_PREFIX + FILE_TEMPLATE_POSTFIX, BusinessScenarioMgr.class);
+			mgr = JsonHelper.toObject(file, BusinessScenarioMgr.class);
 		} catch (MalformedJsonException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if (mgr != null) {
+			int numOfScenarios = 0;
+			for (Scenario scenario : mgr.getAllScenarios()) {
+				if (!UNKNOWN_SCENARIO.equals(scenario.getScenarioName())) {
+					numOfScenarios++;
+				}
+			}
+			mgr.setNumOfScenarios(numOfScenarios);
+		}
+		
 		return mgr;
 	}
 
 	public void saveResult() {
+		updateNumOfScenariosNotCovered();
+		addUnknownScenarioIfNeeded();
 		try {
 			JsonHelper.toFile("target/" + FILE_PREFIX + FILE_RESULT_POSTFIX, this);
 		} catch (MalformedJsonException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	@JsonPropertyOrder({ "scenario" })
-	public static class AllScenarios {
+	public void updateTestStatus(ITestResult result, Status status) {
+		updateTestStatus(result.getMethod().getConstructorOrMethod().getMethod().getName(), status);
+	}
 
-		@JsonProperty("scenario")
-		private List<Scenario> scenario = null;
+	public void updateTestStatus(Method method, Status status) {
+		updateTestStatus(method.getName(), status);
+	}
 
-		@JsonProperty("scenario")
-		public List<Scenario> getScenario() {
-			return scenario;
+	public void updateTestStatus(String testName, Status status) {
+		boolean isTestStatusUpdated = false;
+		for (Scenario scenario : getAllScenarios()) {
+			List<TestStatus> allTests = scenario.getTests();
+			if (allTests == null)
+				allTests = new ArrayList<>();
+			for (TestStatus test : allTests) {
+				if (testName.equals(test.getTestName())) {
+					test.setStatus(status.toString());
+					isTestStatusUpdated = true;
+					break;
+				}
+			}
+			if (isTestStatusUpdated)
+				break;
 		}
-
-		@JsonProperty("scenario")
-		public void setScenario(List<Scenario> scenario) {
-			this.scenario = scenario;
+		if (!isTestStatusUpdated) {
+			unknownScenario.add(new TestStatus(testName, status.toString()));
+		}
+	}
+	
+	private void addUnknownScenarioIfNeeded() {
+		boolean isScenarioFound = false;
+		for (Scenario scenario : getAllScenarios()) {
+			if (UNKNOWN_SCENARIO.equals(scenario.getScenarioName())) {
+				scenario.setTests(unknownScenario);
+				isScenarioFound = true;
+				break;
+			}
+		}
+		if (!isScenarioFound && !unknownScenario.isEmpty()) {
+			Scenario unknownScenarioObj = new Scenario();
+			unknownScenarioObj.setScenarioName(UNKNOWN_SCENARIO);
+			unknownScenarioObj.setTests(unknownScenario);
+			getAllScenarios().add(unknownScenarioObj);
+		}
+	}
+	
+	private void updateNumOfScenariosNotCovered() {
+		for (Scenario scenario : getAllScenarios()) {
+			boolean isScenarioCovered = false;
+			if (!UNKNOWN_SCENARIO.equals(scenario.getScenarioName())) {
+				for (TestStatus status : scenario.getTests()) {
+					if ("SUCCESS".equals(status.getStatus())) {
+						isScenarioCovered = true;
+						break;
+					}
+				}
+				if (!isScenarioCovered) {
+					numOfScenariosNotCovered++;
+				}
+			}
 		}
 	}
 
