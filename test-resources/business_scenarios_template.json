@@ -1,0 +1,25 @@
+{
+  "customer" : "My Test Customer",
+  "numOfScenarios" : 2,
+  "allScenarios" : {
+    "scenario" : [ {
+      "scenarioName" : "Scenario 1",
+      "tests" : [ {
+        "testName" : "My first test",
+        "status" : "pass"
+      }, {
+        "testName" : "My second test",
+        "status" : "fail"
+      } ]
+    }, {
+      "scenarioName" : "Scenario 2",
+      "tests" : [ {
+        "testName" : "My third test",
+        "status" : "pass"
+      }, {
+        "testName" : "My fourth test",
+        "status" : "fail"
+      } ]
+    } ]
+  }
+}
