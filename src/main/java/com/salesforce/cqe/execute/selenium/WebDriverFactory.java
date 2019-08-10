@@ -84,6 +84,7 @@ public class WebDriverFactory {
 			String URL = "https://" + sauceName + ":" + sauceKey + "@ondemand.saucelabs.com:443/wd/hub";
 			// SauceLabs allows to choose the platform to run on
 			caps.setCapability("platform", env.getOsPlatform());
+			caps.setCapability("extendedDebugging", true);
 			if(browser == Browser.chrome) {
 				caps.setCapability(ChromeOptions.CAPABILITY, disableShowNotificationsForChrome());
 			}
