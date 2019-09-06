@@ -49,6 +49,12 @@ import org.testng.Assert;
  */
 public class WebDriverFactory {
 	/**
+	 * Set this System property {@value} to any value to enable recording
+	 * of ShadowRoot JS Path information to STDOUT
+	 */
+	public static final String RECORD_SHADOWJSPATH = "record.shadowjspath";
+
+	/**
 	 * Instantiates a WebDriver instance for the test context defined under "selenium"/"jenkins"|"local"
 	 * in testcontext.json. This file has to be present in the root of the test directory.
 	 * 
@@ -130,6 +136,9 @@ public class WebDriverFactory {
 		EventFiringWebDriver wd = new EventFiringWebDriver(driver, testName);
 		wd.register(new PerformanceListener());
 		wd.register(new StepsToReproduce(testName));
+		if (!System.getProperty(RECORD_SHADOWJSPATH, "").isEmpty()) {
+			wd.register(new ShadowJSPathGenerator(driver));
+		}
 		return wd;
 	}
 

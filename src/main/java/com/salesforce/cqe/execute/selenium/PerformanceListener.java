@@ -37,6 +37,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	public void afterGet(Step step, String url) {
 		afterActionNoReturnValue(step);
 	}
+
 	@Override
 	public void beforeFindElementByElement(Step step, By by, WebElement element) {
 		beforeGatherOneParam(step);
