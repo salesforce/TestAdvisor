@@ -1,28 +1,71 @@
 package com.salesforce.cqe.execute.selenium;
 
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.util.Strings;
 
 import com.salesforce.selenium.support.event.AbstractWebDriverEventListener;
 import com.salesforce.selenium.support.event.Step;
 
 public class ShadowJSPathGenerator extends AbstractWebDriverEventListener {
-	// taken from https://git.soma.salesforce.com/cqe/lwc-shadowpath/blob/master/devtools.js
-	// and compressed by using https://javascriptcompressor.com/
-	private final String shadowJSPathGeneratorScript = "function getSelector(a,long=true){if(!a.tagName)return a.nodeName;let name=a.tagName.toLowerCase();if(long){a.classList.forEach((cls)=>{name+='.'+cls.replace(/([{}])/g,'\\\\\\\\$1')})}return name}function isShadowRoot(a){return a instanceof ShadowRoot}function findPath(a){if(!a)return;const path=[];path.push({elem:a,selector:getSelector(a)});while(a!==null&&a!==document){let parent=a.parentNode;if(isShadowRoot(parent)){parent=parent.host;path.push({elem:parent,selector:getSelector(parent,false)})}a=parent}return path}function selectorFromPath(a){if(!a||a.length===0)return;let jsPath=\"document\";for(let i=a.length-1;i>=0;i--){const node=a[i];const selector=node.selector;const possibilities=eval(jsPath+\".querySelectorAll('\"+selector+\"')\")if(possibilities.length===0){console.log(\"Error: Lost my way. No valid paths from \"+jsPath);throw\"Lost my way. No valid paths from \"+jsPath;}else if(possibilities.length===1){jsPath+=\".querySelector('\"+selector+\"')\"}else{let found=false;for(let p=0;p<possibilities.length;p++){if(possibilities[p]===node.elem){jsPath+=\".querySelectorAll('\"+selector+\"')[\"+p+\"]\";found=true;break}}if(!found){console.log(\"Error: Could not find way to \"+selector)throw\"Could not find way to \"+selector;}}if(i!==0){jsPath=jsPath+'.shadowRoot'}}return jsPath}const jspath=selectorFromPath(findPath(arguments[0]));let data=Object.create(null);data.tagname=getSelector(arguments[0],true);data.jspath=jspath;data.java='String queryString = \"return '+jspath.replace(/\"/g,'\\\\\"')+'\";';return data;";
-			
+	private static final String DEVTOOLS_JS_FILE = "/devtools.js";
 	private final JavascriptExecutor jsExecutor;
+	// taken from https://git.soma.salesforce.com/cqe/lwc-shadowpath/blob/master/devtools.js
+	private final String shadowJSPathGeneratorScript;
 
-	public ShadowJSPathGenerator(WebDriver driver) {
+	private final Map<String, String> dictionary;
+	private final String fileName;
+	
+	public ShadowJSPathGenerator(WebDriver driver, String testName) {
 		this.jsExecutor = (JavascriptExecutor) driver;
+		String tempJSCode = "";
+		try {
+			tempJSCode = IOUtils.toString(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(DEVTOOLS_JS_FILE))));
+			System.out.println(">>> ShadowJSPathGenerator script successfully loaded");
+		} catch (Exception e) {
+			System.err.println("Problem reading " + DEVTOOLS_JS_FILE);
+			e.printStackTrace();
+		}
+		this.shadowJSPathGeneratorScript = tempJSCode;
+		this.dictionary = new HashMap<>();
+		this.fileName = "target/" + convertTestname2FileName(testName) + "-lwc-dict.txt";
 	}
 
 	@Override
 	public void closeListener() {
-		; // empty implementation
+		FileWriter fileWriter = null;
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Number of Locators inside ShadowDOM found: ").append(dictionary.size()).append("\n\n");
+		for (String locator : dictionary.keySet()) {
+			buffer.append("Locator: ").append(locator).append(" >>> ").append(dictionary.get(locator)).append("\n");
+		}
+
+		try {
+			fileWriter = new FileWriter(fileName);
+			fileWriter.write(buffer.toString());
+			System.out.println("Done writing LWC Locators Dictionary to " + fileName);
+		} catch (IOException e) {
+			System.err.println("Error while writing LWC Locators Dictionary to " + fileName);
+			e.printStackTrace();
+		} finally {
+			try {
+				if (fileWriter != null)
+					fileWriter.close();
+			} catch (IOException ex) {
+				System.err.println("Error while trying to close file writer to " + fileName);
+				ex.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -36,9 +79,10 @@ public class ShadowJSPathGenerator extends AbstractWebDriverEventListener {
 	}
 
 	private void runScript(WebElement returnedElement, By by) {
-		if (returnedElement != null) {
+		if (returnedElement != null && !shadowJSPathGeneratorScript.isEmpty()) {
 			String jsPath = jsExecutor.executeScript(shadowJSPathGeneratorScript, returnedElement).toString();
-			if (Strings.isNotNullAndNotEmpty(jsPath)) {
+			if (jsPath != null && !jsPath.isEmpty()) {
+				dictionary.put(by.toString(), jsPath);
 				printMsg(by.toString(), jsPath);
 			}
 		}

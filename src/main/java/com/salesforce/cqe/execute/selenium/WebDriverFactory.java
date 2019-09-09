@@ -137,7 +137,7 @@ public class WebDriverFactory {
 		wd.register(new PerformanceListener());
 		wd.register(new StepsToReproduce(testName));
 		if (!System.getProperty(RECORD_SHADOWJSPATH, "").isEmpty()) {
-			wd.register(new ShadowJSPathGenerator(driver));
+			wd.register(new ShadowJSPathGenerator(driver, testName));
 		}
 		return wd;
 	}

@@ -23,6 +23,7 @@ public class StepsToReproduce extends AbstractWebDriverEventListener {
 		this.fileName = "target/" + convertTestname2FileName(testName) + ".txt";
 	}
 
+	@Override
 	public void closeListener() {
 		FileWriter fileWriter = null;
 
