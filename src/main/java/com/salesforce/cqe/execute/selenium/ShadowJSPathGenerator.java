@@ -27,17 +27,17 @@ public class ShadowJSPathGenerator extends AbstractWebDriverEventListener {
 	
 	public ShadowJSPathGenerator(WebDriver driver, String testName) {
 		this.jsExecutor = (JavascriptExecutor) driver;
+		this.dictionary = new HashMap<>();
+		this.fileName = "target/" + convertTestname2FileName(testName) + "-lwc-dict.txt";
 		String tempJSCode = "";
 		try {
 			tempJSCode = IOUtils.toString(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(DEVTOOLS_JS_FILE))));
-			System.out.println(">>> ShadowJSPathGenerator script successfully loaded");
+			System.out.println(">>> LWC Locators Dictionary generator successfully loaded");
 		} catch (Exception e) {
-			System.err.println("Problem reading " + DEVTOOLS_JS_FILE);
+			System.err.println("Problem reading LWC Locators Dictionary generator script " + DEVTOOLS_JS_FILE);
 			e.printStackTrace();
 		}
 		this.shadowJSPathGeneratorScript = tempJSCode;
-		this.dictionary = new HashMap<>();
-		this.fileName = "target/" + convertTestname2FileName(testName) + "-lwc-dict.txt";
 	}
 
 	@Override
@@ -45,9 +45,9 @@ public class ShadowJSPathGenerator extends AbstractWebDriverEventListener {
 		FileWriter fileWriter = null;
 		
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("Number of Locators inside ShadowDOM found: ").append(dictionary.size()).append("\n\n");
+		buffer.append("Number of locators inside shadowRoot found: ").append(dictionary.size()).append("\n\n");
 		for (String locator : dictionary.keySet()) {
-			buffer.append("Locator: ").append(locator).append(" >>> ").append(dictionary.get(locator)).append("\n");
+			buffer.append(locator).append(" >>> ").append(dictionary.get(locator)).append("\n");
 		}
 
 		try {
@@ -83,12 +83,7 @@ public class ShadowJSPathGenerator extends AbstractWebDriverEventListener {
 			String jsPath = jsExecutor.executeScript(shadowJSPathGeneratorScript, returnedElement).toString();
 			if (jsPath != null && !jsPath.isEmpty()) {
 				dictionary.put(by.toString(), jsPath);
-				printMsg(by.toString(), jsPath);
 			}
 		}
-	}
-	
-	private static void printMsg(String locator, String script) {
-		System.out.printf(">>> Element inside ShadowDOM!%n>>> Locator: %s%n>>> Script: %s%n", locator, script);
 	}
 }
