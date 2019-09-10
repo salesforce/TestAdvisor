@@ -82,7 +82,10 @@ public class ShadowJSPathGenerator extends AbstractWebDriverEventListener {
 		if (returnedElement != null && !shadowJSPathGeneratorScript.isEmpty()) {
 			String jsPath = jsExecutor.executeScript(shadowJSPathGeneratorScript, returnedElement).toString();
 			if (jsPath != null && !jsPath.isEmpty()) {
-				dictionary.put(by.toString(), jsPath);
+				// almost all the time we get a path returned
+				if (jsPath.contains("shadowRoot"))
+					// only if it contains "shadowRoot" it's what we want to add to the dictionary
+					dictionary.put(by.toString(), jsPath);
 			}
 		}
 	}
