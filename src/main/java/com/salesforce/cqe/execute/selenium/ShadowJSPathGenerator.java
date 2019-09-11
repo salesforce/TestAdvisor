@@ -16,15 +16,41 @@ import org.openqa.selenium.WebElement;
 import com.salesforce.selenium.support.event.AbstractWebDriverEventListener;
 import com.salesforce.selenium.support.event.Step;
 
+/**
+ * Checks if a given WebElement object is inside a shadowRoot. If yes, it will
+ * be added to a list which gets printed to disk at the end of the test run.
+ * This list shows the locator used during the test execution and the JavaScript
+ * command potentially required once the shadowDOM rules get tightened.
+ * <p>
+ * As this is a rather resource hungry activity, it is only active if the System
+ * property {@code record.shadowjspath} is set when starting the test execution.
+ * <p>
+ * Note: This class loads a sub-set of the JavaScript code made available at
+ * https://git.soma.salesforce.com/cqe/lwc-shadowpath/blob/master/devtools.js
+ * and executes it for every element retrieved by findElement() calls.
+ * 
+ * @author gneumann
+ */
 public class ShadowJSPathGenerator extends AbstractWebDriverEventListener {
-	private static final String DEVTOOLS_JS_FILE = "/devtools.js";
-	private final JavascriptExecutor jsExecutor;
-	// taken from https://git.soma.salesforce.com/cqe/lwc-shadowpath/blob/master/devtools.js
-	private final String shadowJSPathGeneratorScript;
+	/**
+	 * Set this System property {@value} to any value to enable recording
+	 * of ShadowRoot JS Path information to file.
+	 */
+	public static final String RECORD_SHADOWJSPATH = "record.shadowjspath";
 
+	private static final String DEVTOOLS_JS_FILE = "/devtools.js";
+
+	private final JavascriptExecutor jsExecutor;
+	private final String shadowJSPathGeneratorScript;
 	private final Map<String, String> dictionary;
 	private final String fileName;
 	
+	/**
+	 * Loads the JavaScript code which retrieves the proper command.
+	 * 
+	 * @param driver current WebDriver instance
+	 * @param testName name of the currently executed test
+	 */
 	public ShadowJSPathGenerator(WebDriver driver, String testName) {
 		this.jsExecutor = (JavascriptExecutor) driver;
 		this.dictionary = new HashMap<>();
@@ -84,7 +110,7 @@ public class ShadowJSPathGenerator extends AbstractWebDriverEventListener {
 			if (jsPath != null && !jsPath.isEmpty()) {
 				// almost all the time we get a path returned
 				if (jsPath.contains("shadowRoot"))
-					// only if it contains "shadowRoot" it's what we want to add to the dictionary
+					// only if path contains "shadowRoot", it's a locator we want to add to the dictionary
 					dictionary.put(by.toString(), jsPath);
 			}
 		}
