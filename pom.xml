@@ -125,7 +125,7 @@
 		<dependency>
 			<groupId>com.salesforce.cqe</groupId>
 			<artifactId>test-drop-in-framework</artifactId>
-			<version>3.0.0</version>
+			<version>3.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.saucelabs</groupId>
