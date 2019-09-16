@@ -130,7 +130,7 @@ public class WebDriverFactory {
 		EventFiringWebDriver wd = new EventFiringWebDriver(driver, testName);
 		wd.register(new PerformanceListener());
 		wd.register(new StepsToReproduce(testName));
-		if (!System.getProperty(ShadowJSPathGenerator.RECORD_SHADOWJSPATH, "").isEmpty()) {
+		if ("yes".equalsIgnoreCase(System.getProperty(ShadowJSPathGenerator.RECORD_SHADOWJSPATH, ""))) {
 			wd.register(new ShadowJSPathGenerator(driver, testName));
 		}
 		return wd;

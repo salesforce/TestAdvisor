@@ -33,7 +33,7 @@ import com.salesforce.selenium.support.event.Step;
  */
 public class ShadowJSPathGenerator extends AbstractWebDriverEventListener {
 	/**
-	 * Set this System property {@value} to any value to enable recording
+	 * Set this System property {@value} to value "yes" to enable recording
 	 * of ShadowRoot JS Path information to file.
 	 */
 	public static final String RECORD_SHADOWJSPATH = "record.shadowjspath";
@@ -68,6 +68,10 @@ public class ShadowJSPathGenerator extends AbstractWebDriverEventListener {
 
 	@Override
 	public void closeListener() {
+		// write file only if there is any to report
+		if (dictionary.size() == 0)
+			return;
+		
 		FileWriter fileWriter = null;
 		
 		StringBuffer buffer = new StringBuffer();
