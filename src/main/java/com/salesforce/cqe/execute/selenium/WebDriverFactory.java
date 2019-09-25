@@ -85,8 +85,10 @@ public class WebDriverFactory {
 			// SauceLabs allows to choose the platform to run on
 			caps.setCapability("platform", env.getOsPlatform());
 			caps.setCapability("extendedDebugging", true);
-			if(browser == Browser.chrome) {
+			if (browser == Browser.chrome) {
 				caps.setCapability(ChromeOptions.CAPABILITY, disableShowNotificationsForChrome());
+			} else if (browser == Browser.firefox) {
+				disableShowNotificationsForFirefox().merge(caps);
 			}
 
 			try { // Promote to runtime exception since wrapping function is not setup to handle.
@@ -114,8 +116,8 @@ public class WebDriverFactory {
 		case local:
 			if (browser == Browser.chrome) {
 				driver = new ChromeDriver(disableShowNotificationsForChrome().merge(caps));
-			} else {
-				driver = new FirefoxDriver(new FirefoxOptions().merge(caps));
+			} else if (browser == Browser.firefox) {
+				driver = new FirefoxDriver(disableShowNotificationsForFirefox().merge(caps));
 			}
 			driver.manage().window().setSize(env.getBrowserScreenResolutionAsDimension());
 			break;
@@ -141,6 +143,12 @@ public class WebDriverFactory {
 		prefs.put("profile.default_content_setting_values.notifications", 2);
 		ChromeOptions options = new ChromeOptions();
 		options.setExperimentalOption("prefs", prefs);
+		return options;
+	}
+
+	private static FirefoxOptions disableShowNotificationsForFirefox() {
+		FirefoxOptions options = new FirefoxOptions();
+		options.addPreference("permissions.default.desktop-notification", 1);
 		return options;
 	}
 
