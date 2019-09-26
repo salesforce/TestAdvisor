@@ -274,6 +274,9 @@ public class TestContext {
         private String sauceLabUserName = "tstarbow";
         @JsonProperty("sauceLab_accessKey")
         private String sauceLabAccessKey = "cf312d48-6250-40bf-82ad-a70991bdec72";
+        // match default SauceLabs maximum duration of 1800 seconds
+        @JsonProperty("sauceLab_maxDuration")
+        private int sauceLabMaxDuration = 1800;
 
         // browser name can be overridden by using system property "testcontext.browser"
         @JsonProperty("browser")
@@ -331,6 +334,19 @@ public class TestContext {
         @JsonProperty("sauceLab_accessKey")
         public void setSauceLabAccessKey(String sauceLabAccessKey) {
             this.sauceLabAccessKey = sauceLabAccessKey;
+        }
+
+        @JsonProperty("sauceLab_maxDuration")
+        public int getSauceLabMaxDuration() {
+            return this.sauceLabMaxDuration;
+        }
+
+        /*
+         * Accept value as-is.
+         */
+        @JsonProperty("sauceLab_maxDuration")
+        public void setSauceLabMaxDuration(int sauceLabMaxDuration) {
+            this.sauceLabMaxDuration = sauceLabMaxDuration;
         }
 
         @JsonProperty("browser")
