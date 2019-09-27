@@ -85,6 +85,7 @@ public class WebDriverFactory {
 			// SauceLabs allows to choose the platform to run on
 			caps.setCapability("platform", env.getOsPlatform());
 			caps.setCapability("extendedDebugging", true);
+			caps.setCapability("maxDuration",env.getSauceLabMaxDuration());
 			if (browser == Browser.chrome) {
 				caps.setCapability(ChromeOptions.CAPABILITY, disableShowNotificationsForChrome());
 			} else if (browser == Browser.firefox) {
