@@ -49,8 +49,9 @@ import org.testng.Assert;
  */
 public class WebDriverFactory {
 	/**
-	 * Instantiates a WebDriver instance for the test context defined under "selenium"/"jenkins"|"local"
-	 * in testcontext.json. This file has to be present in the root of the test directory.
+	 * Instantiates a WebDriver instance for the test context defined under
+	 * "selenium"/"jenkins"|"local" in testcontext.json. This file has to be present
+	 * in the root of the test directory.
 	 * 
 	 * @param testName name of the current test
 	 * @return WebDriver instance
@@ -121,6 +122,16 @@ public class WebDriverFactory {
 			}
 			driver.manage().window().setSize(env.getBrowserScreenResolutionAsDimension());
 			break;
+		case docker:
+			printMsg("Connecting to a localhost docker selenium guid.");
+			try{
+				String hub = System.getProperty("HUB_HOST", "127.0.0.1");
+				String port = System.getProperty("HUB_PORT", "4444");
+				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
+			}catch (MalformedURLException e) {
+				throw new RuntimeException(e);
+			}
+			
 		default:
 			// can't happen because validation was already done during reading json file
 		}
