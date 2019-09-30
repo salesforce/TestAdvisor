@@ -29,7 +29,7 @@ public class TestContext {
 	public static final String JSON_FILENAME = "testcontext.json";
 
 	public enum Type {
-		local, saucelabs, privatecloud;
+		local, saucelabs, privatecloud,docker;
 	}
 	public enum Browser {
 		chrome, ie, firefox, safari
