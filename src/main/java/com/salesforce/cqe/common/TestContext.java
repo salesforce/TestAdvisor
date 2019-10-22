@@ -277,6 +277,8 @@ public class TestContext {
         // match default SauceLabs maximum duration of 1800 seconds
         @JsonProperty("sauceLab_maxDuration")
         private int sauceLabMaxDuration = 1800;
+        @JsonProperty("sauceLab_idleTimeout")
+        private int sauceLabIdleTimeout = 90;
 
         // browser name can be overridden by using system property "testcontext.browser"
         @JsonProperty("browser")
@@ -347,6 +349,19 @@ public class TestContext {
         @JsonProperty("sauceLab_maxDuration")
         public void setSauceLabMaxDuration(int sauceLabMaxDuration) {
             this.sauceLabMaxDuration = sauceLabMaxDuration;
+        }
+
+        @JsonProperty("sauceLab_idleTimeout")
+        public int getSauceLabIdleTimeout(){
+            return this.sauceLabIdleTimeout;
+        }
+
+        /*
+         * Accept value as-is.
+         */
+        @JsonProperty("sauceLab_idleTimeout")
+        public void setSauceLabIdleTimeout(int sauceLabIdleTimeout) {
+            this.sauceLabIdleTimeout = sauceLabIdleTimeout;
         }
 
         @JsonProperty("browser")

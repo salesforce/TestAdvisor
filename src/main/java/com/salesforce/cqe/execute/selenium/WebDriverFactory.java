@@ -87,6 +87,7 @@ public class WebDriverFactory {
 			caps.setCapability("platform", env.getOsPlatform());
 			caps.setCapability("extendedDebugging", true);
 			caps.setCapability("maxDuration",env.getSauceLabMaxDuration());
+			caps.setCapability("idleTimeout", env.getSauceLabIdleTimeout());
 			if (browser == Browser.chrome) {
 				caps.setCapability(ChromeOptions.CAPABILITY, disableShowNotificationsForChrome());
 			} else if (browser == Browser.firefox) {
