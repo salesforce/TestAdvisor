@@ -3,7 +3,7 @@
  */
 package com.salesforce.cqe.common;
 
-import org.junit.Assert;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.salesforce.cqe.common.BusinessScenarioMgr.Status;

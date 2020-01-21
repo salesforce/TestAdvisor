@@ -6,13 +6,10 @@
  */
 package com.salesforce.cqe.common;
 
+import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Dimension;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.google.gson.stream.MalformedJsonException;
 
 // Class generated using http://www.jsonschema2pojo.org/
@@ -29,11 +26,15 @@ public class TestContext {
 	public static final String JSON_FILENAME = "testcontext.json";
 
 	public enum Type {
-		local, saucelabs, privatecloud,docker;
+		local, saucelabs, privatecloud,docker
 	}
 	public enum Browser {
-		chrome, ie, firefox, safari
+		chrome, ie, firefox,  safari
 	}
+
+	public enum Platform{
+        desktop, ios, android
+    }
 
 	@JsonProperty("customer")
     private String customer;
@@ -295,6 +296,21 @@ public class TestContext {
         @JsonProperty("os_timeZone")
         private String osTimeZone = "Los Angeles";
 
+        //Default to web
+        @JsonProperty("platform")
+        private Platform platform = Platform.desktop;
+        @JsonProperty("appium_version")
+        private String appiumVersion = "1.15.0";
+        @JsonProperty ("device_name")
+        private String deviceName = "iPhone X Simulator";
+        @JsonProperty("platform_version")
+        private String platformVersion = "13.0";
+        @JsonProperty("device_orientation")
+        private String deviceOrientation = "portrait";
+        @JsonProperty("app_binary")
+        private String appBinary = "sauce-storage:salesforceapp-ue2e-224-dev.zip";
+
+
     	// proxy can be overridden by using system property "testcontext.proxy_url"
     	// for no proxy settings set "testcontext.proxy_url" to "none".
         @JsonProperty("os_proxy_url")
@@ -311,6 +327,16 @@ public class TestContext {
         public Type getContextType() {
     		return this.contextType;
     	}
+
+    	@JsonProperty("platform")
+        public void setPlatform(Platform platform){
+            this.platform = platform;
+        }
+
+        @JsonProperty("platform")
+        public Platform getPlatform(){
+            return this.platform;
+        }
 
         @JsonProperty("sauceLab_userName")
         public String getSauceLabUserName() {
@@ -488,6 +514,56 @@ public class TestContext {
     			}
     		} // otherwise keep default value
             this.osProxyUrl = osProxyUrl;
+        }
+
+        @JsonProperty("appium_version")
+        public String getAppiumVersion(){
+            return appiumVersion;
+        }
+
+        @JsonProperty("appium_version")
+        public void setAppiumVersion(String appiumVersion){
+            this.appiumVersion = appiumVersion;
+        }
+
+        @JsonProperty("device_name")
+        public String getDeviceName() {
+            return deviceName;
+        }
+
+        @JsonProperty("device_name")
+        public void setDeviceName(String deviceName) {
+            this.deviceName = deviceName;
+        }
+
+        @JsonProperty("platform_version")
+        public String getPlatformVersion() {
+            return platformVersion;
+        }
+
+        @JsonProperty("platform_version")
+        public void setPlatformVersion(String platformVersion) {
+            this.platformVersion = platformVersion;
+        }
+
+        @JsonProperty("device_orientation")
+        public String getDeviceOrientation() {
+            return deviceOrientation;
+        }
+
+        @JsonProperty("device_orientation")
+        public void setDeviceOrientation(String deviceOrientation) {
+            this.deviceOrientation = deviceOrientation;
+        }
+
+        @JsonProperty("app_binary")
+        public String getAppBinary() {
+            return appBinary;
+        }
+
+        @JsonProperty("app_binary")
+        public void setAppBinary(String appBinary) {
+            this.appBinary = appBinary;
         }
     }
 }

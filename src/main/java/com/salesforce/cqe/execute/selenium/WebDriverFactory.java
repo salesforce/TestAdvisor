@@ -18,27 +18,28 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.net.Proxy;
 
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHost;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.CommandInfo;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.http.HttpClient;
 import org.openqa.selenium.remote.http.HttpClient.Factory;
-import org.openqa.selenium.remote.internal.ApacheHttpClient;
+import org.openqa.selenium.remote.internal.OkHttpClient;
 
 import com.google.gson.stream.MalformedJsonException;
 import com.salesforce.cqe.common.TestContext;
 import com.salesforce.cqe.common.TestContext.Browser;
 import com.salesforce.cqe.common.TestContext.Env;
+import com.salesforce.cqe.common.TestContext.Platform;
 import com.salesforce.selenium.support.event.EventFiringWebDriver;
 import com.saucelabs.saucerest.SauceREST;
 
@@ -69,9 +70,14 @@ public class WebDriverFactory {
 		
 		Browser browser = env.getBrowser();
 		String proxyUrl = env.getOsProxyUrl();
-		caps.setCapability("browserName", env.getBrowser().toString());
-		caps.setCapability("version", env.getBrowserVersion());
-		caps.setCapability("screenResolution", env.getBrowserScreenResolution());
+		Platform platform = env.getPlatform();
+
+		if(platform == Platform.desktop) {
+			caps.setCapability("browserName", env.getBrowser().toString());
+			caps.setCapability("version", env.getBrowserVersion());
+			caps.setCapability("screenResolution", env.getBrowserScreenResolution());
+		}
+
 		caps.setCapability("timeZone", env.getOsTimeZone());
 		caps.setCapability("name", testName);
 
@@ -83,25 +89,98 @@ public class WebDriverFactory {
 
 			printMsg("Connecting to saucelabs.");
 			String URL = "https://" + sauceName + ":" + sauceKey + "@ondemand.saucelabs.com:443/wd/hub";
-			// SauceLabs allows to choose the platform to run on
-			caps.setCapability("platform", env.getOsPlatform());
-			caps.setCapability("extendedDebugging", true);
-			caps.setCapability("maxDuration",env.getSauceLabMaxDuration());
-			caps.setCapability("idleTimeout", env.getSauceLabIdleTimeout());
-			if (browser == Browser.chrome) {
-				caps.setCapability(ChromeOptions.CAPABILITY, disableShowNotificationsForChrome());
-			} else if (browser == Browser.firefox) {
-				disableShowNotificationsForFirefox().merge(caps);
+			caps.setCapability("username",sauceName);
+			caps.setCapability("accessKey",sauceKey);
+
+			if(platform == Platform.desktop) {
+				// SauceLabs allows to choose the platform to run on
+				caps.setCapability("platform", env.getOsPlatform());
+				caps.setCapability("idleTimeout", env.getSauceLabIdleTimeout());
+				caps.setCapability("extendedDebugging", true);
+				caps.setCapability("maxDuration",env.getSauceLabMaxDuration());
+				if (browser == Browser.chrome) {
+					caps.setCapability(ChromeOptions.CAPABILITY, disableShowNotificationsForChrome());
+				} else if (browser == Browser.firefox) {
+					disableShowNotificationsForFirefox().merge(caps);
+				}
+			}else if(platform==Platform.ios || platform == Platform.android){
+				//set common mobile caps
+				caps.setCapability("appiumVersion",env.getAppiumVersion());
+				caps.setCapability("deviceName", env.getDeviceName());
+				caps.setCapability("deviceOrientation", env.getDeviceOrientation());
+				caps.setCapability("platformVersion",env.getPlatformVersion());
+				caps.setCapability("app", env.getAppBinary());
+				caps.setCapability("language","en");
+				//Platform specific caps
+				if (platform ==Platform.ios){
+					caps.setCapability("platformName","iOS");
+					caps.setCapability("automationName","XCUITest");
+					caps.setCapability("calendarAccessAuthorized",true);
+					caps.setCapability("webkitResponseTimeout",180000);
+					caps.setCapability("autoAcceptAlerts",false);
+					caps.setCapability("nativeWebTap",true);
+				} else if (platform == Platform.android){
+					caps.setCapability("deviceType", "phone");
+					caps.setCapability(MobileCapabilityType.FULL_RESET, false);
+					caps.setCapability("autoGrantPermissions",false);
+					caps.setCapability("locale","US");
+					caps.setCapability("automationName","UIAutomator2");
+					caps.setCapability("appPackage","com.salesforce.chatter");
+					caps.setCapability("appActivity","com.salesforce.chatter.Chatter");
+					caps.setCapability("platformName","Android");
+					caps.setCapability("nativeWebScreenshot", true);
+					caps.setCapability("disableAndroidWatchers", true);
+					caps.setCapability("webviewSupport", true);
+				}
 			}
 
 			try { // Promote to runtime exception since wrapping function is not setup to handle.
-				if (StringUtils.isBlank(proxyUrl)) {
-					driver = new RemoteWebDriver(new URL(URL), caps);
-				} else { // Use the proxy to get to saucelabs.
-					Factory factory = new ProxiedHttpClientFactory(proxyUrl);
-					HttpCommandExecutor executor = new HttpCommandExecutor(new HashMap<String, CommandInfo>(),
+				if (StringUtils.isBlank(proxyUrl) ) {
+					switch (platform) {
+						case ios:
+							driver = new IOSDriver<>(new URL(URL), caps);
+							break;
+						case android:
+							driver = new AndroidDriver<>(new URL(URL), caps);
+							break;
+						case desktop:
+							driver = new RemoteWebDriver(new URL(URL), caps);
+							break;
+						default:
+							// can't happen because validation was already done during reading json file
+					}
+				}else { // Use the proxy to get to saucelabs.
+					String proxyHost;
+					int proxyPort;
+					try {
+						URI uri = new URI("https://" + proxyUrl);
+						proxyHost = uri.getHost();
+						proxyPort = uri.getPort();
+					}
+					catch (URISyntaxException e) {
+						throw new RuntimeException(e);
+					}
+					okhttp3.OkHttpClient.Builder client = new okhttp3.OkHttpClient.Builder()
+							.connectTimeout(60, TimeUnit.SECONDS)
+							.writeTimeout(60, TimeUnit.SECONDS)
+							.readTimeout(60, TimeUnit.SECONDS)
+							.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost,proxyPort)));
+					Factory factory = new ProxiedHttpClientFactory(new OkHttpClient(client.build(),new URL(URL)));
+					HttpCommandExecutor executor = new HttpCommandExecutor(new HashMap<>(),
 							new URL(URL), factory);
-					driver = new RemoteWebDriver(executor, caps);
+					switch (platform) {
+						case ios:
+							driver = new IOSDriver<>(executor, caps);
+							break;
+						case android:
+							driver = new AndroidDriver<>(executor, caps);
+							break;
+						case desktop:
+							driver = new RemoteWebDriver(executor, caps);
+							break;
+						default:
+							// can't happen because validation was already done during reading json file
+					}
 				}
 			} catch (MalformedURLException e) {
 				throw new RuntimeException(e);
@@ -133,7 +212,7 @@ public class WebDriverFactory {
 			}catch (MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
-			
+
 		default:
 			// can't happen because validation was already done during reading json file
 		}
@@ -142,13 +221,19 @@ public class WebDriverFactory {
 			driver.manage().timeouts().implicitlyWait(env.getBrowserImplicitTimeout(), TimeUnit.SECONDS);
 		}
 
-		EventFiringWebDriver wd = new EventFiringWebDriver(driver, testName);
-		wd.register(new PerformanceListener());
-		wd.register(new StepsToReproduce(testName));
-		if ("yes".equalsIgnoreCase(System.getProperty(ShadowJSPathGenerator.RECORD_SHADOWJSPATH, ""))) {
-			wd.register(new ShadowJSPathGenerator(driver, testName));
+		if(platform == Platform.desktop){
+			//Only desktop supports the event firing webdriver
+			EventFiringWebDriver wd = new EventFiringWebDriver(driver, testName);
+			wd.register(new PerformanceListener());
+			wd.register(new StepsToReproduce(testName));
+			if ("yes".equalsIgnoreCase(System.getProperty(ShadowJSPathGenerator.RECORD_SHADOWJSPATH, ""))) {
+				wd.register(new ShadowJSPathGenerator(driver, testName));
+			}
+			return wd;
 		}
-		return wd;
+		else {
+			return driver;
+		}
 	}
 
 	private static ChromeOptions disableShowNotificationsForChrome() {
@@ -236,24 +321,27 @@ public class WebDriverFactory {
 	}
 
 	private static class ProxiedHttpClientFactory implements org.openqa.selenium.remote.http.HttpClient.Factory {
-		final HttpClient client;
+		final OkHttpClient okHttpClient;
 
-		public ProxiedHttpClientFactory(String proxyInfo) {
-			HttpHost proxy = HttpHost.create(proxyInfo);
-			HttpClientBuilder builder = HttpClientBuilder.create();
-			builder.setProxy(proxy);
-			this.client = builder.build();
+		public ProxiedHttpClientFactory(OkHttpClient okHttpClient) {
+			this.okHttpClient = okHttpClient;
 		}
 
 		@Override
 		public org.openqa.selenium.remote.http.HttpClient createClient(URL url) {
-			return new ApacheHttpClient(client, url);
+			// TODO Auto-generated method stub
+			return okHttpClient;
 		}
 
-		// Don't tag with @Override to allow code to run with older Selenium versions  
+		// Don't tag with @Override to allow code to run with older Selenium versions
 //		@Override
 		public void cleanupIdleClients() {
 			; // no-op
+		}
+
+		@Override
+		public HttpClient.Builder builder() {
+			return null;
 		}
 	}
 

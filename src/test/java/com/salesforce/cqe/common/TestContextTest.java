@@ -3,7 +3,7 @@
  */
 package com.salesforce.cqe.common;
 
-import org.junit.Assert;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.google.gson.stream.MalformedJsonException;
@@ -32,7 +32,7 @@ public class TestContextTest {
 		} catch (MalformedJsonException e) {
 			Assert.fail(e.getMessage());
 		}
-		Assert.assertNotNull("Unable to retrieve 2nd source org", context.getOrgs().getSource2());
+		Assert.assertNotNull("Unable to retrieve 2nd source org", context.getOrgs().getSource2().toString());
 		Assert.assertNotNull("Unable to retrieve 2nd source org id", context.getOrgs().getSource2().getSandboxOrgId());
 	}
 
