@@ -125,12 +125,12 @@
 		<dependency>
 			<groupId>com.salesforce.cqe</groupId>
 			<artifactId>test-drop-in-framework</artifactId>
-			<version>3.0.4</version>
+			<version>3.0.5</version>
 		</dependency>
 		<dependency>
 			<groupId>com.saucelabs</groupId>
 			<artifactId>saucerest</artifactId>
-			<version>1.0.35</version>
+			<version>1.0.43</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -153,6 +153,11 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.17</version>
 			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>io.appium</groupId>
+			<artifactId>java-client</artifactId>
+			<version>7.3.0</version>
 		</dependency>
 	</dependencies>
 
