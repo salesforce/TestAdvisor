@@ -219,7 +219,7 @@ public class StepsToReproduce extends AbstractWebDriverEventListener {
 	}
 
 	@Override
-	public void afterSendKeys(Step step, WebElement element, CharSequence... keysToSend) {
+	public void afterSendKeysByElement(Step step, WebElement element, CharSequence... keysToSend) {
 		String result = "Step " + stepCounter + ": enter text '" + step.getParam2() + "' into input field " + Step.getLocatorFromWebElement(element);
 		stepCounter++;
 		buffer.append(result).append(System.lineSeparator());

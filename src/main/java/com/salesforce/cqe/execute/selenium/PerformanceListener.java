@@ -179,7 +179,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	}
 
 	@Override
-	public void beforeSendKeys(Step step, WebElement element, CharSequence... keysToSend) {
+	public void beforeSendKeysByElement(Step step, WebElement element, CharSequence... keysToSend) {
 		if (step.getStepNumber() > 1) {
 			if (lastStep.get() != null) {
 				printMsg("Step " + step.getStepNumber() + ": Time elapsed since action '" + lastStep.get().getCmd().getShortCmdString() + "' in step " + lastStep.get().getStepNumber() + ": " + Step.formattedNanoTime(step.getTimeSinceLastAction()));
@@ -192,7 +192,7 @@ public class PerformanceListener extends AbstractWebDriverEventListener {
 	}
 
 	@Override
-	public void afterSendKeys(Step step, WebElement element, CharSequence... keysToSend) {
+	public void afterSendKeysByElement(Step step, WebElement element, CharSequence... keysToSend) {
 		afterActionNoReturnValue(step);
 	}
 

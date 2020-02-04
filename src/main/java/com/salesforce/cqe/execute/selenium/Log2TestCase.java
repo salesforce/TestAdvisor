@@ -52,7 +52,7 @@ public class Log2TestCase extends AbstractWebDriverEventListener {
 	}
 
 	@Override
-	public void afterSendKeys(Step step, WebElement element, CharSequence... keysToSend) {
+	public void afterSendKeysByElement(Step step, WebElement element, CharSequence... keysToSend) {
 		StringBuffer textBuffer = new StringBuffer();
 		if ((keysToSend != null) && (keysToSend.length > 0)) {
 			for (int i = 0; i < keysToSend.length; i++) {
