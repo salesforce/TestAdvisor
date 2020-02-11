@@ -275,21 +275,23 @@ public class TestContext {
         private String sauceLabUserName = "tstarbow";
         @JsonProperty("sauceLab_accessKey")
         private String sauceLabAccessKey = "cf312d48-6250-40bf-82ad-a70991bdec72";
-        // match default SauceLabs maximum duration of 1800 seconds
+        // match default SauceLabs values for maxDuration, commandTimeout, and idleTimeout
         @JsonProperty("sauceLab_maxDuration")
         private int sauceLabMaxDuration = 1800;
+        @JsonProperty("sauceLab_commandTimeout")
+        private int sauceLabCommandTimeout = 300;
         @JsonProperty("sauceLab_idleTimeout")
         private int sauceLabIdleTimeout = 90;
 
         // browser name can be overridden by using system property "testcontext.browser"
         @JsonProperty("browser")
-        private Browser browser = Browser.firefox;
+        private Browser browser = Browser.chrome;
         @JsonProperty("browser_version")
-        private String browserVersion = "45.0";
+        private String browserVersion = "80";
         @JsonProperty("browser_screenResolution")
         private String browserScreenResolution = "1920x1200";
         @JsonProperty("browser_implicitTimeout")
-        private long browserImplicitTimeout = 45L;
+        private long browserImplicitTimeout = 5L;
 
         @JsonProperty("os_platform")
         private String osPlatform = "Windows 10";
@@ -375,6 +377,19 @@ public class TestContext {
         @JsonProperty("sauceLab_maxDuration")
         public void setSauceLabMaxDuration(int sauceLabMaxDuration) {
             this.sauceLabMaxDuration = sauceLabMaxDuration;
+        }
+
+        @JsonProperty("sauceLab_commandTimeout")
+        public int getSauceLabCommandTimeout(){
+            return this.sauceLabCommandTimeout;
+        }
+
+        /*
+         * Accept value as-is.
+         */
+        @JsonProperty("sauceLab_commandTimeout")
+        public void setSauceLabCommandTimeout(int sauceLabCommandTimeout) {
+            this.sauceLabCommandTimeout = sauceLabCommandTimeout;
         }
 
         @JsonProperty("sauceLab_idleTimeout")

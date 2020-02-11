@@ -92,9 +92,10 @@ public class WebDriverFactory {
 			caps.setCapability("username",sauceName);
 			caps.setCapability("accessKey",sauceKey);
 
-			if(platform == Platform.desktop) {
+			if (platform == Platform.desktop) {
 				// SauceLabs allows to choose the platform to run on
 				caps.setCapability("platform", env.getOsPlatform());
+				caps.setCapability("commandTimeout", env.getSauceLabCommandTimeout());
 				caps.setCapability("idleTimeout", env.getSauceLabIdleTimeout());
 				caps.setCapability("extendedDebugging", true);
 				caps.setCapability("maxDuration",env.getSauceLabMaxDuration());
@@ -103,7 +104,7 @@ public class WebDriverFactory {
 				} else if (browser == Browser.firefox) {
 					disableShowNotificationsForFirefox().merge(caps);
 				}
-			}else if(platform==Platform.ios || platform == Platform.android){
+			} else if (platform==Platform.ios || platform == Platform.android) {
 				//set common mobile caps
 				caps.setCapability("appiumVersion",env.getAppiumVersion());
 				caps.setCapability("deviceName", env.getDeviceName());
@@ -112,7 +113,7 @@ public class WebDriverFactory {
 				caps.setCapability("app", env.getAppBinary());
 				caps.setCapability("language","en");
 				//Platform specific caps
-				if (platform ==Platform.ios){
+				if (platform ==Platform.ios) {
 					caps.setCapability("platformName","iOS");
 					caps.setCapability("automationName","XCUITest");
 					caps.setCapability("calendarAccessAuthorized",true);
