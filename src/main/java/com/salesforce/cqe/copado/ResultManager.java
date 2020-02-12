@@ -3,19 +3,15 @@
  */
 package com.salesforce.cqe.copado;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.apache.http.HttpStatus;
 import org.json.JSONObject;
 import org.testng.util.Strings;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.gson.stream.MalformedJsonException;
+import com.salesforce.cqe.common.JsonHelper;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -23,7 +19,6 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.path.xml.XmlPath;
 import io.restassured.path.xml.XmlPath.CompatibilityMode;
 import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 
 /**
@@ -31,55 +26,100 @@ import io.restassured.specification.RequestSpecification;
  *
  */
 public class ResultManager {
+	public enum Status {
+		QUEUED("Queued", false), INPROGRESS("In Progress", false), SUCCESS("Completed successfully", true),
+		WARNINGS("Completed with warnings", true), ERRORS("Completed with errors", true);
+
+		private final String statusMsg;
+		private final boolean isCompleted;
+
+		Status(String statusMsg, boolean isCompleted) {
+			this.statusMsg = statusMsg;
+			this.isCompleted = isCompleted;
+		}
+
+		public boolean isCompleted() {
+			return this.isCompleted;
+		}
+
+		public static Status fromString(String value) {
+			if (Strings.isNullOrEmpty(value))
+				return null;
+
+			for (Status s : Status.values()) {
+				if (value.equals(s.statusMsg))
+					return s;
+			}
+			return null;
+		}
+
+		@Override
+		public String toString() {
+			return statusMsg;
+		}
+	}
+
 	// generic purpose constants
 	private static final String APPLICATION_TYPE = "application/json";
 	private static final String AUTHORIZATION = "Authorization";
 	private static final String BEARER = "Bearer ";
 	private static final String GRANT_TYPE = "password";
-	private static final String QUERYURI = "/services/data/v37.0/query/?q=";
-	private static final String RETRIEVE_STATUS_QUERY = "SELECT copado__Last_Status__c,copado__Last_Status_Date__c from copado__Selenium_Test_Run__c";
+	private static final String QUERYURI = "/services/data/v47.0/query/?q=";
+	private static final String RETRIEVE_STATUS_QUERY_PRE = "SELECT copado__Batch_No__c,copado__Message__c,copado__Status__c FROM copado__Selenium_Test_Result__c WHERE copado__Selenium_Test_Run__c = '";
+	private static final String RETRIEVE_STATUS_QUERY_POST = "' ORDER BY copado__Batch_No__c DESC NULLS LAST LIMIT 5";
 	private static final String TOKEN_GENERATOR_URL = "https://test.salesforce.com/services/oauth2/token";
 
-	public static void retrieveStatus(String domainURI, String accessToken) {
-		StringBuilder authorizationHeader = null;
-		try {
-			authorizationHeader = new StringBuilder(BEARER).append(accessToken);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			return;
-		}
+	/**
+	 * 
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	public static Result getResult(Data data) throws Exception {
+		Result cachedResult = Result.getResult();
 
+		StringBuilder authorizationHeader = new StringBuilder(BEARER).append(getAccessToken(data));
+
+		System.out.println("Start retrieving result");
 		RequestSpecification request = RestAssured.given().headers(AUTHORIZATION, authorizationHeader)
 				.contentType(APPLICATION_TYPE);
-		Response response = request.when()
-				.get(new StringBuilder(domainURI).append(QUERYURI).append(RETRIEVE_STATUS_QUERY).toString());
+		String query = new StringBuilder(data.getDomainURI()).append(QUERYURI).append(RETRIEVE_STATUS_QUERY_PRE)
+				.append(data.getTestRunRecordId()).append(RETRIEVE_STATUS_QUERY_POST).toString();
+		Response response = request.when().get(query);
 
-//        System.out.println(response.getBody().asString());
 		response.then().statusCode(HttpStatus.SC_OK);
-
+		// System.out.println(response.getBody().asString());
 		JSONObject rootObject = new JSONObject(response.getBody().asString());
 		int totalSize = rootObject.getInt("totalSize");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
-		List<Date> runDates = new ArrayList<>();
-		Map<Date, String> statusByDate = new HashMap<>();
 
+		double batchNo = -1d;
+		Status status = null;
+		String message = null;
 		for (int i = 0; i < totalSize; i++) {
-			JSONObject runObject = new JSONObject(response.getBody().asString()).getJSONArray("records")
+			JSONObject resultObject = new JSONObject(response.getBody().asString()).getJSONArray("records")
 					.getJSONObject(i);
-			Date dateAndTimestamp = null;
-			try {
-				dateAndTimestamp = dateFormat.parse(runObject.getString("copado__Last_Status_Date__c"));
-				statusByDate.put(dateAndTimestamp, runObject.getString("copado__Last_Status__c"));
-				runDates.add(dateAndTimestamp);
-			} catch (ParseException e) {
-				e.printStackTrace();
+			status = Status.fromString(resultObject.getString("copado__Status__c"));
+			if (status == null || !status.isCompleted())
+				// skip any unfinished test runs
 				continue;
-			}
-		}
-		Collections.sort(runDates, Collections.reverseOrder());
-		statusByDate.get(runDates.get(0));
 
-		System.out.println("Last Test Run Status? '" + statusByDate.get(runDates.get(0)) + "' on " + runDates.get(0));
+			batchNo = resultObject.getDouble("copado__Batch_No__c");
+			message = resultObject.getString("copado__Message__c");
+			break;
+		}
+
+		if (batchNo > cachedResult.getBatchNo()) {
+			System.out.println("New Result found under batch " + batchNo);
+			cachedResult.setBatchNo(batchNo);
+			cachedResult.setMessage(message);
+			cachedResult.setStatusMsg(status.toString());
+			cachedResult.setStatus(status);
+			// write new result back to hd
+			cachedResult.saveResult();
+			return cachedResult;
+		}
+		System.out.println("No new result found");
+		return null;
 	}
 
 	/**
@@ -87,53 +127,191 @@ public class ResultManager {
 	 *
 	 * @return token
 	 */
-	public static String getAccessToken(String clientID, String clientSecret, String username, String password)
-			throws Exception {
+	private static String getAccessToken(Data data) throws Exception {
 		RestAssured.useRelaxedHTTPSValidation();
 
-		ValidatableResponse validatableResponse;
-		String token = "";
-		int attempts = 0;
+		String token = null;
 
-		while (attempts < 2) {
-			try {
-				System.out.println("Retrieve access token");
-				RequestSpecification request = RestAssured.given().formParam("grant_type", GRANT_TYPE)
-						.formParam("client_id", clientID).formParam("client_secret", clientSecret)
-						.formParam("username", username).formParam("password", password)
-						.contentType(ContentType.URLENC);
+		System.out.println("Start retrieving access token");
+		RequestSpecification request = RestAssured.given().formParam("grant_type", GRANT_TYPE)
+				.formParam("client_id", data.getClientId()).formParam("client_secret", data.getClientSecret())
+				.formParam("username", data.getUsername()).formParam("password", data.getPassword())
+				.contentType(ContentType.URLENC);
 
-				Response response = request.when().post(TOKEN_GENERATOR_URL);
-				if (response.getStatusCode() != HttpStatus.SC_OK) {
-					if (response.then().extract().contentType().equals(ContentType.HTML.toString())) {
-						XmlPath xml = new XmlPath(CompatibilityMode.HTML,
-								response.then().extract().response().asString());
-						throw new Exception("Unable to retrieve access token: " + xml.getString("html.head.title"));
-					} else if (response.then().extract().contentType().equals(ContentType.JSON.toString())) {
-						throw new Exception("Unable to retrieve access token: "
-								+ new JsonPath(response.then().extract().response().asString())
-										.getString("error_description"));
-					} else {
-						throw new Exception("Unable to retrieve access token: Incorrect content type");
-					}
-				}
-
-				validatableResponse = response.then().statusCode(HttpStatus.SC_OK);
-				System.out.println("Response: " + validatableResponse.extract().statusLine());
-
-				JsonPath jsonPath = new JsonPath(response.then().extract().response().asString());
-				token = jsonPath.getString("access_token");
-
-				if (Strings.isNotNullAndNotEmpty(token)) {
-//                    System.out.println("Token: " + token);
-					System.out.println("Token successfully retrieved");
-					return token;
-				}
-			} catch (Exception e) {
-				System.err.println("Unable to retrieve access token: encountered exception " + e);
-				attempts++;
+		Response response = request.when().post(TOKEN_GENERATOR_URL);
+		if (response.getStatusCode() != HttpStatus.SC_OK) {
+			if (response.then().extract().contentType().equals(ContentType.HTML.toString())) {
+				XmlPath xml = new XmlPath(CompatibilityMode.HTML, response.then().extract().response().asString());
+				throw new Exception("Unable to retrieve access token: " + xml.getString("html.head.title"));
+			} else if (response.then().extract().contentType().equals(ContentType.JSON.toString())) {
+				throw new Exception("Unable to retrieve access token: "
+						+ new JsonPath(response.then().extract().response().asString()).getString("error_description"));
+			} else {
+				throw new Exception("Unable to retrieve access token: Incorrect content type");
 			}
 		}
+
+		if (response.statusCode() != HttpStatus.SC_OK) {
+			throw new Exception("Unable to retrieve access token: incorrect HTTP Response: " + response.statusLine());
+		}
+
+		JsonPath jsonPath = new JsonPath(response.then().extract().response().asString());
+		token = jsonPath.getString("access_token");
+
+		if (Strings.isNullOrEmpty(token)) {
+			throw new Exception("Unable to retrieve access token from response");
+		}
+
+		System.out.println("Successfully retrieved access token");
 		return token;
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonPropertyOrder({ "domainURI", "clientId", "clientSecret", "username", "password", "testRunRecordId" })
+	public static class Data {
+		private static final String JSON_FILENAME = "data.json";
+
+		@JsonProperty("domainURI")
+		private String domainURI;
+		@JsonProperty("clientId")
+		private String clientId;
+		@JsonProperty("clientSecret")
+		private String clientSecret;
+		@JsonProperty("username")
+		private String username;
+		@JsonProperty("password")
+		private String password;
+		@JsonProperty("testRunRecordId")
+		private String testRunRecordId;
+
+		private Data() {
+			; // prohibit default constructor
+		}
+
+		/**
+		 * Reads JSON file "data.json" from test project's root directory.
+		 * 
+		 * @return last result retrieved from sandbox
+		 * @throws MalformedJsonException failure during de-serialization of json file
+		 */
+		public static Data getData() throws MalformedJsonException {
+			return JsonHelper.toObject(Data.JSON_FILENAME, Data.class);
+		}
+
+		@JsonProperty("domainURI")
+		public String getDomainURI() {
+			return this.domainURI;
+		}
+
+		@JsonProperty("clientId")
+		public String getClientId() {
+			return this.clientId;
+		}
+
+		@JsonProperty("clientSecret")
+		public String getClientSecret() {
+			return this.clientSecret;
+		}
+
+		@JsonProperty("username")
+		public String getUsername() {
+			return this.username;
+		}
+
+		@JsonProperty("password")
+		public String getPassword() {
+			return this.password;
+		}
+
+		@JsonProperty("testRunRecordId")
+		public String getTestRunRecordId() {
+			return this.testRunRecordId;
+		}
+	}
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonPropertyOrder({ "batch_no", "message", "status_msg" })
+	public static class Result {
+		private static final String JSON_FILENAME = "last_result.json";
+
+		@JsonProperty("batch_no")
+		private double batchNo;
+		@JsonProperty("message")
+		private String message;
+		@JsonProperty("status_msg")
+		private String statusMsg;
+		
+		private Status status = null;
+
+		private Result() {
+			; // prohibit default constructor
+		}
+
+		/**
+		 * Reads JSON file "last_result.json" from test project's root directory.
+		 * 
+		 * @return last result retrieved from sandbox
+		 */
+		public static Result getResult() {
+			Result result = null;
+			try {
+				result = JsonHelper.toObject(Result.JSON_FILENAME, Result.class);
+			} catch (MalformedJsonException mje) {
+				result = new Result();
+				result.batchNo = -1d;
+				result.message = "undefined";
+				result.statusMsg = "undefined";
+			}
+			return result;
+		}
+
+		/**
+		 * Saves JSON file "last_result.json" to test project's root directory.
+		 */
+		public void saveResult() {
+			try {
+				JsonHelper.toFile(JSON_FILENAME, this);
+			} catch (MalformedJsonException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@JsonProperty("batch_no")
+		public double getBatchNo() {
+			return this.batchNo;
+		}
+
+		@JsonProperty("batch_no")
+		public void setBatchNo(double batchNo) {
+			this.batchNo = batchNo;
+		}
+
+		@JsonProperty("message")
+		public String getMessage() {
+			return this.message;
+		}
+
+		@JsonProperty("message")
+		public void setMessage(String message) {
+			this.message = message;
+		}
+
+		@JsonProperty("status_msg")
+		public String getStatusMsg() {
+			return this.statusMsg;
+		}
+
+		@JsonProperty("status_msg")
+		public void setStatusMsg(String statusMsg) {
+			this.statusMsg = statusMsg;
+		}
+
+		public Status getStatus() {
+			return status;
+		}
+
+		public void setStatus(Status status) {
+			this.status = status;
+		}
 	}
 }

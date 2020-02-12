@@ -18,6 +18,8 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.salesforce.cqe.copado.ResultManager.Status;
+
 /**
  * Report provider for supporting CQE BST program.
  * 
@@ -28,8 +30,8 @@ public class CQEReport {
 	private static final String TEST_SUITE_NAME = "Copado Testing";
 	private static final String TEST_CLASS_NAME = "copado";
 
-	public void saveResult(String testReportName, String testStatus, String failureDescription) {
-		TestCase testCase = new TestCase("Copado", "failed".equalsIgnoreCase(testStatus), failureDescription);
+	public static void save(ResultManager.Result result) {
+		TestCase testCase = new TestCase(result.getStatus(), result.getMessage());
 
 		File outputFile = new File(FILENAME);
 		System.out.println("Processing output file " + outputFile.getAbsolutePath());
@@ -127,7 +129,7 @@ public class CQEReport {
 		testcase.setAttributeNode(attrClassname);
 
 		Attr attrName = document.createAttribute("name");
-		attrName.setValue(tc.getCustomerName());
+		attrName.setValue(TEST_CLASS_NAME);
 		testcase.setAttributeNode(attrName);
 
 		Attr attrTime = document.createAttribute("time");
@@ -153,26 +155,20 @@ public class CQEReport {
 		failure.setAttributeNode(attrType);
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(TEST_CLASS_NAME);
+		sb.append(tc.getMessage());
 		failure.setTextContent(sb.toString());
 		return failure;
 	}
 
 	private static class TestCase {
-		private final String customerName;
 		private final boolean isFailure;
 		private final String message;
 
-		TestCase(String customerName, boolean isFailure, String message) {
-			this.customerName = customerName;
-			this.isFailure = isFailure;
+		TestCase(Status status, String message) {
+			this.isFailure = status != Status.SUCCESS;
 			if (message != null)
 				message = message.replace("\"", "'");
 			this.message = message;
-		}
-
-		String getCustomerName() {
-			return this.customerName;
 		}
 
 		String getMessage() {
