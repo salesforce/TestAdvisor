@@ -222,17 +222,17 @@ public class WebDriverFactory {
 			driver.manage().timeouts().implicitlyWait(env.getBrowserImplicitTimeout(), TimeUnit.SECONDS);
 		}
 
-		if(platform == Platform.desktop){
-			//Only desktop supports the event firing webdriver
+		if (platform == Platform.desktop) {
+			// Only desktop supports the event firing webdriver
 			EventFiringWebDriver wd = new EventFiringWebDriver(driver, testName);
 			wd.register(new PerformanceListener());
 			wd.register(new StepsToReproduce(testName));
+			wd.register(new LogLocators(testName));
 			if ("yes".equalsIgnoreCase(System.getProperty(ShadowJSPathGenerator.RECORD_SHADOWJSPATH, ""))) {
 				wd.register(new ShadowJSPathGenerator(driver, testName));
 			}
 			return wd;
-		}
-		else {
+		} else {
 			return driver;
 		}
 	}
