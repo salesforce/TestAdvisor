@@ -14,7 +14,7 @@ import com.salesforce.selenium.support.event.Step;
  * @author gneumann
  */
 public class LogLocators extends AbstractWebDriverEventListener {
-	private int counter = 1;
+	private int counter = 0;
 	private String fileName = null;
 	private StringBuffer buffer = new StringBuffer();
 
@@ -24,25 +24,25 @@ public class LogLocators extends AbstractWebDriverEventListener {
 
 	@Override
 	public void beforeFindElementByWebDriver(Step step, By by) {
-		buffer.append(by.toString());
+		buffer.append(by.toString() + System.lineSeparator());
 		counter++;
 	}
 
 	@Override
 	public void beforeFindElementsByWebDriver(Step step, By by) {
-		buffer.append(by.toString());
+		buffer.append(by.toString() + System.lineSeparator());
 		counter++;
 	}
 
 	@Override
 	public void beforeFindElementByElement(Step step, By by, WebElement element) {
-		buffer.append(by.toString());
+		buffer.append(by.toString() + System.lineSeparator());
 		counter++;
 	}
 
 	@Override
 	public void beforeFindElementsByElement(Step step, By by, WebElement element) {
-		buffer.append(by.toString());
+		buffer.append(by.toString() + System.lineSeparator());
 		counter++;
 	}
 
