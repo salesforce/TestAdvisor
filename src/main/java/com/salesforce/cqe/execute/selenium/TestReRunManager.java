@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
  * <pre>
  * {@code <suite name="TestNG Listener Example">
  *     <listeners>
- *             <listener class-name="TestReRunManager"/>
+ *             <listener class-name="com.salesforce.cqe.execute.selenium.TestReRunManager"/>
  *     </listeners>
  *     ... }
  * </pre>

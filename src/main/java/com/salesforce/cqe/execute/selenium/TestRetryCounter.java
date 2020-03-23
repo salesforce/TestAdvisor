@@ -29,12 +29,14 @@ public class TestRetryCounter implements IRetryAnalyzer {
         if (count < MAXIMUM_RETRIES) {
         	// mark this test run as failure
             testResult.setStatus(ITestResult.FAILURE);
+            testResult.setWasRetried(true);
             count++;
             // have it re-run
             return true;
         }
         // exceeded maximum time of retries
         testResult.setStatus(ITestResult.FAILURE);
+        testResult.setWasRetried(true);
         return false;
     }
 }
