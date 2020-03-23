@@ -15,7 +15,7 @@ public class TestRetryCounter implements IRetryAnalyzer {
     /**
      * Re-run failed tests up to n times.
      * @param testResult test status information to determine if it has failed
-     * @returns true if test is to be re-run, false otherwise
+     * @return true if test is to be re-run, false otherwise
      */
     @Override
     public boolean retry(ITestResult testResult) {
