@@ -21,6 +21,7 @@ import java.net.Proxy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -197,9 +198,22 @@ public class WebDriverFactory {
 			caps.setCapability(CapabilityType.PROXY, proxy);
 			// no BREAK here by design!
 		case local:
+			String driverVersion = System.getProperty("driver.version");;
 			if (browser == Browser.chrome) {
+				if(driverVersion==null) {
+					WebDriverManager.chromedriver().setup();
+				}
+				else{
+					WebDriverManager.chromedriver().version(driverVersion).setup();
+				}
 				driver = new ChromeDriver(disableShowNotificationsForChrome().merge(caps));
 			} else if (browser == Browser.firefox) {
+				if(driverVersion == null) {
+					WebDriverManager.firefoxdriver().setup();
+				}
+				else{
+					WebDriverManager.firefoxdriver().version(driverVersion).setup();
+				}
 				driver = new FirefoxDriver(disableShowNotificationsForFirefox().merge(caps));
 			}
 			driver.manage().window().setSize(env.getBrowserScreenResolutionAsDimension());
