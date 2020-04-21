@@ -14,6 +14,7 @@ import com.salesforce.selenium.support.event.Step;
 public class PerformanceListener extends AbstractWebDriverEventListener {
 	private ThreadLocal<Step> lastStep = new ThreadLocal<Step>();
 
+	@Override
 	public void closeListener() {
 		; // empty implementation
 	}
