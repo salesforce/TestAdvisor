@@ -6,18 +6,15 @@
  */
 package com.salesforce.cqe.execute.selenium;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.net.Proxy;
-
+import com.google.gson.stream.MalformedJsonException;
+import com.salesforce.cqe.common.APIUtilities;
+import com.salesforce.cqe.common.TestContext;
+import com.salesforce.cqe.common.TestContext.Browser;
+import com.salesforce.cqe.common.TestContext.Env;
+import com.salesforce.cqe.common.TestContext.Platform;
+import com.salesforce.cqe.common.pojo.SaucelabsVMConcurrencyResponse;
+import com.salesforce.selenium.support.event.EventFiringWebDriver;
+import com.saucelabs.saucerest.SauceREST;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
@@ -35,16 +32,13 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.http.HttpClient;
 import org.openqa.selenium.remote.http.HttpClient.Factory;
 import org.openqa.selenium.remote.internal.OkHttpClient;
-
-import com.google.gson.stream.MalformedJsonException;
-import com.salesforce.cqe.common.TestContext;
-import com.salesforce.cqe.common.TestContext.Browser;
-import com.salesforce.cqe.common.TestContext.Env;
-import com.salesforce.cqe.common.TestContext.Platform;
-import com.salesforce.selenium.support.event.EventFiringWebDriver;
-import com.saucelabs.saucerest.SauceREST;
-
 import org.testng.Assert;
+
+import java.io.IOException;
+import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Factory for creating an {@link EventFiringWebDriver} which works in Salesforce Central QE environment.
@@ -84,9 +78,28 @@ public class WebDriverFactory {
 
 		WebDriver driver = null;
 		switch (env.getContextType()) {
-		case saucelabs:
-			String sauceName = env.getSauceLabUserName();
-			String sauceKey = env.getSauceLabAccessKey();
+			case saucelabs:
+
+				String sauceName = env.getSauceLabUserName();
+				String sauceKey = env.getSauceLabAccessKey();
+
+				String saucelabsConcurrencyurl = "https://saucelabs.com/rest/v1.2/users/" + sauceName + "/concurrency";
+
+				if (!isRunningOnJenkins()) {
+					SaucelabsVMConcurrencyResponse saucelabsVMConcurrencyResponse;
+					try {
+						saucelabsVMConcurrencyResponse = APIUtilities.getResponseWithBasicAuth(saucelabsConcurrencyurl, sauceName, sauceKey).as(SaucelabsVMConcurrencyResponse.class);
+					} catch (Exception ex) {
+						throw new RuntimeException(ex);
+					}
+
+					int utilizedVMs = saucelabsVMConcurrencyResponse.getConcurrency().getOrganization().getCurrent().getVms();
+					int allowedVMs = saucelabsVMConcurrencyResponse.getConcurrency().getOrganization().getAllowed().getVms();
+					System.out.println("Saucelabs VM stats - utilizedVMs count: " + utilizedVMs + ", allowedVM's count: " + allowedVMs);
+					if (utilizedVMs == allowedVMs) {
+						throw new RuntimeException("All allowed (" + utilizedVMs + " VM's are already utilized. Please try to execute local tests on saucelabs after sometime");
+					}
+				}
 
 			printMsg("Connecting to saucelabs.");
 			String URL = "https://" + sauceName + ":" + sauceKey + "@ondemand.saucelabs.com:443/wd/hub";
