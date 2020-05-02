@@ -7,7 +7,7 @@
 package com.salesforce.cqe.execute.selenium;
 
 import com.google.gson.stream.MalformedJsonException;
-import com.salesforce.cqe.common.APIUtilities;
+import com.salesforce.cqe.common.RestUtil;
 import com.salesforce.cqe.common.TestContext;
 import com.salesforce.cqe.common.TestContext.Browser;
 import com.salesforce.cqe.common.TestContext.Env;
@@ -82,21 +82,25 @@ public class WebDriverFactory {
 
 				String sauceName = env.getSauceLabUserName();
 				String sauceKey = env.getSauceLabAccessKey();
-
+				// saucelabs url to fetch concurrent virtual machines (VM) status
 				String saucelabsConcurrencyurl = "https://saucelabs.com/rest/v1.2/users/" + sauceName + "/concurrency";
-
+				// only fetch concurrent VM's status if test is being executed from local
 				if (!isRunningOnJenkins()) {
 					SaucelabsVMConcurrencyResponse saucelabsVMConcurrencyResponse;
 					try {
-						saucelabsVMConcurrencyResponse = APIUtilities.getResponseWithBasicAuth(saucelabsConcurrencyurl, sauceName, sauceKey).as(SaucelabsVMConcurrencyResponse.class);
+						// fetch number of allowed and utilised VM's number using saucelabs rest api and deserialize the response
+						saucelabsVMConcurrencyResponse = RestUtil.getResponseWithBasicAuth(saucelabsConcurrencyurl, sauceName, sauceKey).as(SaucelabsVMConcurrencyResponse.class);
 					} catch (Exception ex) {
+						// exception will be thrown in case expected response is not received and deserialization will fail. Further execution won't be possible.
 						throw new RuntimeException(ex);
 					}
 
 					int utilizedVMs = saucelabsVMConcurrencyResponse.getConcurrency().getOrganization().getCurrent().getVms();
 					int allowedVMs = saucelabsVMConcurrencyResponse.getConcurrency().getOrganization().getAllowed().getVms();
 					System.out.println("Saucelabs VM stats - utilizedVMs count: " + utilizedVMs + ", allowedVM's count: " + allowedVMs);
+					// restrict the execution of test if all the allowed VM's are utilised.
 					if (utilizedVMs == allowedVMs) {
+						// exception will be thrown to prevent test to execute.
 						throw new RuntimeException("All allowed (" + utilizedVMs + " VM's are already utilized. Please try to execute local tests on saucelabs after sometime");
 					}
 				}
