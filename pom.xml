@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.salesforce.cqe</groupId>
 	<artifactId>java-test-utils</artifactId>
-	<version>0.0.39</version>
+	<version>0.0.40-SNAPSHOT</version>
 	<name>Java Test Utilities for Selenium WebDriver v.3</name>
 	<description>Our Java code to help run Customer Test Projects based on Selenium WebDriver v.3.x internally.</description>
 	<packaging>jar</packaging>
@@ -181,7 +181,7 @@
 
 	<scm>
 		<developerConnection>scm:git:git@git.soma.salesforce.com:cqe/java-test-utils.git</developerConnection>
-		<tag>v0.0.39</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
