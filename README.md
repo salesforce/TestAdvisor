@@ -26,3 +26,8 @@ for development in Eclipse.
     (http://maven.apache.org/maven-release/maven-release-plugin/examples/perform-release.html)
 4. mvn release:clean
     Cleans up your local env
+    
+## Setup
+Since v0.0.39 this project uses Lombok. In order to properly develop in either IntelliJ IDEA or
+Eclipse IDE please follow section 2 or 3 on this page: https://www.baeldung.com/lombok-ide
+
