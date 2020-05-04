@@ -97,11 +97,16 @@ public class WebDriverFactory {
 
 					int utilizedVMs = saucelabsVMConcurrencyResponse.getConcurrency().getOrganization().getCurrent().getVms();
 					int allowedVMs = saucelabsVMConcurrencyResponse.getConcurrency().getOrganization().getAllowed().getVms();
-					System.out.println("Saucelabs VM stats - utilizedVMs count: " + utilizedVMs + ", allowedVM's count: " + allowedVMs);
+					int numberOfReservedVms = 2;
+					// allowedVMs-2 to cover the case where two currently running builds have just finished a job and are about to start the next test cases.
+					// I will review it in future and change accordingly
+					allowedVMs = allowedVMs-numberOfReservedVms;
+					System.out.println("Saucelabs VM stats - utilizedVMs count: " + utilizedVMs + ", allowedVM's count: " + allowedVMs +
+							" \n * " + numberOfReservedVms + " VM's are reserved to cover the case where two currently running builds have just finished a job and are about to start the next test cases.");
 					// restrict the execution of test if all the allowed VM's are utilised.
-					if (utilizedVMs > (allowedVMs-2)) {
+					if (utilizedVMs > allowedVMs) {
 						// exception will be thrown to prevent test to execute.
-						throw new RuntimeException("All allowed (" + utilizedVMs + " VM's are already utilized. Please try to execute local tests on saucelabs after sometime");
+						throw new RuntimeException("All allowed (" + utilizedVMs + " VM's are already utilized. Please try to execute local tests on saucelabs after sometime.");
 					}
 				}
 
