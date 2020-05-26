@@ -298,12 +298,15 @@ public class WebDriverFactory {
 		boolean isReportedSuccessfully = true;
 		Env env = getSeleniumTestContext();
 
+		// test execution is on docker
 		if(env.getContextType() == TestContext.Type.docker){
 			String testResult = String.valueOf(hasPassed);
 			System.out.println("Zalenium test result: " + hasPassed );
+			// marking test pass/fail as per test result.
 			Cookie cookie = new Cookie("zaleniumTestPassed", testResult);
 			driver.manage().addCookie(cookie);
 		}
+		// test execution is on saucelabs
 		else if (env.getContextType() == TestContext.Type.saucelabs) {
 			String jobId = null;
 			WebDriver wrappedDriver = driver;
