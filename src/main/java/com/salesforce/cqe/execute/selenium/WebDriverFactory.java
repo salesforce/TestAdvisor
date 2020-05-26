@@ -20,6 +20,7 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -241,7 +242,7 @@ public class WebDriverFactory {
 			driver.manage().window().setSize(env.getBrowserScreenResolutionAsDimension());
 			break;
 		case docker:
-			printMsg("Connecting to a localhost docker selenium guid.");
+			printMsg("Connecting to a localhost docker selenium grid.");
 			try{
 				String hub = System.getProperty("HUB_HOST", "127.0.0.1");
 				String port = System.getProperty("HUB_PORT", "4444");
@@ -297,7 +298,13 @@ public class WebDriverFactory {
 		boolean isReportedSuccessfully = true;
 		Env env = getSeleniumTestContext();
 
-		if (env.getContextType() == TestContext.Type.saucelabs) {
+		if(env.getContextType() == TestContext.Type.docker){
+			String testResult = String.valueOf(hasPassed);
+			System.out.println("Zalenium test result: " + hasPassed );
+			Cookie cookie = new Cookie("zaleniumTestPassed", testResult);
+			driver.manage().addCookie(cookie);
+		}
+		else if (env.getContextType() == TestContext.Type.saucelabs) {
 			String jobId = null;
 			WebDriver wrappedDriver = driver;
 			if (driver instanceof EventFiringWebDriver) {
