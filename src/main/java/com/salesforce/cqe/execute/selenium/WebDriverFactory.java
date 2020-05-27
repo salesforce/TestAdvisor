@@ -298,16 +298,8 @@ public class WebDriverFactory {
 		boolean isReportedSuccessfully = true;
 		Env env = getSeleniumTestContext();
 
-		// test execution is on docker
-		if(env.getContextType() == TestContext.Type.docker){
-			String testResult = String.valueOf(hasPassed);
-			System.out.println("Zalenium test result: " + hasPassed );
-			// marking test pass/fail as per test result.
-			Cookie cookie = new Cookie("zaleniumTestPassed", testResult);
-			driver.manage().addCookie(cookie);
-		}
 		// test execution is on saucelabs
-		else if (env.getContextType() == TestContext.Type.saucelabs) {
+		if (env.getContextType() == TestContext.Type.saucelabs) {
 			String jobId = null;
 			WebDriver wrappedDriver = driver;
 			if (driver instanceof EventFiringWebDriver) {
@@ -318,7 +310,7 @@ public class WebDriverFactory {
 				jobId = ((RemoteWebDriver) wrappedDriver).getSessionId().toString();
 			}
 
-			if (jobId != null) { 
+			if (jobId != null) {
 				printMsg("WebDriverFactory.setPassed: session " + jobId + " set to " + hasPassed);
 			} else {
 				printMsg("WebDriverFactory.setPassed: session <unknown> set to " + hasPassed);
@@ -351,6 +343,13 @@ public class WebDriverFactory {
 					isReportedSuccessfully = false;
 				}
 			}
+			// test execution is on docker
+		} else if (env.getContextType() == TestContext.Type.docker) {
+			String testResult = String.valueOf(hasPassed);
+			System.out.println("Zalenium test result: " + hasPassed);
+			// marking test pass/fail as per test result.
+			Cookie cookie = new Cookie("zaleniumTestPassed", testResult);
+			driver.manage().addCookie(cookie);
 		}
 		return isReportedSuccessfully;
 	}
