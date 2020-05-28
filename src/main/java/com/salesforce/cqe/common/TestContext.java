@@ -282,6 +282,8 @@ public class TestContext {
         private int sauceLabCommandTimeout = 300;
         @JsonProperty("sauceLab_idleTimeout")
         private int sauceLabIdleTimeout = 90;
+        @JsonProperty("sauceLab_useHttps")
+        private boolean sauceLabUseHttps = true;
 
         // browser name can be overridden by using system property "testcontext.browser"
         @JsonProperty("browser")
@@ -403,6 +405,19 @@ public class TestContext {
         @JsonProperty("sauceLab_idleTimeout")
         public void setSauceLabIdleTimeout(int sauceLabIdleTimeout) {
             this.sauceLabIdleTimeout = sauceLabIdleTimeout;
+        }
+
+        @JsonProperty("sauceLab_useHttps")
+        public boolean getSauceLabUseHttps(){
+            return this.sauceLabUseHttps;
+        }
+
+        /*
+         * Accept value as-is.
+         */
+        @JsonProperty("sauceLab_useHttps")
+        public void setSauceLabUseHttps(boolean sauceLabUseHttps){
+            this.sauceLabUseHttps = sauceLabUseHttps;
         }
 
         @JsonProperty("browser")

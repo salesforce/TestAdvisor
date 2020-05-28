@@ -110,8 +110,16 @@ public class WebDriverFactory {
 					}
 				}
 
-			printMsg("Connecting to saucelabs.");
-			String URL = "https://" + sauceName + ":" + sauceKey + "@ondemand.saucelabs.com:443/wd/hub";
+			String URL;
+			if(env.getSauceLabUseHttps()){
+				printMsg("Connecting to saucelabs over HTTPS.");
+				URL = "https://" + sauceName + ":" + sauceKey + "@ondemand.saucelabs.com:443/wd/hub";
+			}
+			else{
+				printMsg("Connecting to saucelabs over HTTP.");
+				URL = "http://" + sauceName + ":" + sauceKey + "@ondemand.saucelabs.com:80/wd/hub";
+			}
+
 			caps.setCapability("username",sauceName);
 			caps.setCapability("accessKey",sauceKey);
 
