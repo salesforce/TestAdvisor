@@ -67,7 +67,7 @@ public class WebDriverFactory {
 		String proxyUrl = env.getOsProxyUrl();
 		Platform platform = env.getPlatform();
 
-		if(platform == Platform.desktop) {
+		if (platform == Platform.desktop) {
 			caps.setCapability("browserName", env.getBrowser().toString());
 			caps.setCapability("version", env.getBrowserVersion());
 			caps.setCapability("screenResolution", env.getBrowserScreenResolution());
@@ -88,7 +88,7 @@ public class WebDriverFactory {
 				if (!isRunningOnJenkins()) {
 					SaucelabsVMConcurrencyResponse saucelabsVMConcurrencyResponse;
 					try {
-						// fetch number of allowed and utilised VM's number using saucelabs rest api and deserialize the response
+						// fetch number of allowed and utilized VM's number using saucelabs REST API and deserialize the response
 						saucelabsVMConcurrencyResponse = RestUtil.getResponseWithBasicAuth(saucelabsConcurrencyurl, sauceName, sauceKey).as(SaucelabsVMConcurrencyResponse.class);
 					} catch (Exception ex) {
 						// exception will be thrown in case expected response is not received and deserialization will fail. Further execution won't be possible.
@@ -103,7 +103,7 @@ public class WebDriverFactory {
 					allowedVMs = allowedVMs-numberOfReservedVms;
 					System.out.println("Saucelabs VM stats - utilizedVMs count: " + utilizedVMs + ", allowedVM's count: " + allowedVMs +
 							" \n * " + numberOfReservedVms + " VM's are reserved to cover the case where two currently running builds have just finished a job and are about to start the next test cases.");
-					// restrict the execution of test if all the allowed VM's are utilised.
+					// restrict the execution of test if all the allowed VM's are utilized.
 					if (utilizedVMs > allowedVMs) {
 						// exception will be thrown to prevent test to execute.
 						throw new RuntimeException("All allowed (" + utilizedVMs + " VM's are already utilized. Please try to execute local tests on saucelabs after sometime.");
