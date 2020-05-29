@@ -20,6 +20,7 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -249,7 +250,7 @@ public class WebDriverFactory {
 			driver.manage().window().setSize(env.getBrowserScreenResolutionAsDimension());
 			break;
 		case docker:
-			printMsg("Connecting to a localhost docker selenium guid.");
+			printMsg("Connecting to a localhost docker selenium grid.");
 			try{
 				String hub = System.getProperty("HUB_HOST", "127.0.0.1");
 				String port = System.getProperty("HUB_PORT", "4444");
@@ -305,6 +306,7 @@ public class WebDriverFactory {
 		boolean isReportedSuccessfully = true;
 		Env env = getSeleniumTestContext();
 
+		// test execution is on saucelabs
 		if (env.getContextType() == TestContext.Type.saucelabs) {
 			String jobId = null;
 			WebDriver wrappedDriver = driver;
@@ -316,7 +318,7 @@ public class WebDriverFactory {
 				jobId = ((RemoteWebDriver) wrappedDriver).getSessionId().toString();
 			}
 
-			if (jobId != null) { 
+			if (jobId != null) {
 				printMsg("WebDriverFactory.setPassed: session " + jobId + " set to " + hasPassed);
 			} else {
 				printMsg("WebDriverFactory.setPassed: session <unknown> set to " + hasPassed);
@@ -349,6 +351,13 @@ public class WebDriverFactory {
 					isReportedSuccessfully = false;
 				}
 			}
+			// test execution is on docker
+		} else if (env.getContextType() == TestContext.Type.docker) {
+			String testResult = String.valueOf(hasPassed);
+			System.out.println("Zalenium test result: " + hasPassed);
+			// marking test pass/fail as per test result.
+			Cookie cookie = new Cookie("zaleniumTestPassed", testResult);
+			driver.manage().addCookie(cookie);
 		}
 		return isReportedSuccessfully;
 	}
