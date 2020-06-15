@@ -29,7 +29,26 @@ public class TestContext {
 		local, saucelabs, privatecloud, docker
 	}
 	public enum Browser {
-		chrome, ie, firefox, safari
+		chrome, firefox, safari, edge, internet_explorer;
+
+		/**
+		 * The browsers MS Edge and IE require different
+		 * textual representation when initiating a SauceLabs
+		 * session.
+		 */
+		@Override
+		public String toString() {
+			if (this == chrome)
+				return "chrome";
+			else if (this == firefox)
+				return "firefox";
+			else if (this == safari)
+				return "safari";
+			else if (this == edge)
+				return "MicrosoftEdge";
+			else 
+				return "internet explorer";			
+		}
 	}
 
 	public enum Platform{
