@@ -29,7 +29,7 @@ public class TestContext {
 		local, saucelabs, privatecloud, docker
 	}
 	public enum Browser {
-		chrome, firefox, safari, edge, internet_explorer;
+		chrome, firefox, safari, edge, ie;
 
 		/**
 		 * The browsers MS Edge and IE require different
