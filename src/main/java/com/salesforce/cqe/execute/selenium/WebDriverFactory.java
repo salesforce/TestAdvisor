@@ -20,6 +20,7 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -244,9 +245,27 @@ public class WebDriverFactory {
 		case docker:
 			printMsg("Connecting to a localhost docker selenium grid.");
 			try{
+
+				String buildName = System.getProperty("build");
+				ChromeOptions options = new ChromeOptions();
+				// commented as we are not using zalenium at the moment
+				// options.setCapability("build",buildName);
+				caps.setCapability("enableVNC",true);
+				caps.setCapability("enableVideo",true);
+				caps.setCapability("name",testName);
+				caps.setCapability("videoName",testName + ".mp4");
+
+				org.openqa.selenium.Proxy publicProxy = new org.openqa.selenium.Proxy();
+				publicProxy.setSslProxy("public0-proxy1-0-xrd.data.sfdc.net:8080");
+				publicProxy.setProxyType(org.openqa.selenium.Proxy.ProxyType.MANUAL);
+				options.setCapability("proxy", publicProxy);
+				caps.setCapability(ChromeOptions.CAPABILITY,options);
 				String hub = System.getProperty("HUB_HOST", "127.0.0.1");
 				String port = System.getProperty("HUB_PORT", "4444");
 				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
+			// To verify if proxy capability is setting up
+			/*	Capabilities cap = ((RemoteWebDriver) driver).getCapabilities();
+				System.out.println("caps= " + cap.getCapability("proxy").toString());*/
 			}catch (MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
@@ -273,6 +292,7 @@ public class WebDriverFactory {
 			return driver;
 		}
 	}
+
 
 	private static ChromeOptions disableShowNotificationsForChrome() {
 		Map<String, Object> prefs = new HashMap<String, Object>();
