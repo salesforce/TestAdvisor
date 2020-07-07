@@ -3,6 +3,7 @@
  */
 package com.salesforce.cqe.execute.selenium;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -25,6 +26,7 @@ public class StepsToReproduce extends AbstractWebDriverEventListener {
 
 	@Override
 	public void closeListener() {
+		new File(TESTDROPIN_LOGFILES_DIR).mkdirs();
 		FileWriter fileWriter = null;
 
 		try {

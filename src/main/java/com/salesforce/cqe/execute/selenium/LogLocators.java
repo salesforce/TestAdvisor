@@ -19,7 +19,7 @@ import com.salesforce.selenium.support.event.Step;
  */
 public class LogLocators extends AbstractWebDriverEventListener {
 	private static final String SUMMARY_FILENAME = "locators-statistics.csv";
-	private static final String TARGET_DIRNAME = "target";
+
 	private int totalLocatorUsage = 0;
 	private Set<String> classLocators = new LinkedHashSet<>();
 	private Set<String> cssLocators = new LinkedHashSet<>();
@@ -132,9 +132,10 @@ public class LogLocators extends AbstractWebDriverEventListener {
 			sb.append(s).append(System.lineSeparator());
 		}
 		
-		Path path = FileSystems.getDefault().getPath(TARGET_DIRNAME, testName + "-locators.txt");
+		Path path = FileSystems.getDefault().getPath(TESTDROPIN_LOGFILES_DIR, testName + "-locators.txt");
 
 		try {
+			Files.createDirectories(path);
 			Files.write(path, sb.toString().getBytes());
 			System.out.println("Done writing list of locators to " + testName + "-locators.txt");
 		} catch (IOException e) {
@@ -168,7 +169,7 @@ public class LogLocators extends AbstractWebDriverEventListener {
 	}
 
 	private void writeSummaryFile() {
-		Path summaryPath = FileSystems.getDefault().getPath("target", SUMMARY_FILENAME);
+		Path summaryPath = FileSystems.getDefault().getPath(TESTDROPIN_LOGFILES_DIR, SUMMARY_FILENAME);
 		StringBuilder sb = new StringBuilder();
 		sb.append(testName).append(",");
 		sb.append(totalLocatorUsage).append(",");
