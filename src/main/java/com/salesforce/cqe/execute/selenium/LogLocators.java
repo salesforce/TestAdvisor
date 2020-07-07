@@ -135,7 +135,7 @@ public class LogLocators extends AbstractWebDriverEventListener {
 		Path path = FileSystems.getDefault().getPath(TESTDROPIN_LOGFILES_DIR, testName + "-locators.txt");
 
 		try {
-			Files.createDirectories(path);
+			Files.createDirectories(path.getParent());
 			Files.write(path, sb.toString().getBytes());
 			System.out.println("Done writing list of locators to " + testName + "-locators.txt");
 		} catch (IOException e) {
