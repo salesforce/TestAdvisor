@@ -260,7 +260,7 @@ public class WebDriverFactory {
 				publicProxy.setProxyType(org.openqa.selenium.Proxy.ProxyType.MANUAL);
 				options.setCapability("proxy", publicProxy);
 				caps.setCapability(ChromeOptions.CAPABILITY,options);
-				String hub = System.getProperty("HUB_HOST", "127.0.0.1");
+				String hub = System.getProperty("HUB_HOST", "10.233.160.157");
 				String port = System.getProperty("HUB_PORT", "4444");
 				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
 			// To verify if proxy capability is setting up
@@ -363,14 +363,15 @@ public class WebDriverFactory {
 					isReportedSuccessfully = false;
 				}
 			}
-			// test execution is on docker
-		} else if (env.getContextType() == TestContext.Type.docker) {
+		}
+	/*	commeneted it out as Zalenium is not being used at this moment - test execution is on docker
+		else if (env.getContextType() == TestContext.Type.docker) {
 			String testResult = String.valueOf(hasPassed);
 			System.out.println("Zalenium test result: " + hasPassed);
 			// marking test pass/fail as per test result.
 			Cookie cookie = new Cookie("zaleniumTestPassed", testResult);
 			driver.manage().addCookie(cookie);
-		}
+		}*/
 		return isReportedSuccessfully;
 	}
 	
