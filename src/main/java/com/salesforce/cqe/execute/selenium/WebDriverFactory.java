@@ -251,12 +251,13 @@ public class WebDriverFactory {
                     caps.setCapability("enableVideo", true);
                     caps.setCapability("name", testName);
                     caps.setCapability("videoName", testName + ".mp4");
-
+					// setting up proxy to run test on private cloud
                     org.openqa.selenium.Proxy publicProxy = new org.openqa.selenium.Proxy();
                     publicProxy.setSslProxy("public0-proxy1-0-xrd.data.sfdc.net:8080");
                     publicProxy.setProxyType(org.openqa.selenium.Proxy.ProxyType.MANUAL);
                     options.setCapability("proxy", publicProxy);
                     caps.setCapability(ChromeOptions.CAPABILITY, options);
+                    // changed default hub value to private cloud instance
                     String hub = System.getProperty("HUB_HOST", "10.233.160.157");
                     String port = System.getProperty("HUB_PORT", "4444");
                     driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub", hub, port)), caps);
