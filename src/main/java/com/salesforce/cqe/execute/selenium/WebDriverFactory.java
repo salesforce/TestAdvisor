@@ -222,7 +222,6 @@ public class WebDriverFactory {
                 // no BREAK here by design!
             case local:
                 String driverVersion = System.getProperty("driver.version");
-                ;
                 if (browser == Browser.chrome) {
                     if (driverVersion == null) {
                         WebDriverManager.chromedriver().setup();
