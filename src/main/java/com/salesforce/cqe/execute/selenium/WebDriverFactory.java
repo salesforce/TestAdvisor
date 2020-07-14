@@ -20,13 +20,11 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -89,7 +87,7 @@ public class WebDriverFactory {
 				if (!isRunningOnJenkins()) {
 					SaucelabsVMConcurrencyResponse saucelabsVMConcurrencyResponse;
 					try {
-						// fetch number of allowed and utilized VM's number using saucelabs REST API and deserialize the response
+						// fetch number of allowed and utilised VM's number using saucelabs rest api and deserialize the response
 						saucelabsVMConcurrencyResponse = RestUtil.getResponseWithBasicAuth(saucelabsConcurrencyurl, sauceName, sauceKey).as(SaucelabsVMConcurrencyResponse.class);
 					} catch (Exception ex) {
 						// exception will be thrown in case expected response is not received and deserialization will fail. Further execution won't be possible.
@@ -223,11 +221,26 @@ public class WebDriverFactory {
 			if (StringUtils.isEmpty(proxyUrl)) {
 				throw new IllegalArgumentException("Proxy needed in PrivateCloud");
 			}
-			org.openqa.selenium.Proxy proxy = new org.openqa.selenium.Proxy();
-			proxy.setHttpProxy(proxyUrl).setSslProxy(proxyUrl);
-			proxy.setFtpProxy(proxyUrl).setSocksProxy(proxyUrl);
-			caps.setCapability(CapabilityType.PROXY, proxy);
-			// no BREAK here by design!
+			String hub = System.getProperty("HUB_HOST", "10.233.160.157");
+			String port = System.getProperty("HUB_PORT", "4444");
+			printMsg("Connecting to a private cloud grid at " + hub + " and port " + port);
+			ChromeOptions options = new ChromeOptions();
+			caps.setCapability("enableVNC", true);
+			caps.setCapability("enableVideo", true);
+			caps.setCapability("name", testName);
+			caps.setCapability("videoName", testName + ".mp4");
+			// setting up proxy to run test on private cloud
+			org.openqa.selenium.Proxy publicProxy = new org.openqa.selenium.Proxy();
+			publicProxy.setSslProxy(proxyUrl);
+			publicProxy.setProxyType(org.openqa.selenium.Proxy.ProxyType.MANUAL);
+			options.setCapability("proxy", publicProxy);
+			caps.setCapability(ChromeOptions.CAPABILITY, options);
+			try {
+				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
+			} catch (MalformedURLException e) {
+				throw new RuntimeException(e);
+			}
+			break;
 		case local:
 			String driverVersion = System.getProperty("driver.version");;
 			if (browser == Browser.chrome) {
@@ -252,8 +265,8 @@ public class WebDriverFactory {
 		case docker:
 			printMsg("Connecting to a localhost docker selenium grid.");
 			try{
-				String hub = System.getProperty("HUB_HOST", "127.0.0.1");
-				String port = System.getProperty("HUB_PORT", "4444");
+				hub = System.getProperty("HUB_HOST", "127.0.0.1");
+				port = System.getProperty("HUB_PORT", "4444");
 				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
 			}catch (MalformedURLException e) {
 				throw new RuntimeException(e);
@@ -351,13 +364,6 @@ public class WebDriverFactory {
 					isReportedSuccessfully = false;
 				}
 			}
-			// test execution is on docker
-		} else if (env.getContextType() == TestContext.Type.docker) {
-			String testResult = String.valueOf(hasPassed);
-			System.out.println("Zalenium test result: " + hasPassed);
-			// marking test pass/fail as per test result.
-			Cookie cookie = new Cookie("zaleniumTestPassed", testResult);
-			driver.manage().addCookie(cookie);
 		}
 		return isReportedSuccessfully;
 	}
