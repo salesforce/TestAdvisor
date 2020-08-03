@@ -221,14 +221,35 @@ public class WebDriverFactory {
 			if (StringUtils.isEmpty(proxyUrl)) {
 				throw new IllegalArgumentException("Proxy needed in PrivateCloud");
 			}
+
+			String jenkinsBuild = null;
+			// To use jenkins info to identify tests uniquely on BaaS
+			if (isRunningOnJenkins()) {
+				String buildNumber = System.getenv("BUILD_NUMBER");
+				jenkinsBuild = System.getenv("JOB_NAME") + ":" + buildNumber;
+			}
+
 			String hub = System.getProperty("HUB_HOST", "10.233.160.157");
 			String port = System.getProperty("HUB_PORT", "4444");
 			printMsg("Connecting to a private cloud grid at " + hub + " and port " + port);
 			ChromeOptions options = new ChromeOptions();
 			caps.setCapability("enableVNC", true);
 			caps.setCapability("enableVideo", true);
-			caps.setCapability("name", testName);
-			caps.setCapability("videoName", testName + ".mp4");
+			caps.setCapability("enableLog", true);
+
+			if(jenkinsBuild != null){
+				// append test case and video name with jenkins jobname and build.
+				caps.setCapability("name", jenkinsBuild + "_" + testName);
+				caps.setCapability("videoName", jenkinsBuild + "_" + testName + ".mp4");
+				caps.setCapability("logName", jenkinsBuild + "_" + testName + ".log");
+			}
+			else{
+				// jenkins info. should not be appended when running from local.
+				caps.setCapability("name", "Local" + testName);
+				caps.setCapability("videoName", "Local_" + testName + ".mp4");
+				caps.setCapability("logName", "Local_" + testName + ".log");
+			}
+
 			// setting up proxy to run test on private cloud
 			org.openqa.selenium.Proxy publicProxy = new org.openqa.selenium.Proxy();
 			publicProxy.setSslProxy(proxyUrl);
