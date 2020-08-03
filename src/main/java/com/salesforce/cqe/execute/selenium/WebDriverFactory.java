@@ -231,8 +231,7 @@ public class WebDriverFactory {
 				caps.setCapability("name", jenkinsBuild + "_" + testName);
 				caps.setCapability("videoName", jenkinsBuild + "_" + testName + ".mp4");
 				caps.setCapability("logName", jenkinsBuild + "_" + testName + ".log");
-			}
-			else{
+			} else {
 				caps.setCapability("name", "Local_" + testName);
 				caps.setCapability("videoName", "Local_" + testName + ".mp4");
 				caps.setCapability("logName", "Local_" + testName + ".log");
