@@ -227,6 +227,10 @@ public class WebDriverFactory {
 			if (isRunningOnJenkins()) {
 				String buildNumber = System.getenv("BUILD_NUMBER");
 				jenkinsBuild = System.getenv("JOB_NAME") + ":" + buildNumber;
+				// append test case and video name with jenkins jobname and build.
+				caps.setCapability("name", jenkinsBuild + "_" + testName);
+				caps.setCapability("videoName", jenkinsBuild + "_" + testName + ".mp4");
+				caps.setCapability("logName", jenkinsBuild + "_" + testName + ".log");
 			}
 
 			String hub = System.getProperty("HUB_HOST", "10.233.160.157");
@@ -236,19 +240,10 @@ public class WebDriverFactory {
 			caps.setCapability("enableVNC", true);
 			caps.setCapability("enableVideo", true);
 			caps.setCapability("enableLog", true);
+			caps.setCapability("name", "Local" + testName);
+			caps.setCapability("videoName", "Local_" + testName + ".mp4");
+			caps.setCapability("logName", "Local_" + testName + ".log");
 
-			if(jenkinsBuild != null){
-				// append test case and video name with jenkins jobname and build.
-				caps.setCapability("name", jenkinsBuild + "_" + testName);
-				caps.setCapability("videoName", jenkinsBuild + "_" + testName + ".mp4");
-				caps.setCapability("logName", jenkinsBuild + "_" + testName + ".log");
-			}
-			else{
-				// jenkins info. should not be appended when running from local.
-				caps.setCapability("name", "Local" + testName);
-				caps.setCapability("videoName", "Local_" + testName + ".mp4");
-				caps.setCapability("logName", "Local_" + testName + ".log");
-			}
 
 			// setting up proxy to run test on private cloud
 			org.openqa.selenium.Proxy publicProxy = new org.openqa.selenium.Proxy();
