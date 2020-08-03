@@ -232,6 +232,11 @@ public class WebDriverFactory {
 				caps.setCapability("videoName", jenkinsBuild + "_" + testName + ".mp4");
 				caps.setCapability("logName", jenkinsBuild + "_" + testName + ".log");
 			}
+			else{
+				caps.setCapability("name", "Local_" + testName);
+				caps.setCapability("videoName", "Local_" + testName + ".mp4");
+				caps.setCapability("logName", "Local_" + testName + ".log");
+			}
 
 			String hub = System.getProperty("HUB_HOST", "10.233.160.157");
 			String port = System.getProperty("HUB_PORT", "4444");
@@ -240,11 +245,6 @@ public class WebDriverFactory {
 			caps.setCapability("enableVNC", true);
 			caps.setCapability("enableVideo", true);
 			caps.setCapability("enableLog", true);
-			caps.setCapability("name", "Local" + testName);
-			caps.setCapability("videoName", "Local_" + testName + ".mp4");
-			caps.setCapability("logName", "Local_" + testName + ".log");
-
-
 			// setting up proxy to run test on private cloud
 			org.openqa.selenium.Proxy publicProxy = new org.openqa.selenium.Proxy();
 			publicProxy.setSslProxy(proxyUrl);
