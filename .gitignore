@@ -29,3 +29,5 @@ hs_err_pid*
 /build.bat
 
 .DS_Store
+.idea
+java-test-utils.iml

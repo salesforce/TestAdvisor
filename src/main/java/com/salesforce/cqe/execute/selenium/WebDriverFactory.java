@@ -20,6 +20,8 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -43,6 +45,7 @@ import java.util.concurrent.TimeUnit;
  * Factory for creating an {@link EventFiringWebDriver} which works in Salesforce Central QE environment.
  */
 public class WebDriverFactory {
+	private static String hub, port;
 	/**
 	 * Instantiates a WebDriver instance for the test context defined under
 	 * "selenium"/"jenkins"|"local" in testcontext.json. This file has to be present
@@ -222,42 +225,20 @@ public class WebDriverFactory {
 				throw new IllegalArgumentException("Proxy needed in PrivateCloud");
 			}
 
-			String jenkinsBuild = null;
-			// To use jenkins info to identify tests uniquely on BaaS
-			if (isRunningOnJenkins()) {
-				String buildNumber = System.getenv("BUILD_NUMBER");
-				jenkinsBuild = System.getenv("JOB_NAME") + ":" + buildNumber;
-				// append test case and video name with jenkins jobname and build.
-				caps.setCapability("name", jenkinsBuild + "_" + testName);
-				caps.setCapability("videoName", jenkinsBuild + "_" + testName + ".mp4");
-				caps.setCapability("logName", jenkinsBuild + "_" + testName + ".log");
-			} else {
-				caps.setCapability("name", "Local_" + testName);
-				caps.setCapability("videoName", "Local_" + testName + ".mp4");
-				caps.setCapability("logName", "Local_" + testName + ".log");
-			}
+			hub = System.getProperty("HUB_HOST", "10.233.160.157");
+			port = System.getProperty("HUB_PORT", "4444");
 
-			String hub = System.getProperty("HUB_HOST", "10.233.160.157");
-			String port = System.getProperty("HUB_PORT", "4444");
-			printMsg("Connecting to a private cloud grid at " + hub + " and port " + port);
-			ChromeOptions options = new ChromeOptions();
-			caps.setCapability("enableVNC", true);
-			caps.setCapability("enableVideo", true);
-			caps.setCapability("enableLog", true);
-			// setting up proxy to run test on private cloud
-			org.openqa.selenium.Proxy publicProxy = new org.openqa.selenium.Proxy();
-			publicProxy.setSslProxy(proxyUrl);
-			publicProxy.setProxyType(org.openqa.selenium.Proxy.ProxyType.MANUAL);
-			options.setCapability("proxy", publicProxy);
-			caps.setCapability(ChromeOptions.CAPABILITY, options);
+			setBaaSCapabilities(caps, testName, proxyUrl);
+
 			try {
 				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
+				driver.manage().window().maximize();
 			} catch (MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
 			break;
 		case local:
-			String driverVersion = System.getProperty("driver.version");;
+			String driverVersion = System.getProperty("driver.version");
 			if (browser == Browser.chrome) {
 				if(driverVersion==null) {
 					WebDriverManager.chromedriver().setup();
@@ -278,11 +259,13 @@ public class WebDriverFactory {
 			driver.manage().window().setSize(env.getBrowserScreenResolutionAsDimension());
 			break;
 		case docker:
-			printMsg("Connecting to a localhost docker selenium grid.");
+			printMsg("Connecting to a localhost baas selenium grid.");
 			try{
 				hub = System.getProperty("HUB_HOST", "127.0.0.1");
 				port = System.getProperty("HUB_PORT", "4444");
+				setBaaSCapabilities(caps, testName, proxyUrl);
 				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
+				driver.manage().window().maximize();
 			}catch (MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
@@ -448,5 +431,41 @@ public class WebDriverFactory {
 
 	private static void printMsg(String msg) {
 		System.out.printf("[%d] %s%n", Thread.currentThread().getId(), msg);
+	}
+
+	public static void setBaaSCapabilities(DesiredCapabilities caps, String testName, String proxyUrl) {
+		Env env = getSeleniumTestContext();
+		String jenkinsBuild = null;
+		if (isRunningOnJenkins()) {
+			String buildNumber = System.getenv("BUILD_NUMBER");
+			jenkinsBuild = System.getenv("JOB_NAME") + ":" + buildNumber;
+			// append test case and video name with jenkins jobname and build.
+			caps.setCapability("name", jenkinsBuild + "_" + testName);
+			caps.setCapability("videoName", jenkinsBuild + "_" + testName + ".mp4");
+			caps.setCapability("logName", jenkinsBuild + "_" + testName + ".log");
+			org.openqa.selenium.Proxy publicProxy = new org.openqa.selenium.Proxy();
+			publicProxy.setSslProxy(proxyUrl);
+			publicProxy.setProxyType(org.openqa.selenium.Proxy.ProxyType.MANUAL);
+			ChromeOptions options = new ChromeOptions();
+			options.setCapability("proxy", publicProxy);
+			caps.setCapability(ChromeOptions.CAPABILITY, options);
+		} else {
+			caps.setCapability("name", "Local_" + testName);
+			caps.setCapability("videoName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + testName + ".mp4");
+			caps.setCapability("logName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + testName + ".log");
+		}
+
+		printMsg("Connecting to a grid at " + hub + " and port " + port);
+		caps.setCapability("enableVNC", true);
+		caps.setCapability("enableVideo", true);
+		caps.setCapability("enableLog", true);
+	}
+
+	public static String getSystemDateByTimezone(String timezone, String format) {
+		if(format == "" || format == null || format.isEmpty())
+			format = "yyyy-MM-dd'T'HH:mm:ss";
+		DateTime dt = new DateTime(System.currentTimeMillis());
+		DateTime timezoneDT = dt.withZone(DateTimeZone.forID(timezone));
+		return timezoneDT.toString(format);
 	}
 }
