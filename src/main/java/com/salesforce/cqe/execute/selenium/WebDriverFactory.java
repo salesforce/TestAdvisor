@@ -132,11 +132,7 @@ public class WebDriverFactory {
 				caps.setCapability("idleTimeout", env.getSauceLabIdleTimeout());
 				caps.setCapability("extendedDebugging", true);
 				caps.setCapability("maxDuration",env.getSauceLabMaxDuration());
-				if (browser == Browser.chrome) {
-					caps.setCapability(ChromeOptions.CAPABILITY, disableShowNotificationsForChrome());
-				} else if (browser == Browser.firefox) {
-					disableShowNotificationsForFirefox().merge(caps);
-				}
+				disableBrowserNotification(caps, browser);
 			} else if (platform==Platform.ios || platform == Platform.android) {
 				//set common mobile caps
 				caps.setCapability("appiumVersion",env.getAppiumVersion());
@@ -229,6 +225,7 @@ public class WebDriverFactory {
 			port = System.getProperty("HUB_PORT", "4444");
 
 			setBaaSCapabilities(caps, testName, proxyUrl);
+			disableBrowserNotification(caps, browser);
 
 			try {
 				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
@@ -264,6 +261,7 @@ public class WebDriverFactory {
 				hub = System.getProperty("HUB_HOST", "127.0.0.1");
 				port = System.getProperty("HUB_PORT", "4444");
 				setBaaSCapabilities(caps, testName, proxyUrl);
+				disableBrowserNotification(caps, browser);
 				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
 				driver.manage().window().maximize();
 			}catch (MalformedURLException e) {
@@ -443,16 +441,19 @@ public class WebDriverFactory {
 			caps.setCapability("name", jenkinsBuild + "_" + testName);
 			caps.setCapability("videoName", jenkinsBuild + "_" + testName + ".mp4");
 			caps.setCapability("logName", jenkinsBuild + "_" + testName + ".log");
+		} else {
+			caps.setCapability("name", "Local_" + testName);
+			caps.setCapability("videoName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + testName + ".mp4");
+			caps.setCapability("logName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + testName + ".log");
+		}
+
+		if(env.getContextType().equals(TestContext.Type.privatecloud) || isRunningOnJenkins()) {
 			org.openqa.selenium.Proxy publicProxy = new org.openqa.selenium.Proxy();
 			publicProxy.setSslProxy(proxyUrl);
 			publicProxy.setProxyType(org.openqa.selenium.Proxy.ProxyType.MANUAL);
 			ChromeOptions options = new ChromeOptions();
 			options.setCapability("proxy", publicProxy);
 			caps.setCapability(ChromeOptions.CAPABILITY, options);
-		} else {
-			caps.setCapability("name", "Local_" + testName);
-			caps.setCapability("videoName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + testName + ".mp4");
-			caps.setCapability("logName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + testName + ".log");
 		}
 
 		printMsg("Connecting to a grid at " + hub + " and port " + port);
@@ -467,5 +468,13 @@ public class WebDriverFactory {
 		DateTime dt = new DateTime(System.currentTimeMillis());
 		DateTime timezoneDT = dt.withZone(DateTimeZone.forID(timezone));
 		return timezoneDT.toString(format);
+	}
+
+	public static void disableBrowserNotification(DesiredCapabilities caps, Browser browser) {
+		if (browser == Browser.chrome) {
+			caps.setCapability(ChromeOptions.CAPABILITY, disableShowNotificationsForChrome());
+		} else if (browser == Browser.firefox) {
+			disableShowNotificationsForFirefox().merge(caps);
+		}
 	}
 }
