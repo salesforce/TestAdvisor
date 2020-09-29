@@ -221,8 +221,10 @@ public class WebDriverFactory {
 				throw new IllegalArgumentException("Proxy needed in PrivateCloud");
 			}
 
-			hub = System.getProperty("HUB_HOST", "10.233.160.157");
+			hub = System.getProperty("HUB_HOST", "10.233.160.148");
 			port = System.getProperty("HUB_PORT", "4444");
+
+			String baasVideoUrl = "http://" + hub + ":8080/video/";
 
 			setBaaSCapabilities(caps, testName, proxyUrl);
 			disableBrowserNotification(caps, browser);
@@ -230,6 +232,7 @@ public class WebDriverFactory {
 			try {
 				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
 				driver.manage().window().maximize();
+				printMsg(testName + " test video link:" + baasVideoUrl + caps.getCapability("videoName"));
 			} catch (MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
