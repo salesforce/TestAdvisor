@@ -437,17 +437,19 @@ public class WebDriverFactory {
 	public static void setBaaSCapabilities(DesiredCapabilities caps, String testName, String proxyUrl) {
 		Env env = getSeleniumTestContext();
 		String jenkinsBuild = null;
+		String[] splitTestName = testName.split("\\.");
+		String shortenTestName = splitTestName[splitTestName.length-1];
 		if (isRunningOnJenkins()) {
 			String buildNumber = System.getenv("BUILD_NUMBER");
 			jenkinsBuild = System.getenv("JOB_NAME") + ":" + buildNumber;
 			// append test case and video name with jenkins jobname and build.
 			caps.setCapability("name", jenkinsBuild + "_" + testName);
-			caps.setCapability("videoName", jenkinsBuild + "_" + testName + ".mp4");
-			caps.setCapability("logName", jenkinsBuild + "_" + testName + ".log");
+			caps.setCapability("videoName", jenkinsBuild + "_" + shortenTestName + ".mp4");
+			caps.setCapability("logName", jenkinsBuild + "_" + shortenTestName + ".log");
 		} else {
 			caps.setCapability("name", "Local_" + testName);
-			caps.setCapability("videoName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + testName + ".mp4");
-			caps.setCapability("logName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + testName + ".log");
+			caps.setCapability("videoName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + shortenTestName + ".mp4");
+			caps.setCapability("logName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + shortenTestName + ".log");
 		}
 
 		if(env.getContextType().equals(TestContext.Type.privatecloud) || isRunningOnJenkins()) {
