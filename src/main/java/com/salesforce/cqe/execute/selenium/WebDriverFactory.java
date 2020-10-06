@@ -57,6 +57,7 @@ public class WebDriverFactory {
 	public synchronized static WebDriver getWebDriver(String testName) {
 		Env env = getSeleniumTestContext();
 		DesiredCapabilities caps = new DesiredCapabilities();
+		String baasVideoUrl = "http://" + hub + ":8080/video/";
 
 		// Set env and the Jenkins build value, if available
 		if (isRunningOnJenkins()) {
@@ -224,8 +225,6 @@ public class WebDriverFactory {
 			hub = System.getProperty("HUB_HOST", "10.233.160.148");
 			port = System.getProperty("HUB_PORT", "4444");
 
-			String baasVideoUrl = "http://" + hub + ":8080/video/";
-
 			setBaaSCapabilities(caps, testName, proxyUrl);
 			disableBrowserNotification(caps, browser);
 
@@ -267,6 +266,7 @@ public class WebDriverFactory {
 				disableBrowserNotification(caps, browser);
 				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
 				driver.manage().window().maximize();
+				printMsg(testName + " test video link:" + baasVideoUrl + caps.getCapability("videoName"));
 			}catch (MalformedURLException e) {
 				throw new RuntimeException(e);
 			}
@@ -437,17 +437,19 @@ public class WebDriverFactory {
 	public static void setBaaSCapabilities(DesiredCapabilities caps, String testName, String proxyUrl) {
 		Env env = getSeleniumTestContext();
 		String jenkinsBuild = null;
+		String[] splitTestName = testName.split("\\.");
+		String shortenTestName = splitTestName[splitTestName.length-1];
 		if (isRunningOnJenkins()) {
 			String buildNumber = System.getenv("BUILD_NUMBER");
 			jenkinsBuild = System.getenv("JOB_NAME") + ":" + buildNumber;
 			// append test case and video name with jenkins jobname and build.
 			caps.setCapability("name", jenkinsBuild + "_" + testName);
-			caps.setCapability("videoName", jenkinsBuild + "_" + testName + ".mp4");
-			caps.setCapability("logName", jenkinsBuild + "_" + testName + ".log");
+			caps.setCapability("videoName", jenkinsBuild + "_" + shortenTestName + ".mp4");
+			caps.setCapability("logName", jenkinsBuild + "_" + shortenTestName + ".log");
 		} else {
 			caps.setCapability("name", "Local_" + testName);
-			caps.setCapability("videoName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + testName + ".mp4");
-			caps.setCapability("logName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + testName + ".log");
+			caps.setCapability("videoName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + shortenTestName + ".mp4");
+			caps.setCapability("logName", "Local_" + getSystemDateByTimezone(env.getOsTimeZone(),"") + "_" + shortenTestName + ".log");
 		}
 
 		if(env.getContextType().equals(TestContext.Type.privatecloud) || isRunningOnJenkins()) {
