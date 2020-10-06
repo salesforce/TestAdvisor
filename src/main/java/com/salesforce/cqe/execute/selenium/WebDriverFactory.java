@@ -57,7 +57,6 @@ public class WebDriverFactory {
 	public synchronized static WebDriver getWebDriver(String testName) {
 		Env env = getSeleniumTestContext();
 		DesiredCapabilities caps = new DesiredCapabilities();
-		String baasVideoUrl = "http://" + hub + ":8080/video/";
 
 		// Set env and the Jenkins build value, if available
 		if (isRunningOnJenkins()) {
@@ -224,7 +223,7 @@ public class WebDriverFactory {
 
 			hub = System.getProperty("HUB_HOST", "10.233.160.148");
 			port = System.getProperty("HUB_PORT", "4444");
-
+			String baasVideoUrl = "http://" + hub + ":8080/video/";
 			setBaaSCapabilities(caps, testName, proxyUrl);
 			disableBrowserNotification(caps, browser);
 
@@ -262,6 +261,7 @@ public class WebDriverFactory {
 			try{
 				hub = System.getProperty("HUB_HOST", "127.0.0.1");
 				port = System.getProperty("HUB_PORT", "4444");
+				baasVideoUrl = "http://" + hub + ":8080/video/";
 				setBaaSCapabilities(caps, testName, proxyUrl);
 				disableBrowserNotification(caps, browser);
 				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
