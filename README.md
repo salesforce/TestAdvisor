@@ -31,3 +31,8 @@ for development in Eclipse.
 Since v0.0.39 this project uses Lombok. In order to properly develop in either IntelliJ IDEA or
 Eclipse IDE please follow section 2 or 3 on this page: https://www.baeldung.com/lombok-ide
 
+### Documenting a new release version
+1. Go to the Releases [section](https://git.soma.salesforce.com/cqe/java-test-utils/releases)
+2. Click on the "Draft a new release" button
+3. Enter the "tag version" and "Release title" value as java-test-utils-v0.0.\<new-version\>
+4. Write one or more sentences about the changes pushed ([example](https://git.soma.salesforce.com/cqe/java-test-utils/releases/tag/java-test-utils-v0.0.53)) and publish a release.
