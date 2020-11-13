@@ -163,7 +163,6 @@ public class LogLocators extends AbstractWebDriverEventListener {
 				Files.write(path, sb.toString().getBytes());
 			} catch (IOException e) {
 				System.err.println("Error while writing locator statistics file " + path.toFile().getAbsolutePath());
-				e.printStackTrace();
 			}
 		}
 	}
