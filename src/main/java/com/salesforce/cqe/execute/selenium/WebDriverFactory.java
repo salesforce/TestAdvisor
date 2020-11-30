@@ -56,7 +56,6 @@ import java.util.logging.Level;
  * Factory for creating an {@link EventFiringWebDriver} which works in Salesforce Central QE environment.
  */
 public class WebDriverFactory {
-	private static ThreadLocal<String> cachedTestName = new ThreadLocal<>();
 	private static String hub, port;
 
 	/**
@@ -68,8 +67,6 @@ public class WebDriverFactory {
 	 * @return WebDriver instance
 	 */
 	public synchronized static WebDriver getWebDriver(String testName) {
-		cachedTestName.set(testName);
-
 		Env env = getSeleniumTestContext();
 		DesiredCapabilities caps = new DesiredCapabilities();
 
@@ -517,7 +514,8 @@ public class WebDriverFactory {
 	}
 
 	private static void writeLogFile(Logs logs, String type) {
-		Path summaryPath = FileSystems.getDefault().getPath(WebDriverEventListener.TESTDROPIN_LOGFILES_DIR, cachedTestName.get() + " - " + type + "-log.txt");
+		Path summaryPath = FileSystems.getDefault().getPath(WebDriverEventListener.TESTDROPIN_LOGFILES_DIR,
+				EventFiringWebDriver.getProperty("testName", "na") + " - " + type + "-log.txt");
 		StringBuilder sb = new StringBuilder();
 		final LogEntries logEntries = logs.get(type);
 		for (LogEntry logEntry : logEntries) {
