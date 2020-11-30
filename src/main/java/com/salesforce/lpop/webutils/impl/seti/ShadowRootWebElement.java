@@ -184,6 +184,7 @@ public class ShadowRootWebElement implements WebElement, WrapsElement, WrapsDriv
 	 * By.cssSelector. This is because we translate the By.cssSelector parameter to
 	 * a string to pass along to a client-side element.querySelector() call.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public WebElement findElement(By by) {
 		String byString = by.toString();

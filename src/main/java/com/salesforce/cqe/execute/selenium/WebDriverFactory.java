@@ -14,6 +14,7 @@ import com.salesforce.cqe.common.TestContext.Env;
 import com.salesforce.cqe.common.TestContext.Platform;
 import com.salesforce.cqe.common.pojo.SaucelabsVMConcurrencyResponse;
 import com.salesforce.selenium.support.event.EventFiringWebDriver;
+import com.salesforce.selenium.support.event.WebDriverEventListener;
 import com.saucelabs.saucerest.SauceREST;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
@@ -27,6 +28,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.logging.Logs;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -37,15 +44,21 @@ import org.testng.Assert;
 
 import java.io.IOException;
 import java.net.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 /**
  * Factory for creating an {@link EventFiringWebDriver} which works in Salesforce Central QE environment.
  */
 public class WebDriverFactory {
+	private static ThreadLocal<String> cachedTestName = new ThreadLocal<>();
 	private static String hub, port;
+
 	/**
 	 * Instantiates a WebDriver instance for the test context defined under
 	 * "selenium"/"jenkins"|"local" in testcontext.json. This file has to be present
@@ -55,6 +68,8 @@ public class WebDriverFactory {
 	 * @return WebDriver instance
 	 */
 	public synchronized static WebDriver getWebDriver(String testName) {
+		cachedTestName.set(testName);
+
 		Env env = getSeleniumTestContext();
 		DesiredCapabilities caps = new DesiredCapabilities();
 
@@ -77,6 +92,16 @@ public class WebDriverFactory {
 
 		caps.setCapability("timeZone", env.getOsTimeZone());
 		caps.setCapability("name", testName);
+
+		// enable logs provided by Selenium
+		LoggingPreferences logs = new LoggingPreferences();
+		logs.enable(LogType.BROWSER, Level.ALL);
+		logs.enable(LogType.CLIENT, Level.ALL);
+		logs.enable(LogType.DRIVER, Level.ALL);
+		logs.enable(LogType.PERFORMANCE, Level.ALL);
+		logs.enable(LogType.PROFILER, Level.ALL);
+		logs.enable(LogType.SERVER, Level.ALL);
+		caps.setCapability(CapabilityType.LOGGING_PREFS, logs);
 
 		WebDriver driver = null;
 		switch (env.getContextType()) {
@@ -221,8 +246,8 @@ public class WebDriverFactory {
 				throw new IllegalArgumentException("Proxy needed in PrivateCloud");
 			}
 
-			hub = System.getProperty("HUB_HOST", "10.233.160.148");
-			port = System.getProperty("HUB_PORT", "4444");
+			hub = EventFiringWebDriver.getProperty("HUB_HOST", "10.233.160.148");
+			port = EventFiringWebDriver.getProperty("HUB_PORT", "4444");
 			setBaaSCapabilities(caps, testName, proxyUrl);
 			disableBrowserNotification(caps, browser);
 
@@ -235,20 +260,18 @@ public class WebDriverFactory {
 			}
 			break;
 		case local:
-			String driverVersion = System.getProperty("driver.version");
+			String driverVersion = EventFiringWebDriver.getProperty("driver.version", null);
 			if (browser == Browser.chrome) {
-				if(driverVersion==null) {
+				if (driverVersion == null) {
 					WebDriverManager.chromedriver().setup();
-				}
-				else{
+				} else {
 					WebDriverManager.chromedriver().version(driverVersion).setup();
 				}
 				driver = new ChromeDriver(disableShowNotificationsForChrome().merge(caps));
 			} else if (browser == Browser.firefox) {
-				if(driverVersion == null) {
+				if (driverVersion == null) {
 					WebDriverManager.firefoxdriver().setup();
-				}
-				else{
+				} else {
 					WebDriverManager.firefoxdriver().version(driverVersion).setup();
 				}
 				driver = new FirefoxDriver(disableShowNotificationsForFirefox().merge(caps));
@@ -258,8 +281,8 @@ public class WebDriverFactory {
 		case docker:
 			printMsg("Connecting to a localhost baas selenium grid.");
 			try{
-				hub = System.getProperty("HUB_HOST", "127.0.0.1");
-				port = System.getProperty("HUB_PORT", "4444");
+				hub = EventFiringWebDriver.getProperty("HUB_HOST", "127.0.0.1");
+				port = EventFiringWebDriver.getProperty("HUB_PORT", "4444");
 				setBaaSCapabilities(caps, testName, proxyUrl);
 				disableBrowserNotification(caps, browser);
 				driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub",hub,port)), caps);
@@ -283,7 +306,7 @@ public class WebDriverFactory {
 			wd.register(new PerformanceListener());
 			wd.register(new StepsToReproduce(testName));
 			wd.register(new LogLocators(testName));
-			if ("yes".equalsIgnoreCase(System.getProperty(ShadowJSPathGenerator.RECORD_SHADOWJSPATH, ""))) {
+			if ("yes".equalsIgnoreCase(EventFiringWebDriver.getProperty(ShadowJSPathGenerator.RECORD_SHADOWJSPATH, ""))) {
 				wd.register(new ShadowJSPathGenerator(driver, testName));
 			}
 			return wd;
@@ -313,6 +336,8 @@ public class WebDriverFactory {
 	 * @return false if setting SauceLabs job status failed; otherwise true
 	 */
 	public synchronized static boolean setPassed(boolean hasPassed, WebDriver driver) {
+		writeAllLogFiles(driver);
+
 		boolean isReportedSuccessfully = true;
 		Env env = getSeleniumTestContext();
 
@@ -480,4 +505,30 @@ public class WebDriverFactory {
 			disableShowNotificationsForFirefox().merge(caps);
 		}
 	}
+
+	private static void writeAllLogFiles(WebDriver driver) {
+		final Logs logs = driver.manage().logs();
+		writeLogFile(logs, LogType.BROWSER);
+		writeLogFile(logs, LogType.CLIENT);
+		writeLogFile(logs, LogType.DRIVER);
+		writeLogFile(logs, LogType.PERFORMANCE);
+		writeLogFile(logs, LogType.PROFILER);
+		writeLogFile(logs, LogType.SERVER);
+	}
+
+	private static void writeLogFile(Logs logs, String type) {
+		Path summaryPath = FileSystems.getDefault().getPath(WebDriverEventListener.TESTDROPIN_LOGFILES_DIR, cachedTestName.get() + " - " + type + "-log.txt");
+		StringBuilder sb = new StringBuilder();
+		final LogEntries logEntries = logs.get(type);
+		for (LogEntry logEntry : logEntries) {
+			sb.append(logEntry.toString()).append(System.lineSeparator());
+		}
+		try {
+			Files.write(summaryPath, sb.toString().getBytes(), java.nio.file.StandardOpenOption.APPEND);
+		} catch (IOException e) {
+			System.err.println("Error while writing locator statistics file " + summaryPath.toFile().getAbsolutePath());
+			e.printStackTrace();
+		}
+	}
+
 }
