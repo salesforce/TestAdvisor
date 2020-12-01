@@ -13,6 +13,8 @@ import com.salesforce.cqe.common.TestContext.Browser;
 import com.salesforce.cqe.common.TestContext.Env;
 import com.salesforce.cqe.common.TestContext.Platform;
 import com.salesforce.cqe.common.pojo.SaucelabsVMConcurrencyResponse;
+import com.salesforce.dropin.common.BaseData;
+import com.salesforce.selenium.support.event.AbstractWebDriverEventListener;
 import com.salesforce.selenium.support.event.EventFiringWebDriver;
 import com.salesforce.selenium.support.event.WebDriverEventListener;
 import com.saucelabs.saucerest.SauceREST;
@@ -23,6 +25,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -48,6 +51,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -504,29 +508,53 @@ public class WebDriverFactory {
 	}
 
 	private static void writeAllLogFiles(WebDriver driver) {
-		final Logs logs = driver.manage().logs();
-		writeLogFile(logs, LogType.BROWSER);
-		writeLogFile(logs, LogType.CLIENT);
-		writeLogFile(logs, LogType.DRIVER);
-		writeLogFile(logs, LogType.PERFORMANCE);
-		writeLogFile(logs, LogType.PROFILER);
-		writeLogFile(logs, LogType.SERVER);
+		// As of Dec 1st, 2020, gecko driver does not supports getting logs
+		if (getSeleniumTestContext().getBrowser() == Browser.firefox)
+			return;
+
+		String testName = "not available";
+		WebDriver tmpDriver = driver;
+		if (driver instanceof EventFiringWebDriver) {
+			tmpDriver = ((EventFiringWebDriver) driver).getWrappedDriver();
+			BaseData<String> data = ((EventFiringWebDriver) driver).getDataStore();
+			String temp = data.getData(EventFiringWebDriver.WebDriverConfigData.KEY_TESTNAME);
+			if (temp != null)
+				testName = temp;
+		}
+		final Logs logs = tmpDriver.manage().logs();
+		try {
+			Iterator<String> logTypesIterator = logs.getAvailableLogTypes().iterator();
+			while (logTypesIterator.hasNext()) {
+				writeLogFile(logs, logTypesIterator.next(), testName);
+			}
+		} catch (UnsupportedCommandException uce) {
+			System.err.println("Unable to retrieve Selenium log entries: Cannot call non W3C standard command while in W3C mode");
+		}
 	}
 
-	private static void writeLogFile(Logs logs, String type) {
+	private static void writeLogFile(Logs logs, String type, String testName) {
 		Path summaryPath = FileSystems.getDefault().getPath(WebDriverEventListener.TESTDROPIN_LOGFILES_DIR,
-				EventFiringWebDriver.getProperty("testName", "na") + " - " + type + "-log.txt");
+				AbstractWebDriverEventListener.convertTestname2FileName(testName) + "-" + type + "-log.txt");
 		StringBuilder sb = new StringBuilder();
+		
 		final LogEntries logEntries = logs.get(type);
+		int numOfLogEntries = logEntries.getAll().size();
+		if (numOfLogEntries == 0) {
+			System.err.println("No log entries found for Selenium log of type '" + type + "'");
+			return;
+		}
 		for (LogEntry logEntry : logEntries) {
 			sb.append(logEntry.toString()).append(System.lineSeparator());
 		}
 		try {
-			Files.write(summaryPath, sb.toString().getBytes(), java.nio.file.StandardOpenOption.APPEND);
+			Files.write(summaryPath, sb.toString().getBytes(), java.nio.file.StandardOpenOption.CREATE);
+			if (numOfLogEntries == 1)
+				System.out.println("Successfuly wrote " + numOfLogEntries + " log entry to disk for Selenium log of type '" + type + "'");
+			else
+				System.out.println("Successfuly wrote " + numOfLogEntries + " log entries to disk for Selenium log of type '" + type + "'");
 		} catch (IOException e) {
-			System.err.println("Error while writing locator statistics file " + summaryPath.toFile().getAbsolutePath());
+			System.err.println("Error while writing Selenium log file " + summaryPath.toFile().getAbsolutePath());
 			e.printStackTrace();
 		}
 	}
-
 }
