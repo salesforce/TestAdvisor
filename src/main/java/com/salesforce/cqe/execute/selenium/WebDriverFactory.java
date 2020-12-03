@@ -40,6 +40,7 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.remote.http.HttpClient;
 import org.openqa.selenium.remote.http.HttpClient.Factory;
 import org.openqa.selenium.remote.internal.OkHttpClient;
@@ -529,6 +530,8 @@ public class WebDriverFactory {
 			}
 		} catch (UnsupportedCommandException uce) {
 			System.err.println("Unable to retrieve Selenium log entries: Cannot call non W3C standard command while in W3C mode");
+		} catch (UnreachableBrowserException uce) {
+			System.err.println("Unable to retrieve Selenium log entries: Cannot longer reach browser; it may have died already");
 		}
 	}
 
