@@ -47,7 +47,8 @@ public class HelperUtil {
             String failureDetails = setTestFailureDetails.get()  !=null ? setTestFailureDetails.get() : "";
             System.out.println("setTestStartTimeinUtc value: " + testStartTime);
             System.out.println("setTestEndTimeinUtc value: " + testEndTime);
-            String splunkQuery = WebDriverFactory.getSystemDateByTimezone(env.getOsTimeZone(),"") + " : " +
+            System.out.println("timezone value: " + DateTimeZone.getDefault().toString());
+            String splunkQuery = WebDriverFactory.getSystemDateByTimezone(DateTimeZone.getDefault().toString(),"") + " : " +
                     testName + ": " + testStatus  + " " + failureDetails +
                     " : `from_index_sandbox(" + sandboxPod  +")` organizationId=" + orgId + " `logRecordType(G,gglog,gslog,selog)`" +
                     " earliest=" + testStartTime + " latest=" + testEndTime ;
