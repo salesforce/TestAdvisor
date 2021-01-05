@@ -1,6 +1,7 @@
 package com.salesforce.cqe.common;
 
 import com.google.gson.stream.MalformedJsonException;
+import com.salesforce.cqe.common.enums.TestStatus;
 import com.salesforce.cqe.execute.selenium.WebDriverFactory;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -34,7 +35,8 @@ public class HelperUtil {
     public static String splunkQuery(ITestResult testResult){
         String orgId = null;
         String sandboxPod = null;
-        String testName= null;
+        String testName= "NA";
+        String failureDetails = "";
 
         try {
             TestContext testContext = TestContext.getContext();
@@ -43,8 +45,13 @@ public class HelperUtil {
             testName = testResult.getTestClass().getName() + "." + testResult.getName();
             String testStartTime = setTestStartTimeinUtc.get() != null ? setTestStartTimeinUtc.get() : HelperUtil.setTimeInSplunkFormat(testResult.getStartMillis());
             String testEndTime = setTestEndTimeinUtc.get() != null ? setTestEndTimeinUtc.get() : HelperUtil.setTimeInSplunkFormat(testResult.getEndMillis());
-            String testStatus = testResult.getStatus() == 1 ? "PASS" : testResult.getStatus()==3 ? "SKIPPED":"FAIL" ;
-            String failureDetails = setTestFailureDetails.get()  !=null ? setTestFailureDetails.get() : "";
+            TestStatus testStatus = testResult.getStatus() == 1 ? TestStatus.PASS : testResult.getStatus()==3 ? TestStatus.SKIPPED : TestStatus.FAIL ;
+
+            // handling the case, tests are running in single thread
+            if (!testStatus.equals(TestStatus.PASS)){
+                failureDetails = setTestFailureDetails.get()  !=null ? setTestFailureDetails.get() : "";
+            }
+
             System.out.println("setTestStartTimeinUtc value: " + testStartTime);
             System.out.println("setTestEndTimeinUtc value: " + testEndTime);
             System.out.println("timezone value: " + DateTimeZone.getDefault().toString());
