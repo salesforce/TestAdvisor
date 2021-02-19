@@ -267,14 +267,14 @@ public class WebDriverFactory {
 				if (driverVersion == null) {
 					WebDriverManager.chromedriver().setup();
 				} else {
-					WebDriverManager.chromedriver().version(driverVersion).setup();
+					WebDriverManager.chromedriver().driverVersion(driverVersion).setup();
 				}
 				driver = new ChromeDriver(disableShowNotificationsForChrome().merge(caps));
 			} else if (browser == Browser.firefox) {
 				if (driverVersion == null) {
 					WebDriverManager.firefoxdriver().setup();
 				} else {
-					WebDriverManager.firefoxdriver().version(driverVersion).setup();
+					WebDriverManager.firefoxdriver().driverVersion(driverVersion).setup();
 				}
 				driver = new FirefoxDriver(disableShowNotificationsForFirefox().merge(caps));
 			}
