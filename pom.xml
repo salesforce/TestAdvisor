@@ -1,15 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.salesforce.cqe</groupId>
-	<artifactId>java-test-utils</artifactId>
-	<version>0.0.63-SNAPSHOT</version>
-	<name>Java Test Utilities for Selenium WebDriver v.3</name>
-	<description>Our Java code to help run Customer Test Projects based on Selenium WebDriver v.3.x internally.</description>
+	<artifactId>drillbit-lib</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Drillbit instrumentation library</name>
+	<description>Instrumentation library to generate enhanced test logs</description>
 	<packaging>jar</packaging>
 
 	<developers>
 		<developer>
 			<name>Georg Neumann</name>
+			<roles>
+				<role>Member</role>
+			</roles>
+			<email>cqe-us@salesforce.com</email>
+			<organization>Salesforce</organization>
+		</developer>
+		<developer>
+			<name>Yibing Tao</name>
 			<roles>
 				<role>Member</role>
 			</roles>
