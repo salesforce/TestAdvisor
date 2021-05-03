@@ -2,7 +2,8 @@ package com.salesforce.cqe.common;
 
 import com.google.gson.stream.MalformedJsonException;
 import com.salesforce.cqe.common.enums.TestStatus;
-import com.salesforce.cqe.execute.selenium.WebDriverFactory;
+import com.salesforce.cqe.driver.WebDriverFactory;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.testng.ITestResult;
@@ -13,7 +14,8 @@ import java.io.PrintWriter;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.text.ParseException;
-import static com.salesforce.cqe.execute.selenium.WebDriverFactory.getSeleniumTestContext;
+
+import static com.salesforce.cqe.driver.WebDriverFactory.getSeleniumTestContext;
 import static com.salesforce.selenium.support.event.WebDriverEventListener.TESTDROPIN_LOGFILES_DIR;
 
 /**

@@ -4,7 +4,7 @@
  * Licensed under the BSD 3-Clause license. 
  * For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
  */
-package com.salesforce.cqe.execute.selenium;
+package com.salesforce.cqe.driver;
 
 import com.google.gson.stream.MalformedJsonException;
 import com.salesforce.cqe.common.RestUtil;
@@ -13,6 +13,10 @@ import com.salesforce.cqe.common.TestContext.Browser;
 import com.salesforce.cqe.common.TestContext.Env;
 import com.salesforce.cqe.common.TestContext.Platform;
 import com.salesforce.cqe.common.pojo.SaucelabsVMConcurrencyResponse;
+import com.salesforce.cqe.execute.selenium.LogLocators;
+import com.salesforce.cqe.execute.selenium.PerformanceListener;
+import com.salesforce.cqe.execute.selenium.ShadowJSPathGenerator;
+import com.salesforce.cqe.execute.selenium.StepsToReproduce;
 import com.salesforce.dropin.common.BaseData;
 import com.salesforce.selenium.support.event.AbstractWebDriverEventListener;
 import com.salesforce.selenium.support.event.EventFiringWebDriver;
@@ -63,6 +67,14 @@ import java.util.logging.Level;
 public class WebDriverFactory {
 	private static String hub, port;
 
+	/**
+	 * 
+	 * @param driver web driver instance to register for listener
+	 * @return registed web driver
+	 */
+	public synchronized static WebDriver registerWebDriver(WebDriver driver){
+		throw new UnsupportedOperationException();
+	}
 	/**
 	 * Instantiates a WebDriver instance for the test context defined under
 	 * "selenium"/"jenkins"|"local" in testcontext.json. This file has to be present
