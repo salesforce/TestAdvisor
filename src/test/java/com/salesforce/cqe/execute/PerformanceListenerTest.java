@@ -7,7 +7,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.salesforce.cqe.execute.selenium.PerformanceListener;
+import com.salesforce.cqe.driver.listener.PerformanceListener;
 import com.salesforce.selenium.support.event.Step;
 
 /**

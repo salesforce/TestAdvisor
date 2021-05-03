@@ -12,7 +12,7 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.salesforce.cqe.execute.selenium.LogLocators;
+import com.salesforce.cqe.driver.listener.LogLocators;
 import com.salesforce.selenium.support.event.Step;
 
 /**
