@@ -1,5 +1,6 @@
-# java-test-utils
-Java code such as our WebDriverFactory for use in customer test projects
+# Drillbit Test Framework
+Drillbit test framework designed to help UI automation author to create better Selenium 
+based UI automation for Salesforce platform.
 
 ## Development
 0. Pull from right branch
@@ -35,4 +36,4 @@ Eclipse IDE please follow section 2 or 3 on this page: https://www.baeldung.com/
 1. Go to the Releases [section](https://git.soma.salesforce.com/cqe/java-test-utils/releases)
 2. Click on the "Draft a new release" button
 3. Enter the "tag version" and "Release title" value as java-test-utils-v0.0.\<new-version\>
-4. Write one or more sentences about the changes pushed ([example](https://git.soma.salesforce.com/cqe/java-test-utils/releases/tag/java-test-utils-v0.0.53)) and publish a release.
+4. Write one or more sentences about the changes pushed ([example](https://git.soma.salesforce.com/cqe/java-test-utils/releases/tag/java-test-utils-v0.0.53)) and publish a release.we
