@@ -1,6 +1,6 @@
 package com.salesforce.cqe.context;
 
-import com.salesforce.cqe.configuration.ConfigurationBase;
+import com.salesforce.cqe.configuration.Configuration;
 
 /**
  * @author Yibing Tao
@@ -13,5 +13,5 @@ public interface IExecutionContext{
      * @param config context configruation
      * @return intance of newly created execution context
      */
-    public ExecutionContext build(ConfigurationBase config);
+    public ExecutionContext build(Configuration config);
 }
