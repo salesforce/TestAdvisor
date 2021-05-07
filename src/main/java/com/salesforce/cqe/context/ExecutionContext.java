@@ -3,7 +3,7 @@ package com.salesforce.cqe.context;
 import java.util.List;
 
 import com.salesforce.cqe.configuration.Configuration;
-import com.salesforce.cqe.driver.listener.WebDriverListenerBase;
+import com.salesforce.cqe.driver.listener.EventListener;
 import com.salesforce.cqe.provider.listener.TestListenerBase;
 import com.salesforce.cqe.reporter.IReporter;
 
@@ -20,7 +20,7 @@ public class ExecutionContext implements IExecutionContext {
     private List<TestListenerBase> testListeners;
     private WebDriver driver;
     private IReporter reporter;
-    private List<WebDriverListenerBase> driverListeners;
+    private List<EventListener> driverListeners;
     
     @Override
     public ExecutionContext build(Configuration config) {
