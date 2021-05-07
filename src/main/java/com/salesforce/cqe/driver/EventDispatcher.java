@@ -6,6 +6,7 @@ package com.salesforce.cqe.driver;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,6 +51,10 @@ public class EventDispatcher {
 		eventListeners.add(new FullLogger());
 	}
 
+	public List<IEventListener> getImmutableListOfEventListeners() {
+		return Collections.unmodifiableList(eventListeners);
+	}
+	
 	public void beforeGet(String url) {
 		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.get);
 		step.setParam1(url);

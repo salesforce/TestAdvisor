@@ -9,6 +9,7 @@ package com.salesforce.cqe.driver.listener;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -867,5 +868,13 @@ public class FullLogger extends AbstractEventListener {
 	@Override
 	public void onException(Step step, Cmd cmd, Throwable issue) {
 		logEntries.add(step);
+	}
+	
+	/**
+	 * Gets the currently logged list of steps.
+	 * @return immutable list of steps
+	 */
+	public List<Step> getImmutableListOfSteps() {
+		return Collections.unmodifiableList(logEntries);
 	}
 }
