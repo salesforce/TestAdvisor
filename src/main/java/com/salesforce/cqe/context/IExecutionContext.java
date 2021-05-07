@@ -4,14 +4,14 @@ import com.salesforce.cqe.configuration.Configuration;
 
 /**
  * @author Yibing Tao
- * This interface defines how to create a new execution context
+ * This interface defines how to create a new execution context.
  */
 
 public interface IExecutionContext{
     /**
      * 
-     * @param config context configruation
-     * @return intance of newly created execution context
+     * @param config context configuration
+     * @return instance of newly created execution context
      */
     public ExecutionContext build(Configuration config);
 }

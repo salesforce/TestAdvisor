@@ -37,16 +37,16 @@ import org.openqa.selenium.interactions.Coordinates;
 import com.salesforce.cqe.driver.listener.Step.Cmd;
 
 /**
- * Interface which supports registering of a listener with {@link EventFiringWebDriver}, e.g. for logging
+ * Interface which supports registering of a listener with {@link EventDispatcher} for logging
  * purposes.
  * 
  * This is an extended version of org.openqa.selenium.support.events.WebDriverEventListener. See
  * https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/support/events/WebDriverEventListener.html
  * for more information.
  * 
- * @since 2.0.0
+ * @since 1.0
  */
-public interface EventListener {
+public interface IEventListener {
 	/**
 	 * Location of logfiles produced by Test Drop-in Framework and
 	 * its dependent classes: {@value}
@@ -1645,9 +1645,4 @@ public interface EventListener {
 	 *            the exception that will be thrown
 	 */
 	void onException(Step step, Cmd cmd, Throwable throwable);
-
-	/**
-	 * Allows listener implementation to save itself away before the WebDriver instance has ended.
-	 */
-	void closeListener();
 }

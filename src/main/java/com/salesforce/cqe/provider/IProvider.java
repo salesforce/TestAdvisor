@@ -1,9 +1,9 @@
 package com.salesforce.cqe.provider;
 
 /**
+ * This interface defines how to create and run test case from test provider.
+ * 
  * @author Yibing Tao
- * This interface defines how to create and run test case 
- * from test provider
  */
 public interface IProvider {
     public void create();

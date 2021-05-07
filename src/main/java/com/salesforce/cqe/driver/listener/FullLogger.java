@@ -7,8 +7,6 @@
 package com.salesforce.cqe.driver.listener;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,38 +25,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Coordinates;
 
 import com.salesforce.cqe.driver.listener.Step.Cmd;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SequenceWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * Collects information on a given WebDriver command such as click() or getText() and saves this
  * collection to a JSON file.
  * 
- * {@link RemoteWebDriver} and some other Remote* classes create {@link Step} objects before and after
- * each command such as click() or getText(). This class collects these objects and saves this collection
- * to a JSON file.
+ * The {@link RemoteWebDriver}, {@link RemoteWebElement}, {@link RemoteKeyboard}, and {@link RemoteMouse} have been patched
+ * to meet DrillBit's needs and call {@link EventDispatcher} which creates {@link Step} objects before and after each WebDriver
+ * command. This class is a complete log all these Step objects.
  * 
  * @author gneumann
- * @since 2.0.0
+ * @since 1.0
  */
-public class FullJSONLogger extends AbstractEventListener {
-	private static final int BATCHSIZE = 1000;
-	private String fileName = null;
+public class FullLogger extends AbstractEventListener {
 	private List<Step> logEntries = new ArrayList<>();
-
-	/**
-	 * Define the file name of the JSON file without the ".json" extension. It will be
-	 * written when the running test calls the {@link RemoteWebDriver#quit()} command.
-	 * <p>
-	 * The file will be stored under the relative directory
-	 * {@link EventListener#DRILLBIT_LOGFILES_DIR}.
-	 */
-	public FullJSONLogger() {
-//		this.fileName = DRILLBIT_LOGFILES_DIR + convertTestname2FileName(LibraryManager.getTestCaseName()) + ".json";
-		this.fileName = DRILLBIT_LOGFILES_DIR + convertTestname2FileName(".json");
-	}
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver object.
@@ -887,71 +867,5 @@ public class FullJSONLogger extends AbstractEventListener {
 	@Override
 	public void onException(Step step, Cmd cmd, Throwable issue) {
 		logEntries.add(step);
-	}
-
-	@Override
-	public void closeListener() {
-		// make sure the directory hosting the logfile exists
-		new File(DRILLBIT_LOGFILES_DIR).mkdirs();
-
-		if (logEntries == null || logEntries.size() == 0) {
-			System.out.println("Warning: no performance log entries to write to " + fileName);
-			return;
-		}
-
-		ObjectMapper objectMapper = new ObjectMapper();
-    	//Set pretty printing of json
-    	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-		SequenceWriter seqWriter = null;
-		try {
-			seqWriter = objectMapper.writerWithDefaultPrettyPrinter().writeValuesAsArray(new FileWriter(fileName));
-			int numOfLogEntries = logEntries.size();
-			int numOfBatches = numOfLogEntries / BATCHSIZE;
-			int lowerIndex = 0;
-			int upperIndex = BATCHSIZE;
-			for (int batchNo = 0; batchNo < numOfBatches; batchNo++) {
-				List<Step> logEntriesBatch = logEntries.subList(lowerIndex, upperIndex);
-				seqWriter.writeAll(logEntriesBatch);
-				lowerIndex = lowerIndex + BATCHSIZE;
-				upperIndex = upperIndex + BATCHSIZE;
-			}
-			if (lowerIndex < numOfLogEntries) {
-				List<Step> logEntriesBatch = logEntries.subList(lowerIndex, numOfLogEntries);
-				seqWriter.writeAll(logEntriesBatch);
-			}
-			System.out.println("Done writing full WebDriver log entries to " + fileName);
-		} catch (IOException e) {
-			System.err.println("Error while writing full WebDriver log entries to " + fileName);
-			e.printStackTrace();
-		} finally {
-			try {
-				if (seqWriter != null)
-					seqWriter.close();
-			} catch (IOException ex) {
-				System.err.println("Error while trying to close file writer to " + fileName);
-				ex.printStackTrace();
-			}
-		}
-	}
-	
-	/**
-	 * Convenience method for reading one of the *.json files this logger class has previously
-	 * written to disk. It is then possible to process the information and convert into other
-	 * formats of your choice.
-	 * 
-	 * @param fileName relative or absolute path with file name
-	 * @return list of {@link Step} objects or null in case of de-serialization problems
-	 */
-	public static List<Step> readStepsFromFile(String fileName) {
-		List<Step> steps = null;
-		ObjectMapper objectMapper = new ObjectMapper();
-		try {
-			steps = objectMapper.readValue(new File(fileName), new TypeReference<List<Step>>() {});
-		} catch (IOException e) {
-			System.err.println("Error while reading WebDriver log entries from " + fileName);
-			e.printStackTrace();
-		}
-		return steps;
 	}
 }

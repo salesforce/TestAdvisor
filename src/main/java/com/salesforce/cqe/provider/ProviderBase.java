@@ -1,10 +1,11 @@
 package com.salesforce.cqe.provider;
 
 /**
- * @author Yibing Tao
- * Base class for test provider. Test provider will acturally run the test cases.
+ * Base class for test provider. Test provider will actually run the test cases.
  * Please derive from this class to create provide to run different type of test 
  * case, such as TestNG or JUnit.
+ * 
+ * @author Yibing Tao
  */
 public class ProviderBase implements IProvider{
 

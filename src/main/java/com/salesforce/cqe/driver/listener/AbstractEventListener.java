@@ -37,16 +37,16 @@ import com.salesforce.cqe.driver.listener.Step.Cmd;
 
 /**
  * Use this class as base class, if you want to implement a
- * {@link EventListener} and are only interested in some events. All
+ * {@link IEventListener} and are only interested in some events. All
  * methods provided by this class have an empty method body.
  * 
  * This is an extended version of org.openqa.selenium.support.events.AbstractWebDriverEventListener. See
  * https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/support/events/AbstractWebDriverEventListener.html
  * for more information.
  * 
- * @since 2.0.0
+ * @since 1.0
  */
-public abstract class AbstractEventListener implements EventListener {
+public abstract class AbstractEventListener implements IEventListener {
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver object.

@@ -20,14 +20,13 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 /**
  * Records information on a given WebDriver command such as click() or getText().
  * 
- * The {@link EventFiringWebDriver} creates such a record before and after each command. The Step object
- * is then passed on to any listeners implementing the {@link EventListener} interface.
+ * The {@link EventDispatcher} creates such a record before and after each command. The Step object
+ * is then passed on to any listeners implementing the {@link IEventListener} interface.
  * 
- * A special listener is {@link FullJSONLogger} which collects all Step objects and saves the collection
- * to a JSON file.
+ * The default listener is {@link FullLogger} which collects all Step objects as they come.
  * 
  * @author gneumann
- * @since 2.0.0
+ * @since 1.0
  */
 public class Step {
 	public enum Type { BeforeAction, AfterAction, BeforeGather, AfterGather, Exception }
