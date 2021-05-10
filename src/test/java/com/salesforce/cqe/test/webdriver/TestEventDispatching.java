@@ -9,11 +9,14 @@ import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.CapabilityType;
 
 import com.salesforce.cqe.driver.EventDispatcher;
 import com.salesforce.cqe.driver.listener.FullLogger;
 import com.salesforce.cqe.driver.listener.IEventListener;
-import com.salesforce.cqe.driver.listener.Step;
 
 /**
  * @author gneumann
@@ -28,7 +31,11 @@ public class TestEventDispatching {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		wd = new MockRemoteWebDriver(new MockCommandExecutor(), null);
+		MutableCapabilities mcap = new MutableCapabilities();
+		mcap.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, "true");
+		MockCommandExecutor mce = new MockCommandExecutor();
+		wd = new MockRemoteWebDriver(mce, mcap);
+		mce.setRemoteWebDriver(wd);
 		List<IEventListener> eventListeners = EventDispatcher.getInstance().getImmutableListOfEventListeners();
 		for (IEventListener listener : eventListeners) {
 			if (listener instanceof FullLogger) {
@@ -36,22 +43,63 @@ public class TestEventDispatching {
 				break;
 			}
 		}
-		
+	}
+	
+	@Test
+	public void testFindElementByWebDriver() {
+		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
+		WebElement we = wd.findElement(By.id("someId"));
+		assertNotNull(we);
+		assertNumOfLogEntries("findElementByWebDriver", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 2);
+	}
+	
+	@Test
+	public void testClick() {
+		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
+		WebElement we = wd.findElement(By.id("someId"));
+		assertNotNull(we);
+		we.click();
+		assertNumOfLogEntries("click", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 4);
+	}
+	
+	@Test
+	public void testFindElementByElement() {
+		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
+		WebElement we = wd.findElement(By.id("someId"));
+		assertNotNull(we);
+		WebElement childWe = we.findElement(By.id("someOtherId"));
+		assertNotNull(childWe);
+		assertNumOfLogEntries("findElementByElement", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 4);
+	}
+	
+	@Test
+	public void testClickByChildElement() {
+		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
+		WebElement we = wd.findElement(By.id("someId"));
+		assertNotNull(we);
+		WebElement childWe = we.findElement(By.id("someOtherId"));
+		assertNotNull(childWe);
+		childWe.click();
+		assertNumOfLogEntries("clickByChildElement", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 6);
 	}
 
 	@Test
 	public void testGet() {
-		List<Step> before = fullLogger.getImmutableListOfSteps();
-		int numOfStepsBefore = before.size();
+		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
 		wd.get("https://www.salesforce.com");
-		List<Step> after = fullLogger.getImmutableListOfSteps();
-		int numOfStepsAfter = after.size();
-		System.out.println(String.format("Number of steps logged before command: %d, and after: %d", numOfStepsBefore, numOfStepsAfter));
-		assertTrue(numOfStepsAfter > numOfStepsBefore);
+		assertNumOfLogEntries("get", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 2);
 	}
 
 	@Test
 	public void testGetTitle() {
-		assertEquals(MockCommandExecutor.STRING_VALUE, wd.getTitle());
+		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
+		assertEquals(MockCommandExecutor.STRING_ALLISWELL_VALUE, wd.getTitle());
+		assertNumOfLogEntries("getTitle", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 2);
+	}
+	
+	private void assertNumOfLogEntries(String command, int before, int after, int expectedDifference) {
+		System.out.println(String.format("Number of steps logged before %s(): %d, and after: %d", command, before, after));
+		assertTrue(after > before);
+		assertEquals(expectedDifference, after - before);
 	}
 }
