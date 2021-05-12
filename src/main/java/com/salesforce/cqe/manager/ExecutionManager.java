@@ -8,8 +8,7 @@ import org.testng.IExecutionListener;
 /**
  * @author Yibing Tao
  * Main entry point for this test framework
- * It will load configuration, create context and provider 
- * to run test cases.
+ * It will load configuration and create execution context
  */
 public class ExecutionManager implements IExecutionListener{
 

@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
  * @author Yibing Tao
  * ExecutionContext class contains all test execution context objects
  * during runtime.
- * This context will share between Providers and Listeners
+ * This context will share between Manager and Listeners
  */
 public class ExecutionContext {
 
