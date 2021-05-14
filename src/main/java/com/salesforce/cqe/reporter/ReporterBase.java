@@ -1,11 +1,14 @@
 package com.salesforce.cqe.reporter;
 
 /**
+ * Base class for all classes implementing {@link IReporter}.
+ * 
+ * A reporter decides how to save data. Every implementation of either the {@link IEventListener}
+ * or the {@link ITestListener} interface will call reporter classes to write logs to disk.
+ *  
+ * Please derive from this class to create specific type of reporter, such as XML, HTML, JSON or flat file.
+ * 
  * @author Yibing Tao
- * Base class for all Reporters. Reporter decides how to save data.
- * The listener will call reporter to write logs to disk.  
- * Please derive from this class to create specific type of reporter,
- * such as xml reporter, html reporter or flat file reporter.
  */
 public class ReporterBase implements IReporter {
 
