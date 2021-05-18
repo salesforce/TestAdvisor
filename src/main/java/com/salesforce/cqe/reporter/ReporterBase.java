@@ -12,16 +12,19 @@ package com.salesforce.cqe.reporter;
  */
 public class ReporterBase implements IReporter {
 
+    public ReporterBase(String outputFolder){
+
+    }
+    
     @Override
     public void create() {
-        throw new UnsupportedOperationException();
+        //not implemented yet
         
     }
 
     @Override
     public void log() {
-        throw new UnsupportedOperationException();
-        
+        //not implemented yet
     }
     
 }
