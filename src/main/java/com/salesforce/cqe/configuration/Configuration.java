@@ -2,7 +2,7 @@ package com.salesforce.cqe.configuration;
 
 /**
  * @author Yibing Tao
- * Configration class contains all static setting for this framework
+ * Configuration class contains all static setting for this framework.
  */
 public class Configuration {
     

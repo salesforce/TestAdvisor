@@ -6,10 +6,11 @@ import com.salesforce.cqe.context.ExecutionContext;
 import org.testng.IExecutionListener;
 
 /**
+ * Main entry point for this test framework.
+ * 
+ * It will load configuration, create context and provider to run test cases.
+ * 
  * @author Yibing Tao
- * Main entry point for this test framework
- * It will load configuration, create context and provider 
- * to run test cases.
  */
 public class ExecutionManager implements IExecutionListener{
 
