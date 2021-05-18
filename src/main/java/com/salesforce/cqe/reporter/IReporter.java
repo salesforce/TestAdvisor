@@ -1,8 +1,9 @@
 package com.salesforce.cqe.reporter;
 
 /**
+ * This interface defines how to create and write logs.
+ * 
  * @author Yibing Tao
- * This interface defines how to create and write logs
  */
 public interface IReporter {
     public void create();

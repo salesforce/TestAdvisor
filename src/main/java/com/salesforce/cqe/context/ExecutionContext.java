@@ -1,20 +1,26 @@
 package com.salesforce.cqe.context;
 
+import java.util.List;
+
 import com.salesforce.cqe.configuration.Configuration;
+
+import com.salesforce.cqe.driver.listener.IEventListener;
 import com.salesforce.cqe.reporter.IReporter;
 
 import org.openqa.selenium.WebDriver;
 
 /**
+ * ExecutionContext class contains all test execution context objects during runtime.
+ * This context will share between Manager and Listeners.
+ * 
  * @author Yibing Tao
- * ExecutionContext class contains all test execution context objects
- * during runtime.
- * This context will share between Manager and Listeners
  */
 public class ExecutionContext {
 
     private WebDriver driver;
     private IReporter reporter;
+    private List<IEventListener> driverListeners;
+
     
     public ExecutionContext build(Configuration config) {
         //not implemented yet
