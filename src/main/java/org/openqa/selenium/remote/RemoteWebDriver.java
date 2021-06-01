@@ -99,7 +99,6 @@ public class RemoteWebDriver implements WebDriver, JavascriptExecutor, FindsById
 		FindsByName, FindsByCssSelector, FindsByTagName, FindsByXPath, HasInputDevices, HasCapabilities, Interactive,
 		TakesScreenshot {
 
-	private static final String BORDER_COLORING_ENABLED = "border.color.enabled";
 	private static final String BORDER_COLORING_PREFIX = "arguments[0].style.border='3px solid ";
 	private static final String BORDER_COLORING_POSTFIX = "'";
 	private static final String[] BORDER_COLORS = new String[] { "red", "orange", "yellow", "green", "blue", "purple",
