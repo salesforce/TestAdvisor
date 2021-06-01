@@ -20,10 +20,10 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 /**
  * Records information on a given WebDriver command such as click() or getText().
  * 
- * The {@link EventDispatcher} creates such a record before and after each command. The Step object
- * is then passed on to any listeners implementing the {@link IEventListener} interface.
+ * The {@link com.salesforce.cqe.driver.EventDispatcher} creates such a record before and after each command. The Step object
+ * is then passed on to any listeners implementing the {@link com.salesforce.cqe.driver.listener.IEventListener} interface.
  * 
- * The default listener is {@link FullLogger} which collects all Step objects as they come.
+ * The default listener is {@link com.salesforce.cqe.driver.listener.FullLogger} which collects all Step objects as they come.
  * 
  * @author gneumann
  * @since 1.0

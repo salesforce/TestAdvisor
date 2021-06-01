@@ -37,7 +37,7 @@ import org.openqa.selenium.interactions.Coordinates;
 import com.salesforce.cqe.driver.listener.Step.Cmd;
 
 /**
- * Interface which supports registering of a listener with {@link EventDispatcher} for logging
+ * Interface which supports registering of a listener with {@link com.salesforce.cqe.driver.EventDispatcher} for logging
  * purposes.
  * 
  * This is an extended version of org.openqa.selenium.support.events.WebDriverEventListener. See
@@ -256,7 +256,7 @@ public interface IEventListener {
 	 *            JavaScript script executed
 	 * @param params
 	 *            arguments for script
-	 * @param object
+	 * @param result
 	 *            returned object
 	 */
 	void afterExecuteAsyncScript(Step step, String script, Map<String, ?> params, Object result);
@@ -280,7 +280,7 @@ public interface IEventListener {
 	 *            JavaScript script executed
 	 * @param params
 	 *            arguments for script
-	 * @param object
+	 * @param result
 	 *            returned object
 	 */
 	void afterExecuteScript(Step step, String script, Map<String, ?> params, Object result);
@@ -389,7 +389,7 @@ public interface IEventListener {
 	void beforeGetCookieNamed(Step step, String name);
 
 	/**
-	 * Called after {@link org.openqa.selenium.WebDriver.Options#getCookieNamed(Cookie) getCookieNamed(String name)}.
+	 * Called after {@link org.openqa.selenium.WebDriver.Options#getCookieNamed(String) getCookieNamed(String name)}.
 	 * @param step
 	 *            step record
 	 * @param name
@@ -407,6 +407,8 @@ public interface IEventListener {
 	/**
 	 * Called before {@link org.openqa.selenium.TakesScreenshot#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
 	 * 
+	 * @param <X> 
+	 *            Return type for getScreenshotAs.
 	 * @param step
 	 *            step record
 	 * @param target
@@ -416,6 +418,9 @@ public interface IEventListener {
 
 	/**
 	 * Called after {@link org.openqa.selenium.TakesScreenshot#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
+	 * 
+	 * @param <X> 
+	 *            Return type for getScreenshotAs.
 	 * @param step
 	 *            step record
 	 * @param target
@@ -526,6 +531,7 @@ public interface IEventListener {
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#back
 	 * navigate().back()}.
+	 * 
 	 * @param step
 	 *            step record
 	 */
@@ -534,6 +540,7 @@ public interface IEventListener {
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation
 	 * navigate().back()}. Not called, if an exception is thrown.
+	 * 
 	 * @param step
 	 *            step record
 	 */
@@ -542,6 +549,7 @@ public interface IEventListener {
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#forward
 	 * navigate().forward()}.
+	 * 
 	 * @param step
 	 *            step record
 	 */
@@ -550,6 +558,7 @@ public interface IEventListener {
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#forward
 	 * navigate().forward()}. Not called, if an exception is thrown.
+	 * 
 	 * @param step
 	 *            step record
 	 */
@@ -558,6 +567,7 @@ public interface IEventListener {
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#refresh
 	 * navigate().refresh()}.
+	 * 
 	 * @param step
 	 *            step record
 	 */
@@ -566,6 +576,7 @@ public interface IEventListener {
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#refresh
 	 * navigate().refresh()}. Not called, if an exception is thrown.
+	 * 
 	 * @param step
 	 *            step record
 	 */
@@ -574,6 +585,7 @@ public interface IEventListener {
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#to
 	 * navigate().to(String url)}.
+	 * 
 	 * @param step
 	 *            step record
 	 * @param url
@@ -584,6 +596,7 @@ public interface IEventListener {
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#to
 	 * navigate().to(String url)}. Not called, if an exception is thrown.
+	 * 
 	 * @param step
 	 *            step record
 	 * @param url
@@ -594,6 +607,7 @@ public interface IEventListener {
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#to
 	 * navigate().to(URL url)}.
+	 * 
 	 * @param step
 	 *            step record
 	 * @param url
@@ -604,6 +618,7 @@ public interface IEventListener {
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#to
 	 * navigate().to(URL url)}. Not called, if an exception is thrown.
+	 * 
 	 * @param step
 	 *            step record
 	 * @param url
@@ -616,14 +631,15 @@ public interface IEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	/**
-	 * Called before {@link Alert#dismiss switchTo().alert().dismiss()}.
+	 * Called before {@link org.openqa.selenium.Alert#dismiss switchTo().alert().dismiss()}.
+	 * 
 	 * @param step
 	 *            step record
 	 */
 	void beforeDismiss(Step step);
 
 	/**
-	 * Called after {@link Alert#dismiss switchTo().alert().dismiss()}.
+	 * Called after {@link org.openqa.selenium.Alert#dismiss switchTo().alert().dismiss()}.
 	 * Not called, if an exception is thrown.
 	 * 
 	 * @param step
@@ -632,7 +648,7 @@ public interface IEventListener {
 	void afterDismiss(Step step);
 
 	/**
-	 * Called before {@link Alert#accept switchTo().alert().accept()}.
+	 * Called before {@link org.openqa.selenium.Alert#accept switchTo().alert().accept()}.
 	 * 
 	 * @param step
 	 *            step record
@@ -640,7 +656,7 @@ public interface IEventListener {
 	void beforeAccept(Step step);
 
 	/**
-	 * Called after {@link Alert#accept switchTo().alert().accept()}. 
+	 * Called after {@link org.openqa.selenium.Alert#accept switchTo().alert().accept()}. 
 	 * Not called, if an exception is thrown.
 	 * 
 	 * @param step
@@ -649,7 +665,7 @@ public interface IEventListener {
 	void afterAccept(Step step);
 
 	/**
-	 * Called before {@link Alert#getTextByAlert switchTo().alert().getTextByAlert()}.
+	 * Called before {@link org.openqa.selenium.Alert#getText switchTo().alert().getText()}.
 	 * 
 	 * @param step
 	 *            step record
@@ -657,7 +673,7 @@ public interface IEventListener {
 	void beforeGetTextByAlert(Step step);
 
 	/**
-	 * Called after {@link Alert#getTextByAlert switchTo().alert().getTextByAlert()}.
+	 * Called after {@link org.openqa.selenium.Alert#getText switchTo().alert().getText()}.
 	 * Not called, if an exception is thrown.
 	 * 
 	 * @param step
@@ -668,7 +684,7 @@ public interface IEventListener {
 	void afterGetTextByAlert(Step step, String text);
 
 	/**
-	 * Called before {@link Alert#sendKeysByAlert(String) switchTo().alert().sendKeysByAlert(String keysToSend)}.
+	 * Called before {@link org.openqa.selenium.Alert#sendKeys(String) switchTo().alert().sendKeys(String keysToSend)}.
 	 * 
 	 * @param step
 	 *            step record
@@ -678,7 +694,7 @@ public interface IEventListener {
 	void beforeSendKeysByAlert(Step step, String keysToSend);
 
 	/**
-	 * Called after {@link Alert#sendKeysByAlert(String) switchTo().alert().sendKeysByAlert(String keysToSend)}.
+	 * Called after {@link org.openqa.selenium.Alert#sendKeys(String) switchTo().alert().sendKeys(String keysToSend)}.
 	 * Not called, if an exception is thrown.
 	 * 
 	 * @param step
@@ -1293,6 +1309,7 @@ public interface IEventListener {
 	/**
 	 * Called after {@link WebElement#getSize WebElement.getSize()}.
 	 * Not called, if an exception is thrown.
+	 * 
 	 * @param step
 	 *            step record
 	 * @param dimension
@@ -1304,6 +1321,7 @@ public interface IEventListener {
 
 	/**
 	 * Called before {@link WebElement#getRect WebElement.getRect()}.
+	 * 
 	 * @param step
 	 *            step record
 	 * @param element
@@ -1314,6 +1332,7 @@ public interface IEventListener {
 	/**
 	 * Called after {@link WebElement#getRect WebElement.getRect()}.
 	 * Not called, if an exception is thrown.
+	 * 
 	 * @param step
 	 *            step record
 	 * @param rectangle
@@ -1324,7 +1343,8 @@ public interface IEventListener {
 	void afterGetRect(Step step, Rectangle rectangle, WebElement element);
 
 	/**
-	 * Called before {@link WebElement#getCoordinates WebElement.getCoordinates()}.
+	 * Called before {@link org.openqa.selenium.interactions.Locatable#getCoordinates getCoordinates()}.
+	 * 
 	 * @param step
 	 *            step record
 	 * @param element
@@ -1333,8 +1353,9 @@ public interface IEventListener {
 	void beforeGetCoordinates(Step step, WebElement element);
 
 	/**
-	 * Called after {@link WebElement#getCoordinates WebElement.getCoordinates()}.
+	 * Called after {@link org.openqa.selenium.interactions.Locatable#getCoordinates getCoordinates()}.
 	 * Not called, if an exception is thrown.
+	 * 
 	 * @param step
 	 *            step record
 	 * @param coordinates
@@ -1345,8 +1366,10 @@ public interface IEventListener {
 	void afterGetCoordinates(Step step, Coordinates coordinates, WebElement element);
 
 	/**
-	 * Called before {@link WebElement#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
+	 * Called before {@link org.openqa.selenium.TakesScreenshot#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
 	 * 
+	 * @param <X>
+	 *            Return type for getScreenshotAs.
 	 * @param step
 	 *            step record
 	 * @param target
@@ -1357,7 +1380,10 @@ public interface IEventListener {
 	<X> void beforeGetScreenshotAsByElement(Step step, OutputType<X> target, WebElement element);
 
 	/**
-	 * Called after {@link WebElement#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
+	 * Called after {@link org.openqa.selenium.TakesScreenshot#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
+	 * 
+	 * @param <X>
+	 *            Return type for getScreenshotAs.
 	 * @param step
 	 *            step record
 	 * @param target

@@ -31,9 +31,10 @@ import com.salesforce.cqe.driver.listener.Step.Cmd;
  * Collects information on a given WebDriver command such as click() or getText() and saves this
  * collection to a JSON file.
  * 
- * The {@link RemoteWebDriver}, {@link RemoteWebElement}, {@link RemoteKeyboard}, and {@link RemoteMouse} have been patched
- * to meet DrillBit's needs and call {@link EventDispatcher} which creates {@link Step} objects before and after each WebDriver
- * command. This class is a complete log all these Step objects.
+ * The {@link org.openqa.selenium.remote.RemoteWebDriver}, {@link org.openqa.selenium.remote.RemoteWebElement},
+ * {@link org.openqa.selenium.remote.RemoteKeyboard}, and {@link org.openqa.selenium.remote.RemoteMouse} have been patched
+ * to meet DrillBit's needs and call {@link com.salesforce.cqe.driver.EventDispatcher} which creates {@link com.salesforce.cqe.driver.listener.Step}
+ * objects before and after each WebDriver command. This class is a complete log all these Step objects.
  * 
  * @author gneumann
  * @since 1.0

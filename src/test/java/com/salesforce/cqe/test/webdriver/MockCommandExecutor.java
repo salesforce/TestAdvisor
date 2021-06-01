@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.openqa.selenium.remote.Command;
 import org.openqa.selenium.remote.CommandExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.remote.Response;
+import org.testng.Assert;
 
 import static org.openqa.selenium.remote.DriverCommand.*;
 import static org.testng.Assert.assertNotNull;

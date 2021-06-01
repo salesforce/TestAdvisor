@@ -1,19 +1,15 @@
-# Drillbit Test Framework
-Drillbit test framework designed to help UI automation author to create better Selenium 
-based UI automation for Salesforce platform.
+# DrillBit-Lib Test Framework Enhancement
+DrillBit-Lib test framework enhancement is designed to help UI automation author to create better Selenium 
+based UI automation for the Salesforce platform.
 
 ## Development
-0. Pull from right branch
- a. When your project is based on WebDriver 3.x or newer, pull from 'master'
- b. When your project is based on WebDriver 2.x, pull from 'selenium2'
-1. Run `mvn eclipse:eclipse` to generate .project file and download required jars
-for development in Eclipse.
+1. Run `mvn eclipse:eclipse` to generate .project file and download required jars for development in Eclipse.
 2. Run `mvn clean` to install any dependencies.
-3. Start up eclipse, import project java-test-utils.
+3. Start up eclipse, import project DrillBit-Lib.
 4. Compile project and create jar file:
-`mvn compile jar:jar` which creates jar file target/java-test-utils-0.0.2-SNAPSHOT.jar
+`mvn compile jar:jar` which creates jar file target/drillbit-lib-0.0.1-SNAPSHOT.jar
 5. Deploy jar file to local repository:
-`mvn install:install-file -Dfile=target/java-test-utils-0.0.2-SNAPSHOT.jar -DpomFile=pom.xml`
+`mvn install:install-file -Dfile=target/drillbit-lib-0.0.1-SNAPSHOT.jar -DpomFile=pom.xml`
 
 ## How to publish to Nexus
 1. mvn clean package
@@ -28,12 +24,8 @@ for development in Eclipse.
 4. mvn release:clean
     Cleans up your local env
     
-## Setup
-Since v0.0.39 this project uses Lombok. In order to properly develop in either IntelliJ IDEA or
-Eclipse IDE please follow section 2 or 3 on this page: https://www.baeldung.com/lombok-ide
-
 ### Documenting a new release version
-1. Go to the Releases [section](https://git.soma.salesforce.com/cqe/java-test-utils/releases)
+1. Go to the Releases [section](https://git.soma.salesforce.com/cqe/DrillBit-Lib/releases)
 2. Click on the "Draft a new release" button
-3. Enter the "tag version" and "Release title" value as java-test-utils-v0.0.\<new-version\>
-4. Write one or more sentences about the changes pushed ([example](https://git.soma.salesforce.com/cqe/java-test-utils/releases/tag/java-test-utils-v0.0.53)) and publish a release.we
+3. Enter the "tag version" and "Release title" value as drillbit-lib-v0.0.\<new-version\>
+4. Write one or more sentences about the changes pushed ([example](https://git.soma.salesforce.com/cqe/DrillBit-Lib/releases/tag/drillbit-lib-v0.0.53)) and publish the release.
