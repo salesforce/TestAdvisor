@@ -27,6 +27,7 @@ import com.salesforce.cqe.driver.listener.FullLogger;
 import com.salesforce.cqe.driver.listener.Step;
 import com.salesforce.cqe.driver.listener.Step.Cmd;
 import com.salesforce.cqe.driver.listener.Step.Type;
+import com.salesforce.cqe.driver.listener.StepsToReproduce;
 
 /**
  * Entry point for all WebDriver classes augmented by us to fit DrillBit's needs.
@@ -49,6 +50,7 @@ public class EventDispatcher {
 	private EventDispatcher() {
 		// TODO for the moment hardcode all event listeners here. We can make it dynamic at a later point in time.
 		eventListeners.add(new FullLogger());
+		eventListeners.add(new StepsToReproduce());
 	}
 
 	public List<IEventListener> getImmutableListOfEventListeners() {

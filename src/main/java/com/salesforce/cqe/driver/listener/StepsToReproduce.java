@@ -16,6 +16,11 @@ import org.openqa.selenium.interactions.Coordinates;
 
 import com.salesforce.cqe.driver.listener.Step.Cmd;
 
+/**
+ * Tracks the individual actions of the test.
+ * 
+ * @author gneumann
+ */
 public class StepsToReproduce extends AbstractEventListener {
 	private int stepCounter = 1;
 	private StringBuffer buffer = new StringBuffer();
