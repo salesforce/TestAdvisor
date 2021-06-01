@@ -3,16 +3,16 @@
  */
 package com.salesforce.cqe.test.webdriver;
 
-import static org.junit.Assert.*;
+import static org.testng.Assert.*;
 
 import java.util.List;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import com.salesforce.cqe.driver.EventDispatcher;
 import com.salesforce.cqe.driver.listener.FullLogger;
