@@ -18,6 +18,8 @@ package com.salesforce.cqe.driver.listener;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,6 +49,7 @@ import com.salesforce.cqe.driver.listener.Step.Cmd;
  * @since 1.0
  */
 public abstract class AbstractEventListener implements IEventListener {
+	protected List<Step> logEntries = new ArrayList<>();
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver object.
@@ -726,5 +729,15 @@ public abstract class AbstractEventListener implements IEventListener {
 
 	@Override
 	public void afterUploadFile(Step step, WebElement element, File localFile, String response) {
+	}
+
+	@Override
+	public List<Step> getListOfEventsRecorded() {
+		return Collections.unmodifiableList(logEntries);
+	}
+	
+	@Override
+	public String getEventsFormatted() {
+		return null;
 	}
 }

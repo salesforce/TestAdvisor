@@ -47,54 +47,54 @@ public class TestEventDispatching {
 	
 	@Test
 	public void testFindElementByWebDriver() {
-		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
+		int numOfStepsBefore = fullLogger.getListOfEventsRecorded().size();
 		WebElement we = wd.findElement(By.id("someId"));
 		assertNotNull(we);
-		assertNumOfLogEntries("findElementByWebDriver", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 2);
+		assertNumOfLogEntries("findElementByWebDriver", numOfStepsBefore, fullLogger.getListOfEventsRecorded().size(), 2);
 	}
 	
 	@Test
 	public void testClick() {
-		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
+		int numOfStepsBefore = fullLogger.getListOfEventsRecorded().size();
 		WebElement we = wd.findElement(By.id("someId"));
 		assertNotNull(we);
 		we.click();
-		assertNumOfLogEntries("click", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 4);
+		assertNumOfLogEntries("click", numOfStepsBefore, fullLogger.getListOfEventsRecorded().size(), 4);
 	}
 	
 	@Test
 	public void testFindElementByElement() {
-		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
+		int numOfStepsBefore = fullLogger.getListOfEventsRecorded().size();
 		WebElement we = wd.findElement(By.id("someId"));
 		assertNotNull(we);
 		WebElement childWe = we.findElement(By.id("someOtherId"));
 		assertNotNull(childWe);
-		assertNumOfLogEntries("findElementByElement", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 4);
+		assertNumOfLogEntries("findElementByElement", numOfStepsBefore, fullLogger.getListOfEventsRecorded().size(), 4);
 	}
 	
 	@Test
 	public void testClickByChildElement() {
-		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
+		int numOfStepsBefore = fullLogger.getListOfEventsRecorded().size();
 		WebElement we = wd.findElement(By.id("someId"));
 		assertNotNull(we);
 		WebElement childWe = we.findElement(By.id("someOtherId"));
 		assertNotNull(childWe);
 		childWe.click();
-		assertNumOfLogEntries("clickByChildElement", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 6);
+		assertNumOfLogEntries("clickByChildElement", numOfStepsBefore, fullLogger.getListOfEventsRecorded().size(), 6);
 	}
 
 	@Test
 	public void testGet() {
-		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
+		int numOfStepsBefore = fullLogger.getListOfEventsRecorded().size();
 		wd.get("https://www.salesforce.com");
-		assertNumOfLogEntries("get", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 2);
+		assertNumOfLogEntries("get", numOfStepsBefore, fullLogger.getListOfEventsRecorded().size(), 2);
 	}
 
 	@Test
 	public void testGetTitle() {
-		int numOfStepsBefore = fullLogger.getImmutableListOfSteps().size();
+		int numOfStepsBefore = fullLogger.getListOfEventsRecorded().size();
 		assertEquals(MockCommandExecutor.STRING_ALLISWELL_VALUE, wd.getTitle());
-		assertNumOfLogEntries("getTitle", numOfStepsBefore, fullLogger.getImmutableListOfSteps().size(), 2);
+		assertNumOfLogEntries("getTitle", numOfStepsBefore, fullLogger.getListOfEventsRecorded().size(), 2);
 	}
 	
 	private void assertNumOfLogEntries(String command, int before, int after, int expectedDifference) {

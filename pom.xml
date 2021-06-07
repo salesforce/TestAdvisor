@@ -168,7 +168,7 @@
 	</dependencies>
 
 	<scm>
-		<developerConnection>scm:git:git@git.soma.salesforce.com:cqe/Drillbit-Lib.git</developerConnection>
+		<developerConnection>scm:git:git@git.soma.salesforce.com:cqe/DrillBit-Lib.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 

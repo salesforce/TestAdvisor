@@ -18,6 +18,7 @@ package com.salesforce.cqe.driver.listener;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1671,4 +1672,27 @@ public interface IEventListener {
 	 *            the exception that will be thrown
 	 */
 	void onException(Step step, Cmd cmd, Throwable throwable);
+	
+	/**
+	 * Gets the list of events logged so far by the implementing listener.
+	 * 
+	 * Preferably it should return an immutable list by wrapping the
+	 * list-to-be-returned with {@link Collections#unmodifiableList(List)} so that
+	 * multiple calls of this method are allowed.
+	 * 
+	 * @return list of events logged so far
+	 */
+	List<Step> getListOfEventsRecorded();
+	
+	/**
+	 * Gets the events logged so far by the implementing listener as a string
+	 * or NULL, if this makes no sense.
+	 * 
+	 * The event listener can present the logged events in a formatted style,
+	 * ready to written to disk as-is or deny provisioning this output by
+	 * returning NULL.
+	 * 
+	 * @return events logged so far as string or NULL
+	 */
+	String getEventsFormatted();
 }
