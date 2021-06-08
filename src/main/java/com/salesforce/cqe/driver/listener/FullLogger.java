@@ -8,8 +8,6 @@ package com.salesforce.cqe.driver.listener;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,8 +38,6 @@ import com.salesforce.cqe.driver.listener.Step.Cmd;
  * @since 1.0
  */
 public class FullLogger extends AbstractEventListener {
-	private List<Step> logEntries = new ArrayList<>();
-
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver object.
 	 *--------------------------------------------------------------------*/
@@ -871,11 +867,5 @@ public class FullLogger extends AbstractEventListener {
 		logEntries.add(step);
 	}
 	
-	/**
-	 * Gets the currently logged list of steps.
-	 * @return immutable list of steps
-	 */
-	public List<Step> getImmutableListOfSteps() {
-		return Collections.unmodifiableList(logEntries);
-	}
+	// This listener provides the events in the way defined in AbstractEventListener.
 }
