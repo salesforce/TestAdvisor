@@ -35,7 +35,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Coordinates;
 
-import com.salesforce.cqe.driver.listener.Step.Cmd;
+import com.salesforce.cqe.driver.listener.Event.Cmd;
 
 /**
  * Interface which supports registering of a listener with {@link com.salesforce.cqe.driver.EventDispatcher} for logging
@@ -60,178 +60,178 @@ public interface IEventListener {
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#close close()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeClose(Step step);
+	void beforeClose(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#close close()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterClose(Step step);
+	void afterClose(Event event);
 
 	/**
 	 * Called before {@link WebDriver#findElement WebDriver.findElement(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param by
 	 *            locator being used
 	 */
-	void beforeFindElementByWebDriver(Step step, By by);
+	void beforeFindElementByWebDriver(Event event, By by);
 
 	/**
 	 * Called after {@link WebDriver#findElement WebDriver.findElement(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            returned element
 	 * @param by
 	 *            locator being used
 	 */
-	void afterFindElementByWebDriver(Step step, WebElement element, By by);
+	void afterFindElementByWebDriver(Event event, WebElement element, By by);
 
 	/**
 	 * Called before {@link WebDriver#findElements WebDriver.findElements(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param by
 	 *            locator being used
 	 */
-	void beforeFindElementsByWebDriver(Step step, By by);
+	void beforeFindElementsByWebDriver(Event event, By by);
 
 	/**
 	 * Called after{@link WebDriver#findElements WebDriver.findElements(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param elements
 	 *            returned list of elements
 	 * @param by
 	 *            locator being used
 	 */
-	void afterFindElementsByWebDriver(Step step, List<WebElement> elements, By by);
+	void afterFindElementsByWebDriver(Event event, List<WebElement> elements, By by);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#get get(String url)}.
 	 *
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param url
 	 *            URL
 	 */
-	void beforeGet(Step step, String url);
+	void beforeGet(Event event, String url);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#get get(String url)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param url
 	 *            URL
 	 */
-	void afterGet(Step step, String url);
+	void afterGet(Event event, String url);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#getCurrentUrl getCurrentUrl()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeGetCurrentUrl(Step step);
+	void beforeGetCurrentUrl(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#getCurrentUrl getCurrentUrl()}.
 	 * Not called, if an exception is thrown.
 	 *
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param url
 	 *            returned URL
 	 */
-	void afterGetCurrentUrl(Step step, String url);
+	void afterGetCurrentUrl(Event event, String url);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#getPageSource getPageSource()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeGetPageSource(Step step);
+	void beforeGetPageSource(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#getPageSource getPageSource()}.
 	 * Not called, if an exception is thrown.
 	 *
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param source
 	 *            returned page source
 	 */
-	void afterGetPageSource(Step step, String source);
+	void afterGetPageSource(Event event, String source);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#getTitle getTitle()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeGetTitle(Step step);
+	void beforeGetTitle(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#getTitle getTitle()}.
 	 * Not called, if an exception is thrown.
 	 *
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param title
 	 *            returned page title
 	 */
-	void afterGetTitle(Step step, String title);
+	void afterGetTitle(Event event, String title);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#getWindowHandle getWindowHandle()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeGetWindowHandle(Step step);
+	void beforeGetWindowHandle(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#getWindowHandle getWindowHandle()}.
 	 *
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param handle
 	 *            Handle to current window
 	 */
-	void afterGetWindowHandle(Step step, String handle);
+	void afterGetWindowHandle(Event event, String handle);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#getWindowHandles getWindowHandles()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeGetWindowHandles(Step step);
+	void beforeGetWindowHandles(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#getWindowHandles getWindowHandles()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param handles
 	 *            Set of handles to windows currently open
 	 */
-	void afterGetWindowHandles(Step step, Set<String> handles);
+	void afterGetWindowHandles(Event event, Set<String> handles);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#quit quit()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeQuit(Step step);
+	void beforeQuit(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#quit quit()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterQuit(Step step);
+	void afterQuit(Event event);
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver object
@@ -240,19 +240,19 @@ public interface IEventListener {
 
 	/**
 	 * Called before {@link org.openqa.selenium.JavascriptExecutor#executeAsyncScript(String, Object...) executingAsyncScript(String, Object...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param script
 	 *            JavaScript script to execute
 	 * @param params
 	 *            arguments for script
 	 */
-	void beforeExecuteAsyncScript(Step step, String script, Map<String, ?> params);
+	void beforeExecuteAsyncScript(Event event, String script, Map<String, ?> params);
 
 	/**
 	 * Called after {@link org.openqa.selenium.JavascriptExecutor#executeAsyncScript(String, Object...) executingAsyncScript(String, Object...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param script
 	 *            JavaScript script executed
 	 * @param params
@@ -260,23 +260,23 @@ public interface IEventListener {
 	 * @param result
 	 *            returned object
 	 */
-	void afterExecuteAsyncScript(Step step, String script, Map<String, ?> params, Object result);
+	void afterExecuteAsyncScript(Event event, String script, Map<String, ?> params, Object result);
 
 	/**
 	 * Called before {@link org.openqa.selenium.JavascriptExecutor#executeScript(String, Object...) executingScript(String, Object...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param script
 	 *            JavaScript script to execute
 	 * @param params
 	 *            arguments for script
 	 */
-	void beforeExecuteScript(Step step, String script, Map<String, ?> params);
+	void beforeExecuteScript(Event event, String script, Map<String, ?> params);
 
 	/**
 	 * Called after {@link org.openqa.selenium.JavascriptExecutor#executeScript(String, Object...) executingScript(String, Object...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param script
 	 *            JavaScript script executed
 	 * @param params
@@ -284,7 +284,7 @@ public interface IEventListener {
 	 * @param result
 	 *            returned object
 	 */
-	void afterExecuteScript(Step step, String script, Map<String, ?> params, Object result);
+	void afterExecuteScript(Event event, String script, Map<String, ?> params, Object result);
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.Options object
@@ -293,112 +293,112 @@ public interface IEventListener {
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Options#addCookie(Cookie) addCookie(Cookie cookie)}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param cookie
 	 *            cookie to add
 	 */
-	void beforeAddCookie(Step step, Cookie cookie);
+	void beforeAddCookie(Event event, Cookie cookie);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#addCookie(Cookie) addCookie(Cookie cookie)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param cookie
 	 *            cookie to add
 	 */
-	void afterAddCookie(Step step, Cookie cookie);
+	void afterAddCookie(Event event, Cookie cookie);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Options#deleteCookieNamed(String) deleteCookieNamed(String name)}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param name
 	 *            name of cookie to delete
 	 */
-	void beforeDeleteCookieNamed(Step step, String name);
+	void beforeDeleteCookieNamed(Event event, String name);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#deleteCookieNamed(String) deleteCookieNamed(String name)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param name
 	 *            name of cookie to delete
 	 */
-	void afterDeleteCookieNamed(Step step, String name);
+	void afterDeleteCookieNamed(Event event, String name);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Options#deleteCookie(Cookie) deleteCookie(Cookie cookie)}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param cookie
 	 *            cookie to delete
 	 */
-	void beforeDeleteCookie(Step step, Cookie cookie);
+	void beforeDeleteCookie(Event event, Cookie cookie);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#deleteCookie(Cookie) deleteCookie(Cookie cookie)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param cookie
 	 *            cookie to delete
 	 */
-	void afterDeleteCookie(Step step, Cookie cookie);
+	void afterDeleteCookie(Event event, Cookie cookie);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Options#deleteAllCookies() deleteAllCookies()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeDeleteAllCookies(Step step);
+	void beforeDeleteAllCookies(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#deleteAllCookies() deleteAllCookies()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterDeleteAllCookies(Step step);
+	void afterDeleteAllCookies(Event event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Options#getCookies() getCookies()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeGetCookies(Step step);
+	void beforeGetCookies(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#getCookies() getCookies()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param cookies
 	 *            set of all cookies
 	 */
-	void afterGetCookies(Step step, Set<Cookie> cookies);
+	void afterGetCookies(Event event, Set<Cookie> cookies);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Options#addCookie(Cookie) getCookieNamed(String name)}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param name
 	 *            name of cookie to get
 	 */
-	void beforeGetCookieNamed(Step step, String name);
+	void beforeGetCookieNamed(Event event, String name);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#getCookieNamed(String) getCookieNamed(String name)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param name
 	 *            name of cookie to get
 	 * @param cookie
 	 *            returned cookie
 	 */
-	void afterGetCookieNamed(Step step, String name, Cookie cookie);
+	void afterGetCookieNamed(Event event, String name, Cookie cookie);
 	
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver object
@@ -410,26 +410,26 @@ public interface IEventListener {
 	 * 
 	 * @param <X> 
 	 *            Return type for getScreenshotAs.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param target
 	 *            target type, @see OutputType
 	 */
-	<X> void beforeGetScreenshotAs(Step step, OutputType<X> target);
+	<X> void beforeGetScreenshotAs(Event event, OutputType<X> target);
 
 	/**
 	 * Called after {@link org.openqa.selenium.TakesScreenshot#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
 	 * 
 	 * @param <X> 
 	 *            Return type for getScreenshotAs.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param target
 	 *            target type, @see OutputType
 	 * @param screenshot
 	 *            screenshot captured
 	 */
-	<X> void afterGetScreenshotAs(Step step, OutputType<X> target, X screenshot);
+	<X> void afterGetScreenshotAs(Event event, OutputType<X> target, X screenshot);
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.ImeHandler object
@@ -438,92 +438,92 @@ public interface IEventListener {
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.ImeHandler#getAvailableEngines() getAvailableEngines()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeGetAvailableEngines(Step step);
+	void beforeGetAvailableEngines(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.ImeHandler#getAvailableEngines() getAvailableEngines()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param engines
 	 *            list of names of available engines
 	 */
-	void afterGetAvailableEngines(Step step, List<String> engines);
+	void afterGetAvailableEngines(Event event, List<String> engines);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.ImeHandler#getActiveEngine() getActiveEngine()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeGetActiveEngine(Step step);
+	void beforeGetActiveEngine(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.ImeHandler#getActiveEngine() getActiveEngine()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param engine
 	 *            names of active engine
 	 */
-	void afterGetActiveEngine(Step step, String engine);
+	void afterGetActiveEngine(Event event, String engine);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.ImeHandler#isActivated() isActivated()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeIsActivated(Step step);
+	void beforeIsActivated(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.ImeHandler#isActivated() isActivated()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param isActive
 	 *            state of activation of current engine
 	 */
-	void afterIsActivated(Step step, boolean isActive);
+	void afterIsActivated(Event event, boolean isActive);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.ImeHandler#deactivate() deactivate()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeDeactivate(Step step);
+	void beforeDeactivate(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.ImeHandler#deactivate() deactivate()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterDeactivate(Step step);
+	void afterDeactivate(Event event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.ImeHandler#activateEngine(String) activateEngine(String engine)}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param engine
 	 *            name of engine to activate
 	 */
-	void beforeActivateEngine(Step step, String engine);
+	void beforeActivateEngine(Event event, String engine);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.ImeHandler#activateEngine(String) activateEngine(String engine)}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param engine
 	 *            name of engine to activate
 	 */
-	void afterActivateEngine(Step step, String engine);
+	void afterActivateEngine(Event event, String engine);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.Navigation object.
@@ -533,99 +533,99 @@ public interface IEventListener {
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#back
 	 * navigate().back()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeBack(Step step);
+	void beforeBack(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation
 	 * navigate().back()}. Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterBack(Step step);
+	void afterBack(Event event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#forward
 	 * navigate().forward()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeForward(Step step);
+	void beforeForward(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#forward
 	 * navigate().forward()}. Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterForward(Step step);
+	void afterForward(Event event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#refresh
 	 * navigate().refresh()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeRefresh(Step step);
+	void beforeRefresh(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#refresh
 	 * navigate().refresh()}. Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterRefresh(Step step);
+	void afterRefresh(Event event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#to
 	 * navigate().to(String url)}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param url
 	 *            string representation of URL
 	 */
-	void beforeTo(Step step, String url);
+	void beforeTo(Event event, String url);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#to
 	 * navigate().to(String url)}. Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param url
 	 *            string representation of URL
 	 */
-	void afterTo(Step step, String url);
+	void afterTo(Event event, String url);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#to
 	 * navigate().to(URL url)}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param url
 	 *            URL
 	 */
-	void beforeToUrl(Step step, URL url);
+	void beforeToUrl(Event event, URL url);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#to
 	 * navigate().to(URL url)}. Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param url
 	 *            URL
 	 */
-	void afterToUrl(Step step, URL url);
+	void afterToUrl(Event event, URL url);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.Alert object.
@@ -634,76 +634,76 @@ public interface IEventListener {
 	/**
 	 * Called before {@link org.openqa.selenium.Alert#dismiss switchTo().alert().dismiss()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeDismiss(Step step);
+	void beforeDismiss(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.Alert#dismiss switchTo().alert().dismiss()}.
 	 * Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterDismiss(Step step);
+	void afterDismiss(Event event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.Alert#accept switchTo().alert().accept()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeAccept(Step step);
+	void beforeAccept(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.Alert#accept switchTo().alert().accept()}. 
 	 * Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterAccept(Step step);
+	void afterAccept(Event event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.Alert#getText switchTo().alert().getText()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeGetTextByAlert(Step step);
+	void beforeGetTextByAlert(Event event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.Alert#getText switchTo().alert().getText()}.
 	 * Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param text
 	 *            text shown in alert
 	 */
-	void afterGetTextByAlert(Step step, String text);
+	void afterGetTextByAlert(Event event, String text);
 
 	/**
 	 * Called before {@link org.openqa.selenium.Alert#sendKeys(String) switchTo().alert().sendKeys(String keysToSend)}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param keysToSend
 	 *            keys to enter
 	 */
-	void beforeSendKeysByAlert(Step step, String keysToSend);
+	void beforeSendKeysByAlert(Event event, String keysToSend);
 
 	/**
 	 * Called after {@link org.openqa.selenium.Alert#sendKeys(String) switchTo().alert().sendKeys(String keysToSend)}.
 	 * Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param keysToSend
 	 *            keys to enter
 	 */
-	void afterSendKeysByAlert(Step step, String keysToSend);
+	void afterSendKeysByAlert(Event event, String keysToSend);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.TargetLocator object.
@@ -711,141 +711,141 @@ public interface IEventListener {
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#activeElement() TargetLocator.activeElement()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeActiveElement(Step step);
+	void beforeActiveElement(Event event);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#activeElement() TargetLocator.activeElement()}.
 	 * Not called, if an exception is thrown.
-	 * @param step step record
+	 * @param event event record
 	 * @param activeElement the current active WebElement
 	 */
-	void afterActiveElement(Step step, WebElement activeElement);
+	void afterActiveElement(Event event, WebElement activeElement);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#alert() TargetLocator.alert()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeAlert(Step step);
+	void beforeAlert(Event event);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#alert() TargetLocator.alert()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param alert
 	 *            handle to the Alert
 	 */
-	void afterAlert(Step step, Alert alert);
+	void afterAlert(Event event, Alert alert);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#defaultContent() TargetLocator.defaultContent()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeDefaultContent(Step step);
+	void beforeDefaultContent(Event event);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#defaultContent() TargetLocator.defaultContent()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterDefaultContent(Step step);
+	void afterDefaultContent(Event event);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#frame(int) TargetLocator.frame(..)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param frameIndex
 	 *            0-based index of frame on page
 	 */
-	void beforeFrameByIndex(Step step, int frameIndex);
+	void beforeFrameByIndex(Event event, int frameIndex);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#frame(int) TargetLocator.frame(..)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param frameIndex
 	 *            0-based index of frame on page
 	 */
-	void afterFrameByIndex(Step step, int frameIndex);
+	void afterFrameByIndex(Event event, int frameIndex);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#frame(java.lang.String) TargetLocator.frame(..)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param frameName
 	 *            name of frame
 	 */
-	void beforeFrameByName(Step step, String frameName);
+	void beforeFrameByName(Event event, String frameName);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#frame(java.lang.String) TargetLocator.frame(..)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param frameName
 	 *            name of frame
 	 */
-	void afterFrameByName(Step step, String frameName);
+	void afterFrameByName(Event event, String frameName);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#frame(WebElement) TargetLocator.frame(..)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param frameElement
 	 *            element inside frame
 	 */
-	void beforeFrameByElement(Step step, WebElement frameElement);
+	void beforeFrameByElement(Event event, WebElement frameElement);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#frame(java.lang.String) TargetLocator.frame(..)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param frameElement
 	 *            element inside frame
 	 */
-	void afterFrameByElement(Step step, WebElement frameElement);
+	void afterFrameByElement(Event event, WebElement frameElement);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#parentFrame() TargetLocator.parentFrame()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeParentFrame(Step step);
+	void beforeParentFrame(Event event);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#parentFrame() TargetLocator.parentFrame()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterParentFrame(Step step);
+	void afterParentFrame(Event event);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#window(java.lang.String) TargetLocator.window(..)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param windowName
 	 *            name of window
 	 */
-	void beforeWindow(Step step, String windowName);
+	void beforeWindow(Event event, String windowName);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#window(java.lang.String) TargetLocator.window(..)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param windowName
 	 *            name of window
 	 */
-	void afterWindow(Step step, String windowName);
+	void afterWindow(Event event, String windowName);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.Timeouts object.
@@ -853,72 +853,72 @@ public interface IEventListener {
 
 	/**
 	 * Called before {@link WebDriver.Timeouts#implicitlyWait(long, java.util.concurrent.TimeUnit) Timeouts.implicitlyWait(..)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param time
 	 *            time to wait; to be converted using the given time unit
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void beforeImplicitlyWait(Step step, long time, TimeUnit unit);
+	void beforeImplicitlyWait(Event event, long time, TimeUnit unit);
 
 	/**
 	 * Called after {@link WebDriver.Timeouts#implicitlyWait(long, java.util.concurrent.TimeUnit) Timeouts.implicitlyWait(..)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param time
 	 *            time to wait; to be converted using the given time unit
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void afterImplicitlyWait(Step step, long time, TimeUnit unit);
+	void afterImplicitlyWait(Event event, long time, TimeUnit unit);
 
 	/**
 	 * Called before {@link WebDriver.Timeouts#pageLoadTimeout(long, java.util.concurrent.TimeUnit) Timeouts.pageLoadTimeout(..)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param time
 	 *            time to wait; to be converted using the given time unit
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void beforePageLoadTimeout(Step step, long time, TimeUnit unit);
+	void beforePageLoadTimeout(Event event, long time, TimeUnit unit);
 
 	/**
 	 * Called after {@link WebDriver.Timeouts#pageLoadTimeout(long, java.util.concurrent.TimeUnit) Timeouts.pageLoadTimeout(..)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param time
 	 *            time to wait; to be converted using the given time unit
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void afterPageLoadTimeout(Step step, long time, TimeUnit unit);
+	void afterPageLoadTimeout(Event event, long time, TimeUnit unit);
 
 	/**
 	 * Called before {@link WebDriver.Timeouts#setScriptTimeout(long, java.util.concurrent.TimeUnit) Timeouts.setScriptTimeout(..)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param time
 	 *            time to wait; to be converted using the given time unit
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void beforeSetScriptTimeout(Step step, long time, TimeUnit unit);
+	void beforeSetScriptTimeout(Event event, long time, TimeUnit unit);
 
 	/**
 	 * Called after {@link WebDriver.Timeouts#setScriptTimeout(long, java.util.concurrent.TimeUnit) Timeouts.setScriptTimeout(..)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param time
 	 *            time to wait; to be converted using the given time unit
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void afterSetScriptTimeout(Step step, long time, TimeUnit unit);
+	void afterSetScriptTimeout(Event event, long time, TimeUnit unit);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.Window object.
@@ -926,105 +926,105 @@ public interface IEventListener {
 
 	/**
 	 * Called before {@link WebDriver.Window#fullscreen() Window.fullscreen()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeFullscreen(Step step);
+	void beforeFullscreen(Event event);
 
 	/**
 	 * Called after {@link WebDriver.Window#fullscreen() Window.fullscreen()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterFullscreen(Step step);
+	void afterFullscreen(Event event);
 
 	/**
 	 * Called before {@link WebDriver.Window#getPosition() getPosition()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeGetPosition(Step step);
+	void beforeGetPosition(Event event);
 
 	/**
 	 * Called after {@link WebDriver.Window#getPosition() getPosition()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param targetPosition
 	 *            returned location on screen
 	 */
-	void afterGetPosition(Step step, Point targetPosition);
+	void afterGetPosition(Event event, Point targetPosition);
 
 	/**
 	 * Called before {@link WebDriver.Window#getSize() getSize()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeGetSizeByWindow(Step step);
+	void beforeGetSizeByWindow(Event event);
 
 	/**
 	 * Called after {@link WebDriver.Window#getSize() getSize()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param targetSize
 	 *            returned window size on screen
 	 */
-	void afterGetSizeByWindow(Step step, Dimension targetSize);
+	void afterGetSizeByWindow(Event event, Dimension targetSize);
 
 	/**
 	 * Called before {@link WebDriver.Window#maximize() Window.window()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void beforeMaximize(Step step);
+	void beforeMaximize(Event event);
 
 	/**
 	 * Called after {@link WebDriver.Window#maximize() Window.window()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 */
-	void afterMaximize(Step step);
+	void afterMaximize(Event event);
 
 	/**
 	 * Called before {@link WebDriver.Window#setPosition(Point) setPosition(..)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param targetPosition
 	 *            location on screen
 	 */
-	void beforeSetPosition(Step step, Point targetPosition);
+	void beforeSetPosition(Event event, Point targetPosition);
 
 	/**
 	 * Called after {@link WebDriver.Window#setPosition(Point) setPosition(..)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param targetPosition
 	 *            location on screen
 	 */
-	void afterSetPosition(Step step, Point targetPosition);
+	void afterSetPosition(Event event, Point targetPosition);
 
 	/**
 	 * Called before {@link WebDriver.Window#setSize(Dimension) setSize(..)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param targetSize
 	 *            window size on screen
 	 */
-	void beforeSetSizeByWindow(Step step, Dimension targetSize);
+	void beforeSetSizeByWindow(Event event, Dimension targetSize);
 
 	/**
 	 * Called after {@link WebDriver.Window#setSize(Dimension) setSize(..)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param targetSize
 	 *            window size on screen
 	 */
-	void afterSetSizeByWindow(Step step, Dimension targetSize);
+	void afterSetSizeByWindow(Event event, Dimension targetSize);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebElement object.
@@ -1032,112 +1032,112 @@ public interface IEventListener {
 
 	/**
 	 * Called before {@link WebElement#click WebElement.click()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeClick(Step step, WebElement element);
+	void beforeClick(Event event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#click WebElement.click()}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterClick(Step step, WebElement element);
+	void afterClick(Event event, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#clear WebElement.clear()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeClear(Step step, WebElement element);
+	void beforeClear(Event event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#clear WebElement.clear()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterClear(Step step, WebElement element);
+	void afterClear(Event event, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#findElement WebElement.findElement(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param by
 	 *            locator being used
 	 * @param element
-	 *            use {@link #beforeFindElementByWebDriver(Step, By) beforeFindElement(By, WebDriver)} if a find method of
+	 *            use {@link #beforeFindElementByWebDriver(Event, By) beforeFindElement(By, WebDriver)} if a find method of
 	 *            <code>WebDriver</code> is called.
 	 */
-	void beforeFindElementByElement(Step step, By by, WebElement element);
+	void beforeFindElementByElement(Event event, By by, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#findElement WebElement.findElement(...)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param returnedElement
 	 *            returned element
 	 * @param by
 	 *            locator being used
 	 * @param element
-	 *            use {@link #afterFindElementByWebDriver(Step, WebElement, By) afterFindElement(By, WebDriver)} if a find method of
+	 *            use {@link #afterFindElementByWebDriver(Event, WebElement, By) afterFindElement(By, WebDriver)} if a find method of
 	 *            <code>WebDriver</code> is called.
 	 */
-	void afterFindElementByElement(Step step, WebElement returnedElement, By by, WebElement element);
+	void afterFindElementByElement(Event event, WebElement returnedElement, By by, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#findElements WebElement.findElements(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param by
 	 *            locator being used
 	 * @param element
-	 *            use {@link #beforeFindElementByWebDriver(Step, By) beforeFindElement(By, WebDriver)} if a find method of
+	 *            use {@link #beforeFindElementByWebDriver(Event, By) beforeFindElement(By, WebDriver)} if a find method of
 	 *            <code>WebDriver</code> is called.
 	 */
-	void beforeFindElementsByElement(Step step, By by, WebElement element);
+	void beforeFindElementsByElement(Event event, By by, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#findElements WebElement.findElements(...)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param returnedElements
 	 *            returned list of elements
 	 * @param by
 	 *            locator being used
 	 * @param element
-	 *            use {@link #afterFindElementByWebDriver(Step, WebElement, By) afterFindElement(By, WebDriver)} if a find method of
+	 *            use {@link #afterFindElementByWebDriver(Event, WebElement, By) afterFindElement(By, WebDriver)} if a find method of
 	 *            <code>WebDriver</code> is called.
 	 */
-	void afterFindElementsByElement(Step step, List<WebElement> returnedElements, By by, WebElement element);
+	void afterFindElementsByElement(Event event, List<WebElement> returnedElements, By by, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#getAttribute WebElement.getAttribute(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param name
 	 *            name of the attribute to get
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetAttribute(Step step, String name, WebElement element);
+	void beforeGetAttribute(Event event, String name, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getAttribute WebElement.getAttribute(...)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param value
 	 *            value of the named attribute
 	 * @param name
@@ -1145,24 +1145,24 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetAttribute(Step step, String value, String name, WebElement element);
+	void afterGetAttribute(Event event, String value, String name, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#getCssValue WebElement.getCssValue()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param propertyName
 	 * 			  name of the CSS property to get the value of 
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetCssValue(Step step, String propertyName, WebElement element);
+	void beforeGetCssValue(Event event, String propertyName, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getCssValue WebElement.getCssValue()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param propertyName
 	 * 			  name of the CSS property to get the value of 
 	 * @param value
@@ -1170,223 +1170,223 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetCssValue(Step step, String propertyName, String value, WebElement element);
+	void afterGetCssValue(Event event, String propertyName, String value, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#getTagName WebElement.getTagName()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetTagName(Step step, WebElement element);
+	void beforeGetTagName(Event event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getTagName WebElement.getTagName()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param tagName
 	 *            the retrieved tag name
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetTagName(Step step, String tagName, WebElement element);
+	void afterGetTagName(Event event, String tagName, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#getText WebElement.getText()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetText(Step step, WebElement element);
+	void beforeGetText(Event event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getText WebElement.getText()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param text
 	 *            the retrieved text
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetText(Step step, String text, WebElement element);
+	void afterGetText(Event event, String text, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#isDisplayed WebElement.isDisplayed()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeIsDisplayed(Step step, WebElement element);
+	void beforeIsDisplayed(Event event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#isDisplayed WebElement.isDisplayed()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param isDisplayed
 	 *            the retrieved value
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterIsDisplayed(Step step, boolean isDisplayed, WebElement element);
+	void afterIsDisplayed(Event event, boolean isDisplayed, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#isEnabled WebElement.isEnabled()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeIsEnabled(Step step, WebElement element);
+	void beforeIsEnabled(Event event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#isEnabled WebElement.isEnabled()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param isEnabled
 	 *            the retrieved value
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterIsEnabled(Step step, boolean isEnabled, WebElement element);
+	void afterIsEnabled(Event event, boolean isEnabled, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#isSelected WebElement.isSelected()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeIsSelected(Step step, WebElement element);
+	void beforeIsSelected(Event event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#isSelected WebElement.isSelected()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param isSelected
 	 *            the retrieved value
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterIsSelected(Step step, boolean isSelected, WebElement element);
+	void afterIsSelected(Event event, boolean isSelected, WebElement element);
 	
 	/**
 	 * Called before {@link WebElement#getLocation WebElement.getLocation()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetLocation(Step step, WebElement element);
+	void beforeGetLocation(Event event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getLocation WebElement.getLocation()}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param point
 	 *            the retrieved point
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetLocation(Step step, Point point, WebElement element);
+	void afterGetLocation(Event event, Point point, WebElement element);
 	
 	/**
 	 * Called before {@link WebElement#getSize WebElement.getSize()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetSizeByElement(Step step, WebElement element);
+	void beforeGetSizeByElement(Event event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getSize WebElement.getSize()}.
 	 * Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param dimension
 	 *            the retrieved dimension
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetSizeByElement(Step step, Dimension dimension, WebElement element);
+	void afterGetSizeByElement(Event event, Dimension dimension, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#getRect WebElement.getRect()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetRect(Step step, WebElement element);
+	void beforeGetRect(Event event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getRect WebElement.getRect()}.
 	 * Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param rectangle
 	 *            the retrieved rectangle
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetRect(Step step, Rectangle rectangle, WebElement element);
+	void afterGetRect(Event event, Rectangle rectangle, WebElement element);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Locatable#getCoordinates getCoordinates()}.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetCoordinates(Step step, WebElement element);
+	void beforeGetCoordinates(Event event, WebElement element);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Locatable#getCoordinates getCoordinates()}.
 	 * Not called, if an exception is thrown.
 	 * 
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param coordinates
 	 *            the retrieved coordinates
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetCoordinates(Step step, Coordinates coordinates, WebElement element);
+	void afterGetCoordinates(Event event, Coordinates coordinates, WebElement element);
 
 	/**
 	 * Called before {@link org.openqa.selenium.TakesScreenshot#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
 	 * 
 	 * @param <X>
 	 *            Return type for getScreenshotAs.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param target
 	 *            target type, @see OutputType
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	<X> void beforeGetScreenshotAsByElement(Step step, OutputType<X> target, WebElement element);
+	<X> void beforeGetScreenshotAsByElement(Event event, OutputType<X> target, WebElement element);
 
 	/**
 	 * Called after {@link org.openqa.selenium.TakesScreenshot#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
 	 * 
 	 * @param <X>
 	 *            Return type for getScreenshotAs.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param target
 	 *            target type, @see OutputType
 	 * @param screenshot
@@ -1394,48 +1394,48 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	<X> void afterGetScreenshotAsByElement(Step step, OutputType<X> target, X screenshot, WebElement element);
+	<X> void afterGetScreenshotAsByElement(Event event, OutputType<X> target, X screenshot, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#sendKeys WebElement.sendKeys(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 * @param keysToSend
 	 *            text to insert
 	 */
-	void beforeSendKeysByElement(Step step, WebElement element, CharSequence... keysToSend);
+	void beforeSendKeysByElement(Event event, WebElement element, CharSequence... keysToSend);
 
 	/**
 	 * Called after {@link WebElement#sendKeys WebElement.sendKeys(...)}}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 * @param keysToSend
 	 *            text to insert
 	 */
-	void afterSendKeysByElement(Step step, WebElement element, CharSequence... keysToSend);
+	void afterSendKeysByElement(Event event, WebElement element, CharSequence... keysToSend);
 
 	/**
 	 * Called before {@link WebElement#sendKeys WebElement.sendKeys(...)} if the keys to send
 	 * are the name of a local file.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 * @param localFile
 	 *            local file to upload
 	 */
-	void beforeUploadFile(Step step, WebElement element, File localFile);
+	void beforeUploadFile(Event event, WebElement element, File localFile);
 
 	/**
 	 * Called after {@link WebElement#sendKeys WebElement.sendKeys(...)}} if the keys to send
 	 * are the name of a local file. Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 * @param localFile
@@ -1443,183 +1443,183 @@ public interface IEventListener {
 	 * @param response
 	 *            response to file upload
 	 */
-	void afterUploadFile(Step step, WebElement element, File localFile, String response);
+	void afterUploadFile(Event event, WebElement element, File localFile, String response);
 	
 	/**
 	 * Called before {@link WebElement#submit WebElement.submit()}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeSubmit(Step step, WebElement element);
+	void beforeSubmit(Event event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#submit WebElement.submit()}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterSubmit(Step step, WebElement element);
+	void afterSubmit(Event event, WebElement element);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Keyboard#sendKeys Keyboard.sendKeys(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param keysToSend
 	 *            text to insert
 	 */
-	void beforeSendKeysByKeyboard(Step step, CharSequence... keysToSend);
+	void beforeSendKeysByKeyboard(Event event, CharSequence... keysToSend);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Keyboard#sendKeys Keyboard.sendKeys(...)}}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param keysToSend
 	 *            text to insert
 	 */
-	void afterSendKeysByKeyboard(Step step, CharSequence... keysToSend);
+	void afterSendKeysByKeyboard(Event event, CharSequence... keysToSend);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Keyboard#pressKey Keyboard.pressKey(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param keyToPress
 	 *            key to press
 	 */
-	void beforePressKey(Step step, CharSequence... keyToPress);
+	void beforePressKey(Event event, CharSequence... keyToPress);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Keyboard#pressKey Keyboard.pressKey(...)}}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param keyToPress
 	 *            key to press
 	 */
-	void afterPressKey(Step step, CharSequence... keyToPress);
+	void afterPressKey(Event event, CharSequence... keyToPress);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Keyboard#releaseKey Keyboard.releaseKey(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param keyToRelease
 	 *            key to release
 	 */
-	void beforeReleaseKey(Step step, CharSequence... keyToRelease);
+	void beforeReleaseKey(Event event, CharSequence... keyToRelease);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Keyboard#releaseKey Keyboard.releaseKey(...)}}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param keyToRelease
 	 *            key to release
 	 */
-	void afterReleaseKey(Step step, CharSequence... keyToRelease);
+	void afterReleaseKey(Event event, CharSequence... keyToRelease);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#click Mouse.click(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where click is performed
 	 */
-	void beforeClickByMouse(Step step, Coordinates where);
+	void beforeClickByMouse(Event event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#click Mouse.click(...)}}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where click is performed
 	 */
-	void afterClickByMouse(Step step, Coordinates where);
+	void afterClickByMouse(Event event, Coordinates where);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#doubleClick Mouse.doubleClick(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where double click is performed
 	 */
-	void beforeDoubleClick(Step step, Coordinates where);
+	void beforeDoubleClick(Event event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#doubleClick Mouse.doubleClick(...)}}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where double click is performed
 	 */
-	void afterDoubleClick(Step step, Coordinates where);
+	void afterDoubleClick(Event event, Coordinates where);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#mouseDown Mouse.mouseDown(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where mouse down is performed
 	 */
-	void beforeMouseDown(Step step, Coordinates where);
+	void beforeMouseDown(Event event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#mouseDown Mouse.mouseDown(...)}}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where mouse down is performed
 	 */
-	void afterMouseDown(Step step, Coordinates where);
+	void afterMouseDown(Event event, Coordinates where);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#mouseUp Mouse.mouseUp(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where mouse up is performed
 	 */
-	void beforeMouseUp(Step step, Coordinates where);
+	void beforeMouseUp(Event event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#mouseUp Mouse.mouseUp(...)}}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where mouse up is performed
 	 */
-	void afterMouseUp(Step step, Coordinates where);
+	void afterMouseUp(Event event, Coordinates where);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#mouseMove(Coordinates) Mouse.mouseMove(Coordinates where)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where mouse is moved to
 	 */
-	void beforeMouseMove(Step step, Coordinates where);
+	void beforeMouseMove(Event event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#mouseMove(Coordinates) Mouse.mouseMove(Coordinates where)}}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where mouse is moved to
 	 */
-	void afterMouseMove(Step step, Coordinates where);
+	void afterMouseMove(Event event, Coordinates where);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#mouseMove(Coordinates,long,long) Mouse.mouseMove(Coordinates where, longxOffset, long yOffset)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where mouse is moved to
 	 * @param xOffset
@@ -1627,13 +1627,13 @@ public interface IEventListener {
 	 * @param yOffset
 	 *            offset in y direction
 	 */
-	void beforeMouseMove(Step step, Coordinates where, long xOffset, long yOffset);
+	void beforeMouseMove(Event event, Coordinates where, long xOffset, long yOffset);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#mouseMove(Coordinates,long,long) Mouse.mouseMove(Coordinates where, longxOffset, long yOffset)}.
 	 * Not called, if an exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where mouse is moved to
 	 * @param xOffset
@@ -1641,37 +1641,37 @@ public interface IEventListener {
 	 * @param yOffset
 	 *            offset in y direction
 	 */
-	void afterMouseMove(Step step, Coordinates where, long xOffset, long yOffset);
+	void afterMouseMove(Event event, Coordinates where, long xOffset, long yOffset);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#contextClick Mouse.contextClick(...)}.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where context click is performed
 	 */
-	void beforeContextClick(Step step, Coordinates where);
+	void beforeContextClick(Event event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#contextClick Mouse.contextClick(...)}}. Not called, if an
 	 * exception is thrown.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param where
 	 *            coordinates where context click is performed
 	 */
-	void afterContextClick(Step step, Coordinates where);
+	void afterContextClick(Event event, Coordinates where);
 
 	/**
 	 * Called whenever a command throws an exception.
-	 * @param step
-	 *            step record
+	 * @param event
+	 *            event record
 	 * @param cmd
 	 *            the command which ran into an issue
 	 * @param throwable
 	 *            the exception that will be thrown
 	 */
-	void onException(Step step, Cmd cmd, Throwable throwable);
+	void onException(Event event, Cmd cmd, Throwable throwable);
 	
 	/**
 	 * Gets the list of events logged so far by the implementing listener.
@@ -1682,7 +1682,7 @@ public interface IEventListener {
 	 * 
 	 * @return list of events logged so far
 	 */
-	List<Step> getListOfEventsRecorded();
+	List<Event> getListOfEventsRecorded();
 	
 	/**
 	 * Gets the events logged so far by the implementing listener as a string

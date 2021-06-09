@@ -20,15 +20,15 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 /**
  * Records information on a given WebDriver command such as click() or getText().
  * 
- * The {@link com.salesforce.cqe.driver.EventDispatcher} creates such a record before and after each command. The Step object
+ * The {@link com.salesforce.cqe.driver.EventDispatcher} creates such a record before and after each command. The Event object
  * is then passed on to any listeners implementing the {@link com.salesforce.cqe.driver.listener.IEventListener} interface.
  * 
- * The default listener is {@link com.salesforce.cqe.driver.listener.FullLogger} which collects all Step objects as they come.
+ * The default listener is {@link com.salesforce.cqe.driver.listener.FullLogger} which collects all Event objects as they come.
  * 
  * @author gneumann
  * @since 1.0
  */
-public class Step {
+public class Event {
 	public enum Type { BeforeAction, AfterAction, BeforeGather, AfterGather, Exception }
 	// TODO add Alert
 	public enum WebDriverInterface { WebDriver, JavascriptExecutor, Options, ImeHandler, Navigation, TargetLocator, Timeouts, Window, Alert, WebElement, Keyboard, Mouse, TakesScreenshot }
@@ -197,15 +197,15 @@ public class Step {
 		}
 	}
 
-	private static long timeMarkerElapsedStep;
-	private static long timeMarkerSinceLastStep;
+	private static long timeMarkerElapsedAction;
+	private static long timeMarkerSinceLastEvent;
 	private static int lastRecordNumber = 1;
 
 	private int recordNumber = -1;
-	private int stepNumber = -1;
+	private int eventNumber = -1;
 	private long timeStamp = -1L; // System.currentTimeMillis()
 	private long timeSinceLastAction = -1L; // measured from end of last action to begin of current action
-	private long timeElapsedStep = -1L; // measured from begin of current command to end of current command
+	private long timeElapsedEvent = -1L; // measured from begin of current command to end of current command
 	private Type typeOfLog;
 	private Cmd cmd;
 	private String param1;
@@ -220,31 +220,31 @@ public class Step {
 	/**
 	 * Empty Default constructor to be used by de-serialization.
 	 */
-	public Step( ) {
+	public Event( ) {
 		// no-op
 	}
 
-	public Step(Type typeOfLog, int stepNumber, Cmd cmd) {
-		this.recordNumber = Step.lastRecordNumber++;
+	public Event(Type typeOfLog, int eventNumber, Cmd cmd) {
+		this.recordNumber = Event.lastRecordNumber++;
 		this.typeOfLog = typeOfLog;
-		this.stepNumber = stepNumber;
+		this.eventNumber = eventNumber;
 		this.cmd = cmd;
 		this.timeStamp = System.currentTimeMillis();
 		
 		switch(typeOfLog) {
 		case BeforeAction:
 			timeStampsForBeginAction();
-			timeStampsForBeginStep();
+			timeStampsForBeginEvent();
 			break;
 		case AfterAction:
 			timeStampsForAfterAction();
-			timeStampsForAfterStep();
+			timeStampsForAfterEvent();
 			break;
 		case BeforeGather:
-			timeStampsForBeginStep();
+			timeStampsForBeginEvent();
 			break;
 		case AfterGather:
-			timeStampsForAfterStep();
+			timeStampsForAfterEvent();
 			break;
 		default:
 		}
@@ -254,56 +254,28 @@ public class Step {
 		return recordNumber;
 	}
 
-	public void setRecordNumber(int recordNumber) {
-		this.recordNumber = recordNumber;
-	}
-
-	public int getStepNumber() {
-		return stepNumber;
-	}
-	
-	public void setStepNumber(int stepNumber) {
-		this.stepNumber = stepNumber;
+	public int getEventNumber() {
+		return eventNumber;
 	}
 
 	public long getTimeStamp() {
 		return timeStamp;
 	}
 
-	public void setTimeStamp(long timeStamp) {
-		this.timeStamp = timeStamp;
-	}
-
 	public long getTimeSinceLastAction() {
 		return timeSinceLastAction;
 	}
 
-	public void setTimeSinceLastAction(long timeSinceLastStep) {
-		this.timeSinceLastAction = timeSinceLastStep;
-	}
-
-	public long getTimeElapsedStep() {
-		return timeElapsedStep;
-	}
-
-	public void setTimeElapsedStep(long timeElapsedStep) {
-		this.timeElapsedStep = timeElapsedStep;
+	public long getTimeElapsedEvent() {
+		return timeElapsedEvent;
 	}
 
 	public Type getTypeOfLog() {
 		return typeOfLog;
 	}
 
-	public void setTypeOfLog(Type typeOfLog) {
-		this.typeOfLog = typeOfLog;
-	}
-
 	public Cmd getCmd() {
 		return cmd;
-	}
-
-	public void setCmd(Cmd cmd) {
-		this.cmd = cmd;
 	}
 
 	public String getParam1() {
@@ -357,7 +329,7 @@ public class Step {
 	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("stepno:").append(stepNumber).append(",");
+		buffer.append("eventno:").append(eventNumber).append(",");
 		buffer.append("type:").append(typeOfLog).append(",");
 		buffer.append("timestamp:").append(timeStamp).append(" ms,");
 		buffer.append("cmd:").append(cmd);
@@ -374,10 +346,10 @@ public class Step {
 			buffer.append(",").append("returned:").append(returnObject.toString()).append(",");
 		}
 		if (timeSinceLastAction != -1L) {
-			buffer.append(",").append("since last step:").append(formattedNanoTime(timeSinceLastAction));
+			buffer.append(",").append("since last action:").append(formattedNanoTime(timeSinceLastAction));
 		}
-		if (timeElapsedStep != -1L) {
-			buffer.append(",").append("executed in:").append(formattedNanoTime(timeElapsedStep));
+		if (timeElapsedEvent != -1L) {
+			buffer.append(",").append("executed in:").append(formattedNanoTime(timeElapsedEvent));
 		}
 		if (issue != null) {
 			buffer.append(",").append("issue:").append(issue.getMessage());
@@ -394,21 +366,21 @@ public class Step {
 	}
 
 	private void timeStampsForBeginAction() {
-		if (stepNumber > 1) {
-			timeSinceLastAction = System.nanoTime() - timeMarkerSinceLastStep;
+		if (eventNumber > 1) {
+			timeSinceLastAction = System.nanoTime() - timeMarkerSinceLastEvent;
 		}
 	}
 
 	private void timeStampsForAfterAction() {
-		timeMarkerSinceLastStep = System.nanoTime();
+		timeMarkerSinceLastEvent = System.nanoTime();
 	}
 
-	private void timeStampsForBeginStep() {
-		timeMarkerElapsedStep = System.nanoTime();
+	private void timeStampsForBeginEvent() {
+		timeMarkerElapsedAction = System.nanoTime();
 	}
 
-	private void timeStampsForAfterStep() {
-		timeElapsedStep = System.nanoTime() - timeMarkerElapsedStep;
+	private void timeStampsForAfterEvent() {
+		timeElapsedEvent = System.nanoTime() - timeMarkerElapsedAction;
 	}
 
 	public static String getLocatorFromWebElement(WebElement elem) {

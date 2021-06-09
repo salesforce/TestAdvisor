@@ -23,7 +23,7 @@ import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Coordinates;
 
-import com.salesforce.cqe.driver.listener.Step.Cmd;
+import com.salesforce.cqe.driver.listener.Event.Cmd;
 
 /**
  * Collects information on a given WebDriver command such as click() or getText() and saves this
@@ -31,8 +31,8 @@ import com.salesforce.cqe.driver.listener.Step.Cmd;
  * 
  * The {@link org.openqa.selenium.remote.RemoteWebDriver}, {@link org.openqa.selenium.remote.RemoteWebElement},
  * {@link org.openqa.selenium.remote.RemoteKeyboard}, and {@link org.openqa.selenium.remote.RemoteMouse} have been patched
- * to meet DrillBit's needs and call {@link com.salesforce.cqe.driver.EventDispatcher} which creates {@link com.salesforce.cqe.driver.listener.Step}
- * objects before and after each WebDriver command. This class is a complete log all these Step objects.
+ * to meet DrillBit's needs and call {@link com.salesforce.cqe.driver.EventDispatcher} which creates {@link com.salesforce.cqe.driver.listener.Event}
+ * objects before and after each WebDriver command. This class is a complete log all these Event objects.
  * 
  * @author gneumann
  * @since 1.0
@@ -43,93 +43,93 @@ public class FullLogger extends AbstractEventListener {
 	 *--------------------------------------------------------------------*/
 
 	@Override
-	public void beforeClose(Step step) {
-		logEntries.add(step);
+	public void beforeClose(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterClose(Step step) {
-		logEntries.add(step);
+	public void afterClose(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeFindElementByWebDriver(Step step, By by) {
-		logEntries.add(step);
+	public void beforeFindElementByWebDriver(Event event, By by) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterFindElementByWebDriver(Step step, WebElement returnedElement, By by) {
-		logEntries.add(step);
+	public void afterFindElementByWebDriver(Event event, WebElement returnedElement, By by) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeFindElementsByWebDriver(Step step, By by) {
-		logEntries.add(step);
+	public void beforeFindElementsByWebDriver(Event event, By by) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterFindElementsByWebDriver(Step step, List<WebElement> returnedElements, By by) {
-		logEntries.add(step);
+	public void afterFindElementsByWebDriver(Event event, List<WebElement> returnedElements, By by) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGet(Step step, String url) {
-		logEntries.add(step);
+	public void beforeGet(Event event, String url) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGet(Step step, String url) {
-		logEntries.add(step);
+	public void afterGet(Event event, String url) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetCurrentUrl(Step step) {
-		logEntries.add(step);
+	public void beforeGetCurrentUrl(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetCurrentUrl(Step step, String url) {
-		logEntries.add(step);
+	public void afterGetCurrentUrl(Event event, String url) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetTitle(Step step) {
-		logEntries.add(step);
+	public void beforeGetTitle(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetTitle(Step step, String title) {
-		logEntries.add(step);
+	public void afterGetTitle(Event event, String title) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetWindowHandle(Step step) {
-		logEntries.add(step);
+	public void beforeGetWindowHandle(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetWindowHandle(Step step, String handle) {
-		logEntries.add(step);
+	public void afterGetWindowHandle(Event event, String handle) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetWindowHandles(Step step) {
-		logEntries.add(step);
+	public void beforeGetWindowHandles(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetWindowHandles(Step step, Set<String> handles) {
-		logEntries.add(step);
+	public void afterGetWindowHandles(Event event, Set<String> handles) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeQuit(Step step) {
-		logEntries.add(step);
+	public void beforeQuit(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterQuit(Step step) {
-		logEntries.add(step);
+	public void afterQuit(Event event) {
+		logEntries.add(event);
 	}
 
 	/*--------------------------------------------------------------------
@@ -138,23 +138,23 @@ public class FullLogger extends AbstractEventListener {
 	 *--------------------------------------------------------------------*/
 
 	@Override
-	public void beforeExecuteAsyncScript(Step step, String script, Map<String, ?> params) {
-		logEntries.add(step);
+	public void beforeExecuteAsyncScript(Event event, String script, Map<String, ?> params) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterExecuteAsyncScript(Step step, String script, Map<String, ?> params, Object result) {
-		logEntries.add(step);
+	public void afterExecuteAsyncScript(Event event, String script, Map<String, ?> params, Object result) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeExecuteScript(Step step, String script, Map<String, ?> params) {
-		logEntries.add(step);
+	public void beforeExecuteScript(Event event, String script, Map<String, ?> params) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterExecuteScript(Step step, String script, Map<String, ?> params, Object result) {
-		logEntries.add(step);
+	public void afterExecuteScript(Event event, String script, Map<String, ?> params, Object result) {
+		logEntries.add(event);
 	}
 
 	/*--------------------------------------------------------------------
@@ -163,13 +163,13 @@ public class FullLogger extends AbstractEventListener {
 	 *--------------------------------------------------------------------*/
 
 	@Override
-	public <X> void beforeGetScreenshotAs(Step step, OutputType<X> target) {
-		logEntries.add(step);
+	public <X> void beforeGetScreenshotAs(Event event, OutputType<X> target) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public <X> void afterGetScreenshotAs(Step step, OutputType<X> target, X screenshot) {
-		logEntries.add(step);
+	public <X> void afterGetScreenshotAs(Event event, OutputType<X> target, X screenshot) {
+		logEntries.add(event);
 	}
 
 	/*---------------------------------------------------------------------------
@@ -177,43 +177,43 @@ public class FullLogger extends AbstractEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void beforeBack(Step step) {
-		logEntries.add(step);
+	public void beforeBack(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterBack(Step step) {
-		logEntries.add(step);
+	public void afterBack(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeForward(Step step) {
-		logEntries.add(step);
+	public void beforeForward(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterForward(Step step) {
-		logEntries.add(step);
+	public void afterForward(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeRefresh(Step step) {
-		logEntries.add(step);
+	public void beforeRefresh(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterRefresh(Step step) {
-		logEntries.add(step);
+	public void afterRefresh(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeTo(Step step, String url) {
-		logEntries.add(step);
+	public void beforeTo(Event event, String url) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterTo(Step step, String url) {
-		logEntries.add(step);
+	public void afterTo(Event event, String url) {
+		logEntries.add(event);
 	}
 
 	/*---------------------------------------------------------------------------
@@ -221,83 +221,83 @@ public class FullLogger extends AbstractEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void beforeActiveElement(Step step) {
-		logEntries.add(step);
+	public void beforeActiveElement(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterActiveElement(Step step, WebElement activeElement) {
-		logEntries.add(step);
+	public void afterActiveElement(Event event, WebElement activeElement) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeAlert(Step step) {
-		logEntries.add(step);
+	public void beforeAlert(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterAlert(Step step, Alert alert) {
-		logEntries.add(step);
+	public void afterAlert(Event event, Alert alert) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeDefaultContent(Step step) {
-		logEntries.add(step);
+	public void beforeDefaultContent(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterDefaultContent(Step step) {
-		logEntries.add(step);
+	public void afterDefaultContent(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeFrameByIndex(Step step, int frameIndex) {
-		logEntries.add(step);
+	public void beforeFrameByIndex(Event event, int frameIndex) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterFrameByIndex(Step step, int frameIndex) {
-		logEntries.add(step);
+	public void afterFrameByIndex(Event event, int frameIndex) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeFrameByName(Step step, String frameName) {
-		logEntries.add(step);
+	public void beforeFrameByName(Event event, String frameName) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterFrameByName(Step step, String frameName) {
-		logEntries.add(step);
+	public void afterFrameByName(Event event, String frameName) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeFrameByElement(Step step, WebElement frameElement) {
-		logEntries.add(step);
+	public void beforeFrameByElement(Event event, WebElement frameElement) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterFrameByElement(Step step, WebElement frameElement) {
-		logEntries.add(step);
+	public void afterFrameByElement(Event event, WebElement frameElement) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeParentFrame(Step step) {
-		logEntries.add(step);
+	public void beforeParentFrame(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterParentFrame(Step step) {
-		logEntries.add(step);
+	public void afterParentFrame(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeWindow(Step step, String windowName) {
-		logEntries.add(step);
+	public void beforeWindow(Event event, String windowName) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterWindow(Step step, String windowName) {
-		logEntries.add(step);
+	public void afterWindow(Event event, String windowName) {
+		logEntries.add(event);
 	}
 
 	/*---------------------------------------------------------------------------
@@ -305,33 +305,33 @@ public class FullLogger extends AbstractEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void beforeImplicitlyWait(Step step, long time, TimeUnit unit) {
-		logEntries.add(step);
+	public void beforeImplicitlyWait(Event event, long time, TimeUnit unit) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterImplicitlyWait(Step step, long time, TimeUnit unit) {
-		logEntries.add(step);
+	public void afterImplicitlyWait(Event event, long time, TimeUnit unit) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforePageLoadTimeout(Step step, long time, TimeUnit unit) {
-		logEntries.add(step);
+	public void beforePageLoadTimeout(Event event, long time, TimeUnit unit) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterPageLoadTimeout(Step step, long time, TimeUnit unit) {
-		logEntries.add(step);
+	public void afterPageLoadTimeout(Event event, long time, TimeUnit unit) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeSetScriptTimeout(Step step, long time, TimeUnit unit) {
-		logEntries.add(step);
+	public void beforeSetScriptTimeout(Event event, long time, TimeUnit unit) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterSetScriptTimeout(Step step, long time, TimeUnit unit) {
-		logEntries.add(step);
+	public void afterSetScriptTimeout(Event event, long time, TimeUnit unit) {
+		logEntries.add(event);
 	}
 
 	/*---------------------------------------------------------------------------
@@ -339,63 +339,63 @@ public class FullLogger extends AbstractEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void beforeFullscreen(Step step) {
-		logEntries.add(step);
+	public void beforeFullscreen(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterFullscreen(Step step) {
-		logEntries.add(step);
+	public void afterFullscreen(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetPosition(Step step) {
-		logEntries.add(step);
+	public void beforeGetPosition(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetPosition(Step step, Point targetPosition) {
-		logEntries.add(step);
+	public void afterGetPosition(Event event, Point targetPosition) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetSizeByWindow(Step step) {
-		logEntries.add(step);
+	public void beforeGetSizeByWindow(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetSizeByWindow(Step step, Dimension targetSize) {
-		logEntries.add(step);
+	public void afterGetSizeByWindow(Event event, Dimension targetSize) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeMaximize(Step step) {
-		logEntries.add(step);
+	public void beforeMaximize(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterMaximize(Step step) {
-		logEntries.add(step);
+	public void afterMaximize(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeSetPosition(Step step, Point targetPosition) {
-		logEntries.add(step);
+	public void beforeSetPosition(Event event, Point targetPosition) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterSetPosition(Step step, Point targetPosition) {
-		logEntries.add(step);
+	public void afterSetPosition(Event event, Point targetPosition) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeSetSizeByWindow(Step step, Dimension targetSize) {
-		logEntries.add(step);
+	public void beforeSetSizeByWindow(Event event, Dimension targetSize) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterSetSizeByWindow(Step step, Dimension targetSize) {
-		logEntries.add(step);
+	public void afterSetSizeByWindow(Event event, Dimension targetSize) {
+		logEntries.add(event);
 	}
 
 	/*---------------------------------------------------------------------------
@@ -403,468 +403,468 @@ public class FullLogger extends AbstractEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void beforeClick(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeClick(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterClick(Step step, WebElement element) {
-		logEntries.add(step);
+	public void afterClick(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeClear(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeClear(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterClear(Step step, WebElement element) {
-		logEntries.add(step);
+	public void afterClear(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeFindElementByElement(Step step, By by, WebElement element) {
-		logEntries.add(step);
+	public void beforeFindElementByElement(Event event, By by, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterFindElementByElement(Step step, WebElement returnedElement, By by, WebElement element) {
-		logEntries.add(step);
+	public void afterFindElementByElement(Event event, WebElement returnedElement, By by, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeFindElementsByElement(Step step, By by, WebElement element) {
-		logEntries.add(step);
+	public void beforeFindElementsByElement(Event event, By by, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterFindElementsByElement(Step step, List<WebElement> returnedElements, By by, WebElement element) {
-		logEntries.add(step);
+	public void afterFindElementsByElement(Event event, List<WebElement> returnedElements, By by, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetAttribute(Step step, String name, WebElement element) {
-		logEntries.add(step);
+	public void beforeGetAttribute(Event event, String name, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetAttribute(Step step, String value, String name, WebElement element) {
-		logEntries.add(step);
+	public void afterGetAttribute(Event event, String value, String name, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetCssValue(Step step, String propertyName, WebElement element) {
-		logEntries.add(step);
+	public void beforeGetCssValue(Event event, String propertyName, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetCssValue(Step step, String propertyName, String value, WebElement element) {
-		logEntries.add(step);
+	public void afterGetCssValue(Event event, String propertyName, String value, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetTagName(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeGetTagName(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetTagName(Step step, String tagName, WebElement element) {
-		logEntries.add(step);
+	public void afterGetTagName(Event event, String tagName, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetText(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeGetText(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetText(Step step, String text, WebElement element) {
-		logEntries.add(step);
+	public void afterGetText(Event event, String text, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeIsDisplayed(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeIsDisplayed(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterIsDisplayed(Step step, boolean isDisplayed, WebElement element) {
-		logEntries.add(step);
+	public void afterIsDisplayed(Event event, boolean isDisplayed, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeIsEnabled(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeIsEnabled(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterIsEnabled(Step step, boolean isEnabled, WebElement element) {
-		logEntries.add(step);
+	public void afterIsEnabled(Event event, boolean isEnabled, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeIsSelected(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeIsSelected(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterIsSelected(Step step, boolean isSelected, WebElement element) {
-		logEntries.add(step);
+	public void afterIsSelected(Event event, boolean isSelected, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetLocation(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeGetLocation(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetLocation(Step step, Point point, WebElement element) {
-		logEntries.add(step);
+	public void afterGetLocation(Event event, Point point, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetSizeByElement(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeGetSizeByElement(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetSizeByElement(Step step, Dimension dimension, WebElement element) {
-		logEntries.add(step);
+	public void afterGetSizeByElement(Event event, Dimension dimension, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetRect(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeGetRect(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetRect(Step step, Rectangle rectangle, WebElement element) {
-		logEntries.add(step);
+	public void afterGetRect(Event event, Rectangle rectangle, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeSendKeysByElement(Step step, WebElement element, CharSequence... keysToSend) {
-		logEntries.add(step);
+	public void beforeSendKeysByElement(Event event, WebElement element, CharSequence... keysToSend) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterSendKeysByElement(Step step, WebElement element, CharSequence... keysToSend) {
-		logEntries.add(step);
+	public void afterSendKeysByElement(Event event, WebElement element, CharSequence... keysToSend) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeSubmit(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeSubmit(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterSubmit(Step step, WebElement element) {
-		logEntries.add(step);
+	public void afterSubmit(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeSendKeysByKeyboard(Step step, CharSequence... keysToSend) {
-		logEntries.add(step);
+	public void beforeSendKeysByKeyboard(Event event, CharSequence... keysToSend) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterSendKeysByKeyboard(Step step, CharSequence... keysToSend) {
-		logEntries.add(step);
+	public void afterSendKeysByKeyboard(Event event, CharSequence... keysToSend) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforePressKey(Step step, CharSequence... keyToPress) {
-		logEntries.add(step);
+	public void beforePressKey(Event event, CharSequence... keyToPress) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterPressKey(Step step, CharSequence... keyToPress) {
-		logEntries.add(step);
+	public void afterPressKey(Event event, CharSequence... keyToPress) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeReleaseKey(Step step, CharSequence... keyToPress) {
-		logEntries.add(step);
+	public void beforeReleaseKey(Event event, CharSequence... keyToPress) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterReleaseKey(Step step, CharSequence... keyToPress) {
-		logEntries.add(step);
+	public void afterReleaseKey(Event event, CharSequence... keyToPress) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeClickByMouse(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void beforeClickByMouse(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterClickByMouse(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void afterClickByMouse(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeDoubleClick(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void beforeDoubleClick(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterDoubleClick(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void afterDoubleClick(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeMouseDown(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void beforeMouseDown(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterMouseDown(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void afterMouseDown(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeMouseUp(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void beforeMouseUp(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterMouseUp(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void afterMouseUp(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeMouseMove(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void beforeMouseMove(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterMouseMove(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void afterMouseMove(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeMouseMove(Step step, Coordinates where, long xOffset, long yOffset) {
-		logEntries.add(step);
+	public void beforeMouseMove(Event event, Coordinates where, long xOffset, long yOffset) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterMouseMove(Step step, Coordinates where, long xOffset, long yOffset) {
-		logEntries.add(step);
+	public void afterMouseMove(Event event, Coordinates where, long xOffset, long yOffset) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeContextClick(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void beforeContextClick(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterContextClick(Step step, Coordinates where) {
-		logEntries.add(step);
+	public void afterContextClick(Event event, Coordinates where) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetPageSource(Step step) {
-		logEntries.add(step);
+	public void beforeGetPageSource(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetPageSource(Step step, String source) {
-		logEntries.add(step);
+	public void afterGetPageSource(Event event, String source) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeAddCookie(Step step, Cookie cookie) {
-		logEntries.add(step);
+	public void beforeAddCookie(Event event, Cookie cookie) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterAddCookie(Step step, Cookie cookie) {
-		logEntries.add(step);
+	public void afterAddCookie(Event event, Cookie cookie) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeDeleteCookieNamed(Step step, String name) {
-		logEntries.add(step);
+	public void beforeDeleteCookieNamed(Event event, String name) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterDeleteCookieNamed(Step step, String name) {
-		logEntries.add(step);
+	public void afterDeleteCookieNamed(Event event, String name) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeDeleteCookie(Step step, Cookie cookie) {
-		logEntries.add(step);
+	public void beforeDeleteCookie(Event event, Cookie cookie) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterDeleteCookie(Step step, Cookie cookie) {
-		logEntries.add(step);
+	public void afterDeleteCookie(Event event, Cookie cookie) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeDeleteAllCookies(Step step) {
-		logEntries.add(step);
+	public void beforeDeleteAllCookies(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterDeleteAllCookies(Step step) {
-		logEntries.add(step);
+	public void afterDeleteAllCookies(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetCookies(Step step) {
-		logEntries.add(step);
+	public void beforeGetCookies(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetCookies(Step step, Set<Cookie> cookies) {
-		logEntries.add(step);
+	public void afterGetCookies(Event event, Set<Cookie> cookies) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetCookieNamed(Step step, String name) {
-		logEntries.add(step);
+	public void beforeGetCookieNamed(Event event, String name) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetCookieNamed(Step step, String name, Cookie cookie) {
-		logEntries.add(step);
+	public void afterGetCookieNamed(Event event, String name, Cookie cookie) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetAvailableEngines(Step step) {
-		logEntries.add(step);
+	public void beforeGetAvailableEngines(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetAvailableEngines(Step step, List<String> engines) {
-		logEntries.add(step);
+	public void afterGetAvailableEngines(Event event, List<String> engines) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetActiveEngine(Step step) {
-		logEntries.add(step);
+	public void beforeGetActiveEngine(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetActiveEngine(Step step, String engine) {
-		logEntries.add(step);
+	public void afterGetActiveEngine(Event event, String engine) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeIsActivated(Step step) {
-		logEntries.add(step);
+	public void beforeIsActivated(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterIsActivated(Step step, boolean isActive) {
-		logEntries.add(step);
+	public void afterIsActivated(Event event, boolean isActive) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeDeactivate(Step step) {
-		logEntries.add(step);
+	public void beforeDeactivate(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterDeactivate(Step step) {
-		logEntries.add(step);
+	public void afterDeactivate(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeActivateEngine(Step step, String engine) {
-		logEntries.add(step);
+	public void beforeActivateEngine(Event event, String engine) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterActivateEngine(Step step, String engine) {
-		logEntries.add(step);
+	public void afterActivateEngine(Event event, String engine) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeToUrl(Step step, URL url) {
-		logEntries.add(step);
+	public void beforeToUrl(Event event, URL url) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterToUrl(Step step, URL url) {
-		logEntries.add(step);
+	public void afterToUrl(Event event, URL url) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeDismiss(Step step) {
-		logEntries.add(step);
+	public void beforeDismiss(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterDismiss(Step step) {
-		logEntries.add(step);
+	public void afterDismiss(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeAccept(Step step) {
-		logEntries.add(step);
+	public void beforeAccept(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterAccept(Step step) {
-		logEntries.add(step);
+	public void afterAccept(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetTextByAlert(Step step) {
-		logEntries.add(step);
+	public void beforeGetTextByAlert(Event event) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetTextByAlert(Step step, String text) {
-		logEntries.add(step);
+	public void afterGetTextByAlert(Event event, String text) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeSendKeysByAlert(Step step, String keysToSend) {
-		logEntries.add(step);
+	public void beforeSendKeysByAlert(Event event, String keysToSend) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterSendKeysByAlert(Step step, String keysToSend) {
-		logEntries.add(step);
+	public void afterSendKeysByAlert(Event event, String keysToSend) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeGetCoordinates(Step step, WebElement element) {
-		logEntries.add(step);
+	public void beforeGetCoordinates(Event event, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterGetCoordinates(Step step, Coordinates coordinates, WebElement element) {
-		logEntries.add(step);
+	public void afterGetCoordinates(Event event, Coordinates coordinates, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public <X> void beforeGetScreenshotAsByElement(Step step, OutputType<X> target, WebElement element) {
-		logEntries.add(step);
+	public <X> void beforeGetScreenshotAsByElement(Event event, OutputType<X> target, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public <X> void afterGetScreenshotAsByElement(Step step, OutputType<X> target, X screenshot, WebElement element) {
-		logEntries.add(step);
+	public <X> void afterGetScreenshotAsByElement(Event event, OutputType<X> target, X screenshot, WebElement element) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void beforeUploadFile(Step step, WebElement element, File localFile) {
-		logEntries.add(step);
+	public void beforeUploadFile(Event event, WebElement element, File localFile) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void afterUploadFile(Step step, WebElement element, File localFile, String response) {
-		logEntries.add(step);
+	public void afterUploadFile(Event event, WebElement element, File localFile, String response) {
+		logEntries.add(event);
 	}
 
 	@Override
-	public void onException(Step step, Cmd cmd, Throwable issue) {
-		logEntries.add(step);
+	public void onException(Event event, Cmd cmd, Throwable issue) {
+		logEntries.add(event);
 	}
 	
 	// This listener provides the events in the way defined in AbstractEventListener.
