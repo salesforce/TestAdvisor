@@ -24,9 +24,9 @@ import org.openqa.selenium.interactions.Coordinates;
 
 import com.salesforce.cqe.driver.listener.IEventListener;
 import com.salesforce.cqe.driver.listener.FullLogger;
-import com.salesforce.cqe.driver.listener.Step;
-import com.salesforce.cqe.driver.listener.Step.Cmd;
-import com.salesforce.cqe.driver.listener.Step.Type;
+import com.salesforce.cqe.driver.listener.Event;
+import com.salesforce.cqe.driver.listener.Event.Cmd;
+import com.salesforce.cqe.driver.listener.Event.Type;
 import com.salesforce.cqe.driver.listener.StepsToReproduce;
 
 /**
@@ -38,8 +38,8 @@ public class EventDispatcher {
 	private static EventDispatcher instance = null;
 
 	private final List<IEventListener> eventListeners = new ArrayList<>();
-	private Step currentStep = null;
-	private int stepNumber = 0;
+	private Event currentEvent = null;
+	private int eventNumber = 0;
 
 	public static EventDispatcher getInstance() {
 		if (instance == null)
@@ -58,175 +58,175 @@ public class EventDispatcher {
 	}
 	
 	public void beforeGet(String url) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.get);
-		step.setParam1(url);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.get);
+		event.setParam1(url);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGet(step, url);
+			listener.beforeGet(event, url);
 	}
 
 	public void afterGet(String url) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.get);
-		step.setParam1(url);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.get);
+		event.setParam1(url);
 		for (IEventListener listener : eventListeners)
-			listener.afterGet(step, url);
+			listener.afterGet(event, url);
 	}
 
 	public void beforeGetTitle() {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getTitle);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getTitle);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetTitle(step);
+			listener.beforeGetTitle(event);
 	}
 
 	public void afterGetTitle(String title) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getTitle);
-		step.setReturnValue(title);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getTitle);
+		event.setReturnValue(title);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetTitle(step, title);
+			listener.afterGetTitle(event, title);
 	}
 
 	public void beforeGetCurrentUrl() {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getCurrentUrl);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getCurrentUrl);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetCurrentUrl(step);
+			listener.beforeGetCurrentUrl(event);
 	}
 
 	public void afterGetCurrentUrl(String url) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.get);
-		step.setReturnValue(url);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.get);
+		event.setReturnValue(url);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetCurrentUrl(step, url);
+			listener.afterGetCurrentUrl(event, url);
 	}
 
 	public <X> void beforeGetScreenshotAs(OutputType<X> target) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getScreenshotAs);
-		step.setParam1(target.toString());
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getScreenshotAs);
+		event.setParam1(target.toString());
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetScreenshotAs(step, target);
+			listener.beforeGetScreenshotAs(event, target);
 	}
 
 	public <X> void afterGetScreenshotAs(OutputType<X> target, X screenshot) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getScreenshotAs);
-		step.setParam1(target.toString());
-		step.setReturnObject(screenshot);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getScreenshotAs);
+		event.setParam1(target.toString());
+		event.setReturnObject(screenshot);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetScreenshotAs(step, target, screenshot);
+			listener.afterGetScreenshotAs(event, target, screenshot);
 	}
 
 	public void beforeFindElementsByWebDriver(By by) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.findElementsByWebDriver);
-		step.setParam1(Step.getLocatorFromBy(by));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.findElementsByWebDriver);
+		event.setParam1(Event.getLocatorFromBy(by));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeFindElementsByWebDriver(step, by);
+			listener.beforeFindElementsByWebDriver(event, by);
 	}
 
 	public void afterFindElementsByWebDriver(List<WebElement> elements, By by) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.findElementsByWebDriver);
-		step.setParam1(Step.getLocatorFromBy(by));
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.findElementsByWebDriver);
+		event.setParam1(Event.getLocatorFromBy(by));
 		if (elements.size() > 0) {
 			if (elements.size() == 1)
-				step.setReturnValue(Step.getLocatorFromWebElement(elements.get(0)));
+				event.setReturnValue(Event.getLocatorFromWebElement(elements.get(0)));
 			else
-				step.setReturnValue(Step.getLocatorFromWebElement(elements.get(0)) + " and "
+				event.setReturnValue(Event.getLocatorFromWebElement(elements.get(0)) + " and "
 						+ (elements.size() - 1) + " more");				
 		}
-		step.setReturnObject(elements);
+		event.setReturnObject(elements);
 		for (IEventListener listener : eventListeners)
-			listener.afterFindElementsByWebDriver(step, elements, by);
+			listener.afterFindElementsByWebDriver(event, elements, by);
 	}
 
 	public void beforeFindElementByWebDriver(By by) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.findElementByWebDriver);
-		step.setParam1(Step.getLocatorFromBy(by));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.findElementByWebDriver);
+		event.setParam1(Event.getLocatorFromBy(by));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeFindElementByWebDriver(step, by);
+			listener.beforeFindElementByWebDriver(event, by);
 	}
 
 	public void afterFindElementByWebDriver(WebElement element, By by) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.findElementByWebDriver);
-		step.setParam1(Step.getLocatorFromBy(by));
-		step.setReturnValue(Step.getLocatorFromWebElement(element));
-		step.setReturnObject(element);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.findElementByWebDriver);
+		event.setParam1(Event.getLocatorFromBy(by));
+		event.setReturnValue(Event.getLocatorFromWebElement(element));
+		event.setReturnObject(element);
 		for (IEventListener listener : eventListeners)
-			listener.afterFindElementByWebDriver(step, element, by);
+			listener.afterFindElementByWebDriver(event, element, by);
 	}
 
 	public void beforeGetPageSource() {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getPageSource);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getPageSource);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetPageSource(step);
+			listener.beforeGetPageSource(event);
 	}
 
 	public void afterGetPageSource(String source) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getPageSource);
-		step.setReturnValue(source);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getPageSource);
+		event.setReturnValue(source);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetPageSource(step, source);		
+			listener.afterGetPageSource(event, source);		
 	}
 
 	public void beforeClose() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.close);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.close);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeClose(step);
+			listener.beforeClose(event);
 	}
 
 	public void afterClose() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.get);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.get);
 		for (IEventListener listener : eventListeners)
-			listener.afterClose(step);
+			listener.afterClose(event);
 	}
 
 	public void beforeQuit() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.quit);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.quit);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeQuit(step);
+			listener.beforeQuit(event);
 	}
 
 	public void afterQuit() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.quit);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.quit);
 		for (IEventListener listener : eventListeners)
-			listener.afterQuit(step);
+			listener.afterQuit(event);
 	}
 
 	public void beforeGetWindowHandles() {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getWindowHandles);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getWindowHandles);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetWindowHandles(step);
+			listener.beforeGetWindowHandles(event);
 	}
 
 	public void afterGetWindowHandles(Set<String> handles) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getWindowHandles);
-		step.setReturnObject(handles);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getWindowHandles);
+		event.setReturnObject(handles);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetWindowHandles(step, handles);
+			listener.afterGetWindowHandles(event, handles);
 	}
 
 	public void beforeGetWindowHandle() {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getWindowHandle);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getWindowHandle);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetWindowHandle(step);
+			listener.beforeGetWindowHandle(event);
 	}
 
 	public void afterGetWindowHandle(String handle) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getWindowHandle);
-		step.setReturnValue(handle);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getWindowHandle);
+		event.setReturnValue(handle);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetWindowHandle(step, handle);
+			listener.afterGetWindowHandle(event, handle);
 	}
 
 	public void beforeExecuteScript(String script, Map<String, ?> params) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.executeScript);
-		step.setParam1(script);
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.executeScript);
+		event.setParam1(script);
 		if (!params.isEmpty()) {
 			Set<String> arguments = params.keySet();
 			StringBuilder b = new StringBuilder();
@@ -234,16 +234,16 @@ public class EventDispatcher {
 				b.append(arg).append(",");
 			String param2 = b.toString();
 			// drop the trailing ','
-			step.setParam2(param2.substring(0, param2.length()-1));
+			event.setParam2(param2.substring(0, param2.length()-1));
 		}
-		currentStep = step;
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeExecuteScript(step, script, params);
+			listener.beforeExecuteScript(event, script, params);
 	}
 
 	public void afterExecuteScript(String script, Map<String, ?> params, Object result) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.executeScript);
-		step.setParam1(script);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.executeScript);
+		event.setParam1(script);
 		if (!params.isEmpty()) {
 			Set<String> arguments = params.keySet();
 			StringBuilder b = new StringBuilder();
@@ -251,16 +251,16 @@ public class EventDispatcher {
 				b.append(arg).append(",");
 			String param2 = b.toString();
 			// drop the trailing ','
-			step.setParam2(param2.substring(0, param2.length()-1));
+			event.setParam2(param2.substring(0, param2.length()-1));
 		}
-		step.setReturnObject(result);
+		event.setReturnObject(result);
 		for (IEventListener listener : eventListeners)
-			listener.afterExecuteScript(step, script, params, result);
+			listener.afterExecuteScript(event, script, params, result);
 	}
 
 	public void beforeExecuteAsyncScript(String script, Map<String, ?> params) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.executeAsyncScript);
-		step.setParam1(script);
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.executeAsyncScript);
+		event.setParam1(script);
 		if (!params.isEmpty()) {
 			Set<String> arguments = params.keySet();
 			StringBuilder b = new StringBuilder();
@@ -268,16 +268,16 @@ public class EventDispatcher {
 				b.append(arg).append(",");
 			String param2 = b.toString();
 			// drop the trailing ','
-			step.setParam2(param2.substring(0, param2.length()-1));
+			event.setParam2(param2.substring(0, param2.length()-1));
 		}
-		currentStep = step;
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeExecuteAsyncScript(step, script, params);
+			listener.beforeExecuteAsyncScript(event, script, params);
 	}
 
 	public void afterExecuteAsyncScript(String script, Map<String, ?> params, Object result) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.executeAsyncScript);
-		step.setParam1(script);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.executeAsyncScript);
+		event.setParam1(script);
 		if (!params.isEmpty()) {
 			Set<String> arguments = params.keySet();
 			StringBuilder b = new StringBuilder();
@@ -285,490 +285,490 @@ public class EventDispatcher {
 				b.append(arg).append(",");
 			String param2 = b.toString();
 			// drop the trailing ','
-			step.setParam2(param2.substring(0, param2.length()-1));
+			event.setParam2(param2.substring(0, param2.length()-1));
 		}
-		step.setReturnObject(result);
+		event.setReturnObject(result);
 		for (IEventListener listener : eventListeners)
-			listener.afterExecuteAsyncScript(step, script, params, result);
+			listener.afterExecuteAsyncScript(event, script, params, result);
 	}
 
 	public void beforeAddCookie(Cookie cookie) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.addCookie);
-		step.setParam1(cookie.toString());
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.addCookie);
+		event.setParam1(cookie.toString());
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeAddCookie(step, cookie);
+			listener.beforeAddCookie(event, cookie);
 	}
 
 	public void afterAddCookie(Cookie cookie) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.addCookie);
-		step.setParam1(cookie.toString());
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.addCookie);
+		event.setParam1(cookie.toString());
 		for (IEventListener listener : eventListeners)
-			listener.afterAddCookie(step, cookie);
+			listener.afterAddCookie(event, cookie);
 	}
 
 	public void beforeDeleteCookieNamed(String name) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.deleteCookieNamed);
-		step.setParam1(name);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.deleteCookieNamed);
+		event.setParam1(name);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeDeleteCookieNamed(step, name);
+			listener.beforeDeleteCookieNamed(event, name);
 	}
 
 	public void afterDeleteCookieNamed(String name) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.deleteCookieNamed);
-		step.setParam1(name);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.deleteCookieNamed);
+		event.setParam1(name);
 		for (IEventListener listener : eventListeners)
-			listener.afterDeleteCookieNamed(step, name);
+			listener.afterDeleteCookieNamed(event, name);
 	}
 
 	public void beforeDeleteCookie(Cookie cookie) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.deleteCookie);
-		step.setParam1(cookie.toString());
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.deleteCookie);
+		event.setParam1(cookie.toString());
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeDeleteCookie(step, cookie);
+			listener.beforeDeleteCookie(event, cookie);
 	}
 
 	public void afterDeleteCookie(Cookie cookie) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.deleteCookie);
-		step.setParam1(cookie.toString());
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.deleteCookie);
+		event.setParam1(cookie.toString());
 		for (IEventListener listener : eventListeners)
-			listener.afterDeleteCookie(step, cookie);
+			listener.afterDeleteCookie(event, cookie);
 	}
 
 	public void beforeDeleteAllCookies() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.deleteAllCookies);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.deleteAllCookies);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeDeleteAllCookies(step);
+			listener.beforeDeleteAllCookies(event);
 	}
 
 	public void afterDeleteAllCookies() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.deleteAllCookies);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.deleteAllCookies);
 		for (IEventListener listener : eventListeners)
-			listener.afterDeleteAllCookies(step);
+			listener.afterDeleteAllCookies(event);
 	}
 
 	public void beforeGetCookies() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.getCookies);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.getCookies);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetCookies(step);
+			listener.beforeGetCookies(event);
 	}
 
 	public void afterGetCookies(Set<Cookie> cookies) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.getCookies);
-		step.setReturnObject(cookies);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.getCookies);
+		event.setReturnObject(cookies);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetCookies(step, cookies);
+			listener.afterGetCookies(event, cookies);
 	}
 
 	public void beforeGetCookieNamed(String name) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.getCookieNamed);
-		step.setParam1(name);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.getCookieNamed);
+		event.setParam1(name);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetCookieNamed(step, name);
+			listener.beforeGetCookieNamed(event, name);
 	}
 
 	public void afterGetCookieNamed(String name, Cookie cookie) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.getCookieNamed);
-		step.setParam1(name);
-		step.setReturnObject(cookie);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.getCookieNamed);
+		event.setParam1(name);
+		event.setReturnObject(cookie);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetCookieNamed(step, name, cookie);
+			listener.afterGetCookieNamed(event, name, cookie);
 	}
 
 	public void beforeGetAvailableEngines() {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getAvailableEngines);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getAvailableEngines);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetAvailableEngines(step);
+			listener.beforeGetAvailableEngines(event);
 	}
 
 	public void afterGetAvailableEngines(List<String> engines) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getAvailableEngines);
-		step.setReturnObject(engines);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getAvailableEngines);
+		event.setReturnObject(engines);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetAvailableEngines(step, engines);
+			listener.afterGetAvailableEngines(event, engines);
 	}
 
 	public void beforeGetActiveEngine() {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getActiveEngine);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getActiveEngine);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetActiveEngine(step);
+			listener.beforeGetActiveEngine(event);
 	}
 
 	public void afterGetActiveEngine(String engine) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getActiveEngine);
-		step.setReturnValue(engine);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getActiveEngine);
+		event.setReturnValue(engine);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetActiveEngine(step, engine);
+			listener.afterGetActiveEngine(event, engine);
 	}
 
 	public void beforeIsActivated() {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.isActivated);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.isActivated);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeIsActivated(step);
+			listener.beforeIsActivated(event);
 	}
 
 	public void afterIsActivated(boolean isActivated) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.isActivated);
-		step.setReturnValue(Boolean.toString(isActivated));
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.isActivated);
+		event.setReturnValue(Boolean.toString(isActivated));
 		for (IEventListener listener : eventListeners)
-			listener.afterIsActivated(step, isActivated);
+			listener.afterIsActivated(event, isActivated);
 	}
 
 	public void beforeDeactivate() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.deactivate);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.deactivate);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeDeactivate(step);
+			listener.beforeDeactivate(event);
 	}
 
 	public void afterDeactivate() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.deactivate);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.deactivate);
 		for (IEventListener listener : eventListeners)
-			listener.afterDeactivate(step);
+			listener.afterDeactivate(event);
 	}
 
 	public void beforeActivateEngine(String engine) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.activateEngine);
-		step.setParam1(engine);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.activateEngine);
+		event.setParam1(engine);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeActivateEngine(step, engine);
+			listener.beforeActivateEngine(event, engine);
 	}
 
 	public void afterActivateEngine(String engine) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.activateEngine);
-		step.setParam1(engine);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.activateEngine);
+		event.setParam1(engine);
 		for (IEventListener listener : eventListeners)
-			listener.afterActivateEngine(step, engine);
+			listener.afterActivateEngine(event, engine);
 	}
 
 	public void beforeImplicitlyWait(long time, TimeUnit unit) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.implicitlyWait);
-		step.setParam1(Long.toString(time));
-		step.setParam2(unit.name());
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.implicitlyWait);
+		event.setParam1(Long.toString(time));
+		event.setParam2(unit.name());
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeImplicitlyWait(step, time, unit);
+			listener.beforeImplicitlyWait(event, time, unit);
 	}
 
 	public void afterImplicitlyWait(long time, TimeUnit unit) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.implicitlyWait);
-		step.setParam1(Long.toString(time));
-		step.setParam2(unit.name());
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.implicitlyWait);
+		event.setParam1(Long.toString(time));
+		event.setParam2(unit.name());
 		for (IEventListener listener : eventListeners)
-			listener.afterImplicitlyWait(step, time, unit);
+			listener.afterImplicitlyWait(event, time, unit);
 	}
 
 	public void beforeSetScriptTimeout(long time, TimeUnit unit) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.setScriptTimeout);
-		step.setParam1(Long.toString(time));
-		step.setParam2(unit.name());
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.setScriptTimeout);
+		event.setParam1(Long.toString(time));
+		event.setParam2(unit.name());
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeSetScriptTimeout(step, time, unit);
+			listener.beforeSetScriptTimeout(event, time, unit);
 	}
 
 	public void afterSetScriptTimeout(long time, TimeUnit unit) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.setScriptTimeout);
-		step.setParam1(Long.toString(time));
-		step.setParam2(unit.name());
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.setScriptTimeout);
+		event.setParam1(Long.toString(time));
+		event.setParam2(unit.name());
 		for (IEventListener listener : eventListeners)
-			listener.afterSetScriptTimeout(step, time, unit);
+			listener.afterSetScriptTimeout(event, time, unit);
 	}
 
 	public void beforePageLoadTimeout(long time, TimeUnit unit) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.pageLoadTimeout);
-		step.setParam1(Long.toString(time));
-		step.setParam2(unit.name());
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.pageLoadTimeout);
+		event.setParam1(Long.toString(time));
+		event.setParam2(unit.name());
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforePageLoadTimeout(step, time, unit);
+			listener.beforePageLoadTimeout(event, time, unit);
 	}
 
 	public void afterPageLoadTimeout(long time, TimeUnit unit) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.pageLoadTimeout);
-		step.setParam1(Long.toString(time));
-		step.setParam2(unit.name());
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.pageLoadTimeout);
+		event.setParam1(Long.toString(time));
+		event.setParam2(unit.name());
 		for (IEventListener listener : eventListeners)
-			listener.afterPageLoadTimeout(step, time, unit);
+			listener.afterPageLoadTimeout(event, time, unit);
 	}
 
 	public void beforeSetSizeByWindow(Dimension targetSize) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.setSizeByWindow);
-		step.setParam1(targetSize.getHeight() + "x" + targetSize.getWidth());
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.setSizeByWindow);
+		event.setParam1(targetSize.getHeight() + "x" + targetSize.getWidth());
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeSetSizeByWindow(step, targetSize);
+			listener.beforeSetSizeByWindow(event, targetSize);
 	}
 
 	public void afterSetSizeByWindow(Dimension targetSize) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.setSizeByWindow);
-		step.setParam1(targetSize.getHeight() + "x" + targetSize.getWidth());
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.setSizeByWindow);
+		event.setParam1(targetSize.getHeight() + "x" + targetSize.getWidth());
 		for (IEventListener listener : eventListeners)
-			listener.afterSetSizeByWindow(step, targetSize);
+			listener.afterSetSizeByWindow(event, targetSize);
 	}
 
 	public void beforeSetPosition(Point targetPosition) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.setPosition);
-		step.setParam1("x:" + targetPosition.x + ",y:" + targetPosition.y);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.setPosition);
+		event.setParam1("x:" + targetPosition.x + ",y:" + targetPosition.y);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeSetPosition(step, targetPosition);
+			listener.beforeSetPosition(event, targetPosition);
 	}
 
 	public void afterSetPosition(Point targetPosition) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.setPosition);
-		step.setParam1("x:" + targetPosition.x + ",y:" + targetPosition.y);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.setPosition);
+		event.setParam1("x:" + targetPosition.x + ",y:" + targetPosition.y);
 		for (IEventListener listener : eventListeners)
-			listener.afterSetPosition(step, targetPosition);
+			listener.afterSetPosition(event, targetPosition);
 	}
 
 	public void beforeGetSizeByWindow() {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getSizeByWindow);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getSizeByWindow);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetSizeByWindow(step);
+			listener.beforeGetSizeByWindow(event);
 	}
 
 	public void afterGetSizeByWindow(Dimension size) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getSizeByWindow);
-		step.setReturnValue(String.format("h:%d,w:%d", size.height, size.width));
-		step.setReturnObject(size);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getSizeByWindow);
+		event.setReturnValue(String.format("h:%d,w:%d", size.height, size.width));
+		event.setReturnObject(size);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetSizeByWindow(step, size);
+			listener.afterGetSizeByWindow(event, size);
 	}
 
 	public void beforeGetPosition() {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getPosition);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getPosition);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetPosition(step);
+			listener.beforeGetPosition(event);
 	}
 
 	public void afterGetPosition(Point targetPosition) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getPosition);
-		step.setReturnObject(targetPosition);
-		currentStep = step;
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getPosition);
+		event.setReturnObject(targetPosition);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.afterGetPosition(step, targetPosition);
+			listener.afterGetPosition(event, targetPosition);
 	}
 
 	public void beforeMaximize() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.maximize);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.maximize);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeMaximize(step);
+			listener.beforeMaximize(event);
 	}
 
 	public void afterMaximize() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.maximize);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.maximize);
 		for (IEventListener listener : eventListeners)
-			listener.afterMaximize(step);
+			listener.afterMaximize(event);
 	}
 
 	public void beforeFullscreen() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.fullscreen);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.fullscreen);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeFullscreen(step);
+			listener.beforeFullscreen(event);
 	}
 
 	public void afterFullscreen() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.fullscreen);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.fullscreen);
 		for (IEventListener listener : eventListeners)
-			listener.afterFullscreen(step);
+			listener.afterFullscreen(event);
 	}
 
 	public void beforeBack() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.back);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.back);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeBack(step);
+			listener.beforeBack(event);
 	}
 
 	public void afterBack() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.back);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.back);
 		for (IEventListener listener : eventListeners)
-			listener.afterBack(step);
+			listener.afterBack(event);
 	}
 
 	public void beforeForward() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.forward);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.forward);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeForward(step);
+			listener.beforeForward(event);
 	}
 
 	public void afterForward() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.forward);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.forward);
 		for (IEventListener listener : eventListeners)
-			listener.afterForward(step);
+			listener.afterForward(event);
 	}
 
 	public void beforeTo(String url) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.to);
-		step.setParam1(url);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.to);
+		event.setParam1(url);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeTo(step, url);
+			listener.beforeTo(event, url);
 	}
 
 	public void afterTo(String url) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.to);
-		step.setParam1(url);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.to);
+		event.setParam1(url);
 		for (IEventListener listener : eventListeners)
-			listener.afterTo(step, url);
+			listener.afterTo(event, url);
 	}
 
 	public void beforeToUrl(URL url) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.toUrl);
-		step.setParam1(url.toString());
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.toUrl);
+		event.setParam1(url.toString());
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeToUrl(step, url);
+			listener.beforeToUrl(event, url);
 	}
 
 	public void afterToUrl(URL url) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.toUrl);
-		step.setParam1(url.toString());
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.toUrl);
+		event.setParam1(url.toString());
 		for (IEventListener listener : eventListeners)
-			listener.afterToUrl(step, url);
+			listener.afterToUrl(event, url);
 	}
 
 	public void beforeRefresh() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.refresh);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.refresh);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeRefresh(step);
+			listener.beforeRefresh(event);
 	}
 
 	public void afterRefresh() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.refresh);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.refresh);
 		for (IEventListener listener : eventListeners)
-			listener.afterRefresh(step);
+			listener.afterRefresh(event);
 	}
 
 	public void beforeFrameByIndex(int frameIndex) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.frameByIndex);
-		step.setParam1("" + frameIndex);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.frameByIndex);
+		event.setParam1("" + frameIndex);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeFrameByIndex(step, frameIndex);
+			listener.beforeFrameByIndex(event, frameIndex);
 	}
 
 	public void afterFrameByIndex(int frameIndex) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.frameByIndex);
-		step.setParam1("" + frameIndex);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.frameByIndex);
+		event.setParam1("" + frameIndex);
 		for (IEventListener listener : eventListeners)
-			listener.afterFrameByIndex(step, frameIndex);
+			listener.afterFrameByIndex(event, frameIndex);
 	}
 
 	public void beforeFrameByName(String frameName) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.frameByName);
-		step.setParam1(frameName);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.frameByName);
+		event.setParam1(frameName);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeFrameByName(step, frameName);
+			listener.beforeFrameByName(event, frameName);
 	}
 
 	public void afterFrameByName(String frameName) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.frameByName);
-		step.setParam1(frameName);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.frameByName);
+		event.setParam1(frameName);
 		for (IEventListener listener : eventListeners)
-			listener.afterFrameByName(step, frameName);
+			listener.afterFrameByName(event, frameName);
 	}
 
 	public void beforeFrameByElement(WebElement frameElement) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.frameByElement);
-		step.setParam1(Step.getLocatorFromWebElement(frameElement));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.frameByElement);
+		event.setParam1(Event.getLocatorFromWebElement(frameElement));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeFrameByElement(step, frameElement);
+			listener.beforeFrameByElement(event, frameElement);
 	}
 
 	public void afterFrameByElement(WebElement frameElement) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.frameByElement);
-		step.setParam1(Step.getLocatorFromWebElement(frameElement));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.frameByElement);
+		event.setParam1(Event.getLocatorFromWebElement(frameElement));
 		for (IEventListener listener : eventListeners)
-			listener.afterFrameByElement(step, frameElement);
+			listener.afterFrameByElement(event, frameElement);
 	}
 
 	public void beforeParentFrame() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.parentFrame);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.parentFrame);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeParentFrame(step);
+			listener.beforeParentFrame(event);
 	}
 
 	public void afterParentFrame() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.parentFrame);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.parentFrame);
 		for (IEventListener listener : eventListeners)
-			listener.afterParentFrame(step);
+			listener.afterParentFrame(event);
 	}
 
 	public void beforeWindow(String windowHandleOrName) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.window);
-		step.setParam1(windowHandleOrName);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.window);
+		event.setParam1(windowHandleOrName);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeWindow(step, windowHandleOrName);
+			listener.beforeWindow(event, windowHandleOrName);
 	}
 
 	public void afterWindow(String windowHandleOrName) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.window);
-		step.setParam1(windowHandleOrName);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.window);
+		event.setParam1(windowHandleOrName);
 		for (IEventListener listener : eventListeners)
-			listener.afterWindow(step, windowHandleOrName);
+			listener.afterWindow(event, windowHandleOrName);
 	}
 
 	public void beforeDefaultContent() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.defaultContent);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.defaultContent);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeDefaultContent(step);
+			listener.beforeDefaultContent(event);
 	}
 
 	public void afterDefaultContent() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.defaultContent);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.defaultContent);
 		for (IEventListener listener : eventListeners)
-			listener.afterDefaultContent(step);
+			listener.afterDefaultContent(event);
 	}
 	
 	public void beforeActiveElement() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.activeElement);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.activeElement);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeActiveElement(step);
+			listener.beforeActiveElement(event);
 	}
 
 	public void afterActiveElement(WebElement activeElement) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.activeElement);
-		step.setReturnValue(Step.getLocatorFromWebElement(activeElement));
-		step.setReturnObject(activeElement);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.activeElement);
+		event.setReturnValue(Event.getLocatorFromWebElement(activeElement));
+		event.setReturnObject(activeElement);
 		for (IEventListener listener : eventListeners)
-			listener.afterActiveElement(step, activeElement);
+			listener.afterActiveElement(event, activeElement);
 	}
 
 	public void beforeAlert() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.alert);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.alert);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeAlert(step);
+			listener.beforeAlert(event);
 	}
 
 	public void afterAlert(Alert alert) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.alert);
-		step.setReturnObject(alert);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.alert);
+		event.setReturnObject(alert);
 		for (IEventListener listener : eventListeners)
-			listener.afterAlert(step, alert);
+			listener.afterAlert(event, alert);
 	}
 
 	/* End of methods provided by RemoteTargetLocator */
@@ -776,58 +776,58 @@ public class EventDispatcher {
 	/* Begin of methods provided by RemoteAlert class */
 
 	public void beforeDismiss() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.dismiss);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.dismiss);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeDismiss(step);
+			listener.beforeDismiss(event);
 	}
 
 	public void afterDismiss() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.dismiss);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.dismiss);
 		for (IEventListener listener : eventListeners)
-			listener.afterDismiss(step);
+			listener.afterDismiss(event);
 	}
 
 	public void beforeAccept() {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.accept);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.accept);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeAccept(step);
+			listener.beforeAccept(event);
 	}
 
 	public void afterAccept() {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.accept);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.accept);
 		for (IEventListener listener : eventListeners)
-			listener.afterAccept(step);
+			listener.afterAccept(event);
 	}
 
 	public void beforeGetTextByAlert() {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getTextByAlert);
-		currentStep = step;
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getTextByAlert);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetTextByAlert(step);
+			listener.beforeGetTextByAlert(event);
 	}
 
 	public void afterGetTextByAlert(String text) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getTextByAlert);
-		step.setReturnValue(text);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getTextByAlert);
+		event.setReturnValue(text);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetTextByAlert(step, text);
+			listener.afterGetTextByAlert(event, text);
 	}
 
 	public void beforeSendKeysByAlert(String keysToSend) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.sendKeysByAlert);
-		step.setParam1(keysToSend);
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.sendKeysByAlert);
+		event.setParam1(keysToSend);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeSendKeysByAlert(step, keysToSend);
+			listener.beforeSendKeysByAlert(event, keysToSend);
 	}
 
 	public void afterSendKeysByAlert(String keysToSend) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.accept);
-		step.setParam1(keysToSend);
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.accept);
+		event.setParam1(keysToSend);
 		for (IEventListener listener : eventListeners)
-			listener.afterSendKeysByAlert(step, keysToSend);
+			listener.afterSendKeysByAlert(event, keysToSend);
 	}
 
 	/* End of methods provided by RemoteWebDriver and its inner classes */
@@ -835,328 +835,328 @@ public class EventDispatcher {
 	/* Begin of methods provided by RemoteWebElement class */
 	
 	public void beforeClick(WebElement element) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.clickByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.clickByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeClick(step, element);
+			listener.beforeClick(event, element);
 	}
 
 	public void afterClick(WebElement element) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.clickByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.clickByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
 		for (IEventListener listener : eventListeners)
-			listener.afterClick(step, element);
+			listener.afterClick(event, element);
 	}
 
 	public void beforeSubmit(WebElement element) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.submit);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.submit);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeSubmit(step, element);
+			listener.beforeSubmit(event, element);
 	}
 
 	public void afterSubmit(WebElement element) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.submit);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.submit);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
 		for (IEventListener listener : eventListeners)
-			listener.afterSubmit(step, element);
+			listener.afterSubmit(event, element);
 	}
 
 	public void beforeSendKeysByElement(WebElement element, CharSequence... keysToSend) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.sendKeysByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(maskTextIfPassword(step.getElementLocator(), keysToSend));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.sendKeysByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(maskTextIfPassword(event.getElementLocator(), keysToSend));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeSendKeysByElement(step, element, keysToSend);
+			listener.beforeSendKeysByElement(event, element, keysToSend);
 	}
 
 	public void afterSendKeysByElement(WebElement element, CharSequence... keysToSend) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.sendKeysByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(maskTextIfPassword(step.getElementLocator(), keysToSend));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.sendKeysByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(maskTextIfPassword(event.getElementLocator(), keysToSend));
 		for (IEventListener listener : eventListeners)
-			listener.afterSendKeysByElement(step, element, keysToSend);
+			listener.afterSendKeysByElement(event, element, keysToSend);
 	}
 
 	public void beforeUploadFile(WebElement element, File localFile) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.uploadFile);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(localFile.getPath());
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.uploadFile);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(localFile.getPath());
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeUploadFile(step, element, localFile);
+			listener.beforeUploadFile(event, element, localFile);
 	}
 
 	public void afterUploadFile(WebElement element, File localFile, String response) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.uploadFile);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(localFile.getPath());
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.uploadFile);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(localFile.getPath());
 		for (IEventListener listener : eventListeners)
-			listener.afterUploadFile(step, element, localFile, response);
+			listener.afterUploadFile(event, element, localFile, response);
 	}
 
 	public void beforeClear(WebElement element) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.clear);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.clear);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeClear(step, element);
+			listener.beforeClear(event, element);
 	}
 
 	public void afterClear(WebElement element) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.clear);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.clear);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
 		for (IEventListener listener : eventListeners)
-			listener.afterClear(step, element);
+			listener.afterClear(event, element);
 	}
 
 	public void beforeGetTagName(WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getTagName);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getTagName);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetTagName(step, element);
+			listener.beforeGetTagName(event, element);
 	}
 
 	public void afterGetTagName(String tagName, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getTagName);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setReturnValue(tagName);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getTagName);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setReturnValue(tagName);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetTagName(step, tagName, element);		
+			listener.afterGetTagName(event, tagName, element);		
 	}
 
 	public void beforeGetAttribute(String name, WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getAttribute);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(name);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getAttribute);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(name);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetAttribute(step, name, element);
+			listener.beforeGetAttribute(event, name, element);
 	}
 
 	public void afterGetAttribute(String value, String name, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getAttribute);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(name);
-		step.setReturnValue(value);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getAttribute);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(name);
+		event.setReturnValue(value);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetAttribute(step, value, name, element);		
+			listener.afterGetAttribute(event, value, name, element);		
 	}
 
 	public void beforeIsSelected(WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.isSelected);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.isSelected);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeIsSelected(step, element);
+			listener.beforeIsSelected(event, element);
 	}
 
 	public void afterIsSelected(boolean isSelected, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.isSelected);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setReturnValue(Boolean.toString(isSelected));
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.isSelected);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setReturnValue(Boolean.toString(isSelected));
 		for (IEventListener listener : eventListeners)
-			listener.afterIsSelected(step, isSelected, element);		
+			listener.afterIsSelected(event, isSelected, element);		
 	}
 
 	public void beforeIsEnabled(WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.isEnabled);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.isEnabled);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeIsEnabled(step, element);
+			listener.beforeIsEnabled(event, element);
 	}
 
 	public void afterIsEnabled(boolean isEnabled, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.isEnabled);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setReturnValue(Boolean.toString(isEnabled));
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.isEnabled);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setReturnValue(Boolean.toString(isEnabled));
 		for (IEventListener listener : eventListeners)
-			listener.afterIsEnabled(step, isEnabled, element);		
+			listener.afterIsEnabled(event, isEnabled, element);		
 	}
 
 	public void beforeGetText(WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getText);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getText);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetText(step, element);
+			listener.beforeGetText(event, element);
 	}
 
 	public void afterGetText(String text, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getText);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setReturnValue(text);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getText);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setReturnValue(text);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetText(step, text, element);		
+			listener.afterGetText(event, text, element);		
 	}
 
 	public void beforeGetCssValue(String propertyName, WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getCssValue);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(propertyName);
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getCssValue);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(propertyName);
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetCssValue(step, propertyName, element);
+			listener.beforeGetCssValue(event, propertyName, element);
 	}
 
 	public void afterGetCssValue(String propertyName, String value, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getCssValue);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(propertyName);
-		step.setReturnValue(value);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getCssValue);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(propertyName);
+		event.setReturnValue(value);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetCssValue(step, propertyName, value, element);		
+			listener.afterGetCssValue(event, propertyName, value, element);		
 	}
 
 	public void beforeFindElementsByElement(By by, WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.findElementsByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(Step.getLocatorFromBy(by));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.findElementsByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(Event.getLocatorFromBy(by));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeFindElementsByElement(step, by, element);
+			listener.beforeFindElementsByElement(event, by, element);
 	}
 
 	public void afterFindElementsByElement(List<WebElement> elements, By by, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.findElementsByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(Step.getLocatorFromBy(by));
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.findElementsByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(Event.getLocatorFromBy(by));
 		if (elements.size() > 0) {
 			if (elements.size() == 1)
-				step.setReturnValue(Step.getLocatorFromWebElement(elements.get(0)));
+				event.setReturnValue(Event.getLocatorFromWebElement(elements.get(0)));
 			else
-				step.setReturnValue(Step.getLocatorFromWebElement(elements.get(0)) + " and "
+				event.setReturnValue(Event.getLocatorFromWebElement(elements.get(0)) + " and "
 						+ (elements.size() - 1) + " more");				
 		}
-		step.setReturnObject(elements);
+		event.setReturnObject(elements);
 		for (IEventListener listener : eventListeners)
-			listener.afterFindElementsByElement(step, elements, by, element);
+			listener.afterFindElementsByElement(event, elements, by, element);
 	}
 
 	public void beforeFindElementByElement(By by, WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.findElementByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(Step.getLocatorFromBy(by));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.findElementByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(Event.getLocatorFromBy(by));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeFindElementByElement(step, by, element);
+			listener.beforeFindElementByElement(event, by, element);
 	}
 
 	public void afterFindElementByElement(WebElement returnedElement, By by, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.findElementByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(Step.getLocatorFromBy(by));
-		step.setReturnValue(Step.getLocatorFromWebElement(element));
-		step.setReturnObject(element);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.findElementByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(Event.getLocatorFromBy(by));
+		event.setReturnValue(Event.getLocatorFromWebElement(element));
+		event.setReturnObject(element);
 		for (IEventListener listener : eventListeners)
-			listener.afterFindElementByElement(step, element, by, element);
+			listener.afterFindElementByElement(event, element, by, element);
 	}
 
 	public void beforeIsDisplayed(WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.isDisplayed);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.isDisplayed);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeIsDisplayed(step, element);
+			listener.beforeIsDisplayed(event, element);
 	}
 
 	public void afterIsDisplayed(boolean isDisplayed, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.isDisplayed);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setReturnValue(Boolean.toString(isDisplayed));
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.isDisplayed);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setReturnValue(Boolean.toString(isDisplayed));
 		for (IEventListener listener : eventListeners)
-			listener.afterIsDisplayed(step, isDisplayed, element);		
+			listener.afterIsDisplayed(event, isDisplayed, element);		
 	}
 
 	public void beforeGetLocation(WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getLocation);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getLocation);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetLocation(step, element);
+			listener.beforeGetLocation(event, element);
 	}
 
 	public void afterGetLocation(Point point, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getLocation);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setReturnValue(String.format("x:%d,y:%d", point.x, point.y));
-		step.setReturnObject(point);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getLocation);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setReturnValue(String.format("x:%d,y:%d", point.x, point.y));
+		event.setReturnObject(point);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetLocation(step, point, element);		
+			listener.afterGetLocation(event, point, element);		
 	}
 
 	public void beforeGetSizeByElement(WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getSizeByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getSizeByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetSizeByElement(step, element);
+			listener.beforeGetSizeByElement(event, element);
 	}
 
 	public void afterGetSizeByElement(Dimension size, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getSizeByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setReturnValue(String.format("h:%d,w:%d", size.height, size.width));
-		step.setReturnObject(size);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getSizeByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setReturnValue(String.format("h:%d,w:%d", size.height, size.width));
+		event.setReturnObject(size);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetSizeByElement(step, size, element);		
+			listener.afterGetSizeByElement(event, size, element);		
 	}
 
 	public void beforeGetRect(WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getRect);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getRect);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetRect(step, element);
+			listener.beforeGetRect(event, element);
 	}
 
 	public void afterGetRect(Rectangle rectangle, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getRect);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setReturnValue(String.format("h:%d,w:%d", rectangle.height, rectangle.width));
-		step.setReturnObject(rectangle);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getRect);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setReturnValue(String.format("h:%d,w:%d", rectangle.height, rectangle.width));
+		event.setReturnObject(rectangle);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetRect(step, rectangle, element);		
+			listener.afterGetRect(event, rectangle, element);		
 	}
 
 	public void beforeGetCoordinates(WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getCoordinates);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getCoordinates);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetCoordinates(step, element);
+			listener.beforeGetCoordinates(event, element);
 	}
 
 	public void afterGetCoordinates(Coordinates coordinates, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getCoordinates);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setReturnValue(String.format("x:%d,y:%d in view port", coordinates.inViewPort().x, coordinates.inViewPort().y));
-		step.setReturnObject(coordinates);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getCoordinates);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setReturnValue(String.format("x:%d,y:%d in view port", coordinates.inViewPort().x, coordinates.inViewPort().y));
+		event.setReturnObject(coordinates);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetCoordinates(step, coordinates, element);		
+			listener.afterGetCoordinates(event, coordinates, element);		
 	}
 
 	public <X> void beforeGetScreenshotAsByElement(OutputType<X> target, WebElement element) {
-		Step step = new Step(Type.BeforeGather, stepNumber, Cmd.getScreenshotAsByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(target.toString());
-		currentStep = step;
+		Event event = new Event(Type.BeforeGather, eventNumber, Cmd.getScreenshotAsByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(target.toString());
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeGetScreenshotAsByElement(step, target, element);
+			listener.beforeGetScreenshotAsByElement(event, target, element);
 	}
 
 	public <X> void afterGetScreenshotAsByElement(OutputType<X> target, X screenshot, WebElement element) {
-		Step step = new Step(Type.AfterGather, stepNumber, Cmd.getScreenshotAsByElement);
-		step.setElementLocator(Step.getLocatorFromWebElement(element));
-		step.setParam1(target.toString());
-		step.setReturnObject(screenshot);
+		Event event = new Event(Type.AfterGather, eventNumber, Cmd.getScreenshotAsByElement);
+		event.setElementLocator(Event.getLocatorFromWebElement(element));
+		event.setParam1(target.toString());
+		event.setReturnObject(screenshot);
 		for (IEventListener listener : eventListeners)
-			listener.afterGetScreenshotAsByElement(step, target, screenshot, element);
+			listener.afterGetScreenshotAsByElement(event, target, screenshot, element);
 	}
 	
 	/* End of methods provided by RemoteWebElement class */
@@ -1164,45 +1164,45 @@ public class EventDispatcher {
 	/* Begin of methods provided by RemoteKeyboard class */
 
 	public void beforeSendKeysByKeyboard(CharSequence... keysToSend) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.sendKeysByKeyboard);
-		step.setParam1(charSequence2String(keysToSend));
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.sendKeysByKeyboard);
+		event.setParam1(charSequence2String(keysToSend));
 		for (IEventListener listener : eventListeners)
-			listener.beforeSendKeysByKeyboard(step, keysToSend);
+			listener.beforeSendKeysByKeyboard(event, keysToSend);
 	}
 
 	public void afterSendKeysByKeyboard(CharSequence... keysToSend) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.sendKeysByKeyboard);
-		step.setParam1(charSequence2String(keysToSend));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.sendKeysByKeyboard);
+		event.setParam1(charSequence2String(keysToSend));
 		for (IEventListener listener : eventListeners)
-			listener.afterSendKeysByKeyboard(step, keysToSend);
+			listener.afterSendKeysByKeyboard(event, keysToSend);
 	}
 
 	public void beforePressKey(CharSequence... keyToPress) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.pressKey);
-		step.setParam1(charSequence2String(keyToPress));
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.pressKey);
+		event.setParam1(charSequence2String(keyToPress));
 		for (IEventListener listener : eventListeners)
-			listener.beforePressKey(step, keyToPress);
+			listener.beforePressKey(event, keyToPress);
 	}
 
 	public void afterPressKey(CharSequence... keyToPress) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.pressKey);
-		step.setParam1(charSequence2String(keyToPress));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.pressKey);
+		event.setParam1(charSequence2String(keyToPress));
 		for (IEventListener listener : eventListeners)
-			listener.afterPressKey(step, keyToPress);
+			listener.afterPressKey(event, keyToPress);
 	}
 
 	public void beforeReleaseKey(CharSequence... keyToRelease) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.releaseKey);
-		step.setParam1(charSequence2String(keyToRelease));
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.releaseKey);
+		event.setParam1(charSequence2String(keyToRelease));
 		for (IEventListener listener : eventListeners)
-			listener.beforeReleaseKey(step, keyToRelease);
+			listener.beforeReleaseKey(event, keyToRelease);
 	}
 
 	public void afterReleaseKey(CharSequence... keyToRelease) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.releaseKey);
-		step.setParam1(charSequence2String(keyToRelease));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.releaseKey);
+		event.setParam1(charSequence2String(keyToRelease));
 		for (IEventListener listener : eventListeners)
-			listener.afterReleaseKey(step, keyToRelease);
+			listener.afterReleaseKey(event, keyToRelease);
 	}
 	
 	/* End of methods provided by RemoteKeyboard class */
@@ -1210,115 +1210,115 @@ public class EventDispatcher {
 	/* Begin of methods provided by RemoteMouse class */
 
 	public void beforeClickByMouse(Coordinates where) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.clickByMouse);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.clickByMouse);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeClickByMouse(step, where);
+			listener.beforeClickByMouse(event, where);
 	}
 
 	public void afterClickByMouse(Coordinates where) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.clickByMouse);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.clickByMouse);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
-			listener.afterClickByMouse(step, where);
+			listener.afterClickByMouse(event, where);
 	}
 
 	public void beforeContextClick(Coordinates where) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.contextClick);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.contextClick);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeContextClick(step, where);
+			listener.beforeContextClick(event, where);
 	}
 
 	public void afterContextClick(Coordinates where) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.contextClick);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.contextClick);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
-			listener.afterContextClick(step, where);
+			listener.afterContextClick(event, where);
 	}
 
 	public void beforeDoubleClick(Coordinates where) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.doubleClick);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.doubleClick);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeDoubleClick(step, where);
+			listener.beforeDoubleClick(event, where);
 	}
 
 	public void afterDoubleClick(Coordinates where) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.doubleClick);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.doubleClick);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
-			listener.afterDoubleClick(step, where);
+			listener.afterDoubleClick(event, where);
 	}
 
 	public void beforeMouseDown(Coordinates where) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.mouseDown);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.mouseDown);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeMouseDown(step, where);
+			listener.beforeMouseDown(event, where);
 	}
 
 	public void afterMouseDown(Coordinates where) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.mouseDown);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.mouseDown);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
-			listener.afterMouseDown(step, where);
+			listener.afterMouseDown(event, where);
 	}
 
 	public void beforeMouseUp(Coordinates where) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.mouseUp);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.mouseUp);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeMouseUp(step, where);
+			listener.beforeMouseUp(event, where);
 	}
 
 	public void afterMouseUp(Coordinates where) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.mouseUp);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.mouseUp);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
-			listener.afterMouseUp(step, where);
+			listener.afterMouseUp(event, where);
 	}
 
 	public void beforeMouseMove(Coordinates where) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.mouseMove);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.mouseMove);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeMouseMove(step, where);
+			listener.beforeMouseMove(event, where);
 	}
 
 	public void afterMouseMove(Coordinates where) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.mouseMove);
-		step.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.mouseMove);
+		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
-			listener.afterMouseMove(step, where);
+			listener.afterMouseMove(event, where);
 	}
 
 	public void beforeMouseMove(Coordinates where, long xOffset, long yOffset) {
-		Step step = new Step(Type.BeforeAction, stepNumber, Cmd.mouseMoveWithOffset);
-		step.setParam1(String.format("x:%d,y:%d in view port, x:%d,y:%d offset", where.inViewPort().x, where.inViewPort().y, xOffset, yOffset));
-		currentStep = step;
+		Event event = new Event(Type.BeforeAction, eventNumber, Cmd.mouseMoveWithOffset);
+		event.setParam1(String.format("x:%d,y:%d in view port, x:%d,y:%d offset", where.inViewPort().x, where.inViewPort().y, xOffset, yOffset));
+		currentEvent = event;
 		for (IEventListener listener : eventListeners)
-			listener.beforeMouseMove(step, where, xOffset, yOffset);
+			listener.beforeMouseMove(event, where, xOffset, yOffset);
 	}
 
 	public void afterMouseMove(Coordinates where, long xOffset, long yOffset) {
-		Step step = new Step(Type.AfterAction, stepNumber++, Cmd.mouseMoveWithOffset);
-		step.setParam1(String.format("x:%d,y:%d in view port, x:%d,y:%d offset", where.inViewPort().x, where.inViewPort().y, xOffset, yOffset));
+		Event event = new Event(Type.AfterAction, eventNumber++, Cmd.mouseMoveWithOffset);
+		event.setParam1(String.format("x:%d,y:%d in view port, x:%d,y:%d offset", where.inViewPort().x, where.inViewPort().y, xOffset, yOffset));
 		for (IEventListener listener : eventListeners)
-			listener.afterMouseMove(step, where, xOffset, yOffset);
+			listener.afterMouseMove(event, where, xOffset, yOffset);
 	}
 
 	public void onException(String cmd, Throwable throwable) {
-		Step step = new Step(Type.Exception, stepNumber, currentStep.getCmd());
-		step.setParam1(String.format("Exception Type: %s, message: %s", throwable.getClass().getName(), throwable.getMessage()));
+		Event event = new Event(Type.Exception, eventNumber, currentEvent.getCmd());
+		event.setParam1(String.format("Exception Type: %s, message: %s", throwable.getClass().getName(), throwable.getMessage()));
 		for (IEventListener listener : eventListeners)
-			listener.onException(step, currentStep.getCmd(), throwable);
+			listener.onException(event, currentEvent.getCmd(), throwable);
 	}
 
 	private String maskTextIfPassword(String locator, CharSequence... charSequence) {

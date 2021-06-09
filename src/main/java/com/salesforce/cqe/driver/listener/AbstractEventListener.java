@@ -35,7 +35,7 @@ import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Coordinates;
 
-import com.salesforce.cqe.driver.listener.Step.Cmd;
+import com.salesforce.cqe.driver.listener.Event.Cmd;
 
 /**
  * Use this class as base class, if you want to implement a
@@ -49,90 +49,90 @@ import com.salesforce.cqe.driver.listener.Step.Cmd;
  * @since 1.0
  */
 public abstract class AbstractEventListener implements IEventListener {
-	protected List<Step> logEntries = new ArrayList<>();
+	protected List<Event> logEntries = new ArrayList<>();
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver object.
 	 *--------------------------------------------------------------------*/
 
 	@Override
-	public void beforeClose(Step step) {
+	public void beforeClose(Event event) {
 	}
 
 	@Override
-	public void afterClose(Step step) {
+	public void afterClose(Event event) {
 	}
 
 	@Override
-	public void beforeFindElementByWebDriver(Step step, By by) {
+	public void beforeFindElementByWebDriver(Event event, By by) {
 	}
 
 	@Override
-	public void afterFindElementByWebDriver(Step step, WebElement returnedElement, By by) {
+	public void afterFindElementByWebDriver(Event event, WebElement returnedElement, By by) {
 	}
 
 	@Override
-	public void beforeFindElementsByWebDriver(Step step, By by) {
+	public void beforeFindElementsByWebDriver(Event event, By by) {
 	}
 
 	@Override
-	public void afterFindElementsByWebDriver(Step step, List<WebElement> returnedElements, By by) {
+	public void afterFindElementsByWebDriver(Event event, List<WebElement> returnedElements, By by) {
 	}
 
 	@Override
-	public void beforeGet(Step step, String url) {
+	public void beforeGet(Event event, String url) {
 	}
 
 	@Override
-	public void afterGet(Step step, String url) {
+	public void afterGet(Event event, String url) {
 	}
 
 	@Override
-	public void beforeGetCurrentUrl(Step step) {
+	public void beforeGetCurrentUrl(Event event) {
 	}
 
 	@Override
-	public void afterGetCurrentUrl(Step step, String url) {
+	public void afterGetCurrentUrl(Event event, String url) {
 	}
 
 	@Override
-	public void beforeGetPageSource(Step step) {
+	public void beforeGetPageSource(Event event) {
 	}
 
 	@Override
-	public void afterGetPageSource(Step step, String source) {
+	public void afterGetPageSource(Event event, String source) {
 	}
 
 	@Override
-	public void beforeGetTitle(Step step) {
+	public void beforeGetTitle(Event event) {
 	}
 
 	@Override
-	public void afterGetTitle(Step step, String title) {
+	public void afterGetTitle(Event event, String title) {
 	}
 
 	@Override
-	public void beforeGetWindowHandle(Step step) {
+	public void beforeGetWindowHandle(Event event) {
 	}
 
 	@Override
-	public void afterGetWindowHandle(Step step, String handle) {
+	public void afterGetWindowHandle(Event event, String handle) {
 	}
 
 	@Override
-	public void beforeGetWindowHandles(Step step) {
+	public void beforeGetWindowHandles(Event event) {
 	}
 
 	@Override
-	public void afterGetWindowHandles(Step step, Set<String> handles) {
+	public void afterGetWindowHandles(Event event, Set<String> handles) {
 	}
 
 	@Override
-	public void beforeQuit(Step step) {
+	public void beforeQuit(Event event) {
 	}
 
 	@Override
-	public void afterQuit(Step step) {
+	public void afterQuit(Event event) {
 	}
 
 	/*--------------------------------------------------------------------
@@ -141,19 +141,19 @@ public abstract class AbstractEventListener implements IEventListener {
 	 *--------------------------------------------------------------------*/
 
 	@Override
-	public void beforeExecuteAsyncScript(Step step, String script, Map<String, ?> params) {
+	public void beforeExecuteAsyncScript(Event event, String script, Map<String, ?> params) {
 	}
 
 	@Override
-	public void afterExecuteAsyncScript(Step step, String script, Map<String, ?> params, Object result) {
+	public void afterExecuteAsyncScript(Event event, String script, Map<String, ?> params, Object result) {
 	}
 
 	@Override
-	public void beforeExecuteScript(Step step, String script, Map<String, ?> params) {
+	public void beforeExecuteScript(Event event, String script, Map<String, ?> params) {
 	}
 
 	@Override
-	public void afterExecuteScript(Step step, String script, Map<String, ?> params, Object result) {
+	public void afterExecuteScript(Event event, String script, Map<String, ?> params, Object result) {
 	}
 
 	/*--------------------------------------------------------------------
@@ -162,11 +162,11 @@ public abstract class AbstractEventListener implements IEventListener {
 	 *--------------------------------------------------------------------*/
 
 	@Override
-	public <X> void beforeGetScreenshotAs(Step step, OutputType<X> target) {
+	public <X> void beforeGetScreenshotAs(Event event, OutputType<X> target) {
 	}
 
 	@Override
-	public <X> void afterGetScreenshotAs(Step step, OutputType<X> target, X screenshot) {
+	public <X> void afterGetScreenshotAs(Event event, OutputType<X> target, X screenshot) {
 	}
 
 	/*---------------------------------------------------------------------------
@@ -174,35 +174,35 @@ public abstract class AbstractEventListener implements IEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void beforeBack(Step step) {
+	public void beforeBack(Event event) {
 	}
 
 	@Override
-	public void afterBack(Step step) {
+	public void afterBack(Event event) {
 	}
 
 	@Override
-	public void beforeForward(Step step) {
+	public void beforeForward(Event event) {
 	}
 
 	@Override
-	public void afterForward(Step step) {
+	public void afterForward(Event event) {
 	}
 
 	@Override
-	public void beforeRefresh(Step step) {
+	public void beforeRefresh(Event event) {
 	}
 
 	@Override
-	public void afterRefresh(Step step) {
+	public void afterRefresh(Event event) {
 	}
 
 	@Override
-	public void beforeTo(Step step, String url) {
+	public void beforeTo(Event event, String url) {
 	}
 
 	@Override
-	public void afterTo(Step step, String url) {
+	public void afterTo(Event event, String url) {
 	}
 
 	/*---------------------------------------------------------------------------
@@ -210,67 +210,67 @@ public abstract class AbstractEventListener implements IEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void beforeActiveElement(Step step) {
+	public void beforeActiveElement(Event event) {
 	}
 
 	@Override
-	public void afterActiveElement(Step step, WebElement activeElement) {
+	public void afterActiveElement(Event event, WebElement activeElement) {
 	}
 
 	@Override
-	public void beforeAlert(Step step) {
+	public void beforeAlert(Event event) {
 	}
 
 	@Override
-	public void afterAlert(Step step, Alert alert) {
+	public void afterAlert(Event event, Alert alert) {
 	}
 
 	@Override
-	public void beforeDefaultContent(Step step) {
+	public void beforeDefaultContent(Event event) {
 	}
 
 	@Override
-	public void afterDefaultContent(Step step) {
+	public void afterDefaultContent(Event event) {
 	}
 
 	@Override
-	public void beforeFrameByIndex(Step step, int frameIndex) {
+	public void beforeFrameByIndex(Event event, int frameIndex) {
 	}
 
 	@Override
-	public void afterFrameByIndex(Step step, int frameIndex) {
+	public void afterFrameByIndex(Event event, int frameIndex) {
 	}
 
 	@Override
-	public void beforeFrameByName(Step step, String frameName) {
+	public void beforeFrameByName(Event event, String frameName) {
 	}
 
 	@Override
-	public void afterFrameByName(Step step, String frameName) {
+	public void afterFrameByName(Event event, String frameName) {
 	}
 
 	@Override
-	public void beforeFrameByElement(Step step, WebElement frameElement) {
+	public void beforeFrameByElement(Event event, WebElement frameElement) {
 	}
 
 	@Override
-	public void afterFrameByElement(Step step, WebElement frameElement) {
+	public void afterFrameByElement(Event event, WebElement frameElement) {
 	}
 
 	@Override
-	public void beforeParentFrame(Step step) {
+	public void beforeParentFrame(Event event) {
 	}
 
 	@Override
-	public void afterParentFrame(Step step) {
+	public void afterParentFrame(Event event) {
 	}
 
 	@Override
-	public void beforeWindow(Step step, String windowName) {
+	public void beforeWindow(Event event, String windowName) {
 	}
 
 	@Override
-	public void afterWindow(Step step, String windowName) {
+	public void afterWindow(Event event, String windowName) {
 	}
 
 	/*---------------------------------------------------------------------------
@@ -278,27 +278,27 @@ public abstract class AbstractEventListener implements IEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void beforeImplicitlyWait(Step step, long time, TimeUnit unit) {
+	public void beforeImplicitlyWait(Event event, long time, TimeUnit unit) {
 	}
 
 	@Override
-	public void afterImplicitlyWait(Step step, long time, TimeUnit unit) {
+	public void afterImplicitlyWait(Event event, long time, TimeUnit unit) {
 	}
 
 	@Override
-	public void beforePageLoadTimeout(Step step, long time, TimeUnit unit) {
+	public void beforePageLoadTimeout(Event event, long time, TimeUnit unit) {
 	}
 
 	@Override
-	public void afterPageLoadTimeout(Step step, long time, TimeUnit unit) {
+	public void afterPageLoadTimeout(Event event, long time, TimeUnit unit) {
 	}
 
 	@Override
-	public void beforeSetScriptTimeout(Step step, long time, TimeUnit unit) {
+	public void beforeSetScriptTimeout(Event event, long time, TimeUnit unit) {
 	}
 
 	@Override
-	public void afterSetScriptTimeout(Step step, long time, TimeUnit unit) {
+	public void afterSetScriptTimeout(Event event, long time, TimeUnit unit) {
 	}
 
 	/*---------------------------------------------------------------------------
@@ -306,51 +306,51 @@ public abstract class AbstractEventListener implements IEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void beforeFullscreen(Step step) {
+	public void beforeFullscreen(Event event) {
 	}
 
 	@Override
-	public void afterFullscreen(Step step) {
+	public void afterFullscreen(Event event) {
 	}
 
 	@Override
-	public void beforeGetPosition(Step step) {
+	public void beforeGetPosition(Event event) {
 	}
 
 	@Override
-	public void afterGetPosition(Step step, Point targetPosition) {
+	public void afterGetPosition(Event event, Point targetPosition) {
 	}
 
 	@Override
-	public void beforeGetSizeByWindow(Step step) {
+	public void beforeGetSizeByWindow(Event event) {
 	}
 
 	@Override
-	public void afterGetSizeByWindow(Step step, Dimension targetSize) {
+	public void afterGetSizeByWindow(Event event, Dimension targetSize) {
 	}
 
 	@Override
-	public void beforeMaximize(Step step) {
+	public void beforeMaximize(Event event) {
 	}
 
 	@Override
-	public void afterMaximize(Step step) {
+	public void afterMaximize(Event event) {
 	}
 
 	@Override
-	public void beforeSetPosition(Step step, Point targetPosition) {
+	public void beforeSetPosition(Event event, Point targetPosition) {
 	}
 
 	@Override
-	public void afterSetPosition(Step step, Point targetPosition) {
+	public void afterSetPosition(Event event, Point targetPosition) {
 	}
 
 	@Override
-	public void beforeSetSizeByWindow(Step step, Dimension targetSize) {
+	public void beforeSetSizeByWindow(Event event, Dimension targetSize) {
 	}
 
 	@Override
-	public void afterSetSizeByWindow(Step step, Dimension targetSize) {
+	public void afterSetSizeByWindow(Event event, Dimension targetSize) {
 	}
 
 	/*---------------------------------------------------------------------------
@@ -358,215 +358,215 @@ public abstract class AbstractEventListener implements IEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void beforeClick(Step step, WebElement element) {
+	public void beforeClick(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterClick(Step step, WebElement element) {
+	public void afterClick(Event event, WebElement element) {
 	}
 
 	@Override
-	public void beforeClear(Step step, WebElement element) {
+	public void beforeClear(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterClear(Step step, WebElement element) {
+	public void afterClear(Event event, WebElement element) {
 	}
 
 	@Override
-	public void beforeFindElementByElement(Step step, By by, WebElement element) {
+	public void beforeFindElementByElement(Event event, By by, WebElement element) {
 	}
 
 	@Override
-	public void afterFindElementByElement(Step step, WebElement returnedElement, By by, WebElement element) {
+	public void afterFindElementByElement(Event event, WebElement returnedElement, By by, WebElement element) {
 	}
 
 	@Override
-	public void beforeFindElementsByElement(Step step, By by, WebElement element) {
+	public void beforeFindElementsByElement(Event event, By by, WebElement element) {
 	}
 
 	@Override
-	public void afterFindElementsByElement(Step step, List<WebElement> returnedElements, By by, WebElement element) {
+	public void afterFindElementsByElement(Event event, List<WebElement> returnedElements, By by, WebElement element) {
 	}
 
 	@Override
-	public void beforeGetAttribute(Step step, String name, WebElement element) {
+	public void beforeGetAttribute(Event event, String name, WebElement element) {
 	}
 
 	@Override
-	public void afterGetAttribute(Step step, String value, String name, WebElement element) {
+	public void afterGetAttribute(Event event, String value, String name, WebElement element) {
 	}
 
 	@Override
-	public void beforeGetCssValue(Step step, String propertyName, WebElement element) {
+	public void beforeGetCssValue(Event event, String propertyName, WebElement element) {
 	}
 
 	@Override
-	public void afterGetCssValue(Step step, String propertyName, String value, WebElement element) {
+	public void afterGetCssValue(Event event, String propertyName, String value, WebElement element) {
 	}
 
 	@Override
-	public void beforeGetTagName(Step step, WebElement element) {
+	public void beforeGetTagName(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterGetTagName(Step step, String tagName, WebElement element) {
+	public void afterGetTagName(Event event, String tagName, WebElement element) {
 	}
 
 	@Override
-	public void beforeGetText(Step step, WebElement element) {
+	public void beforeGetText(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterGetText(Step step, String text, WebElement element) {
+	public void afterGetText(Event event, String text, WebElement element) {
 	}
 
 	@Override
-	public void beforeIsDisplayed(Step step, WebElement element) {
+	public void beforeIsDisplayed(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterIsDisplayed(Step step, boolean isDisplayed, WebElement element) {
+	public void afterIsDisplayed(Event event, boolean isDisplayed, WebElement element) {
 	}
 
 	@Override
-	public void beforeIsEnabled(Step step, WebElement element) {
+	public void beforeIsEnabled(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterIsEnabled(Step step, boolean isEnabled, WebElement element) {
+	public void afterIsEnabled(Event event, boolean isEnabled, WebElement element) {
 	}
 
 	@Override
-	public void beforeIsSelected(Step step, WebElement element) {
+	public void beforeIsSelected(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterIsSelected(Step step, boolean isSelected, WebElement element) {
+	public void afterIsSelected(Event event, boolean isSelected, WebElement element) {
 	}
 
 	@Override
-	public void beforeGetLocation(Step step, WebElement element) {
+	public void beforeGetLocation(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterGetLocation(Step step, Point point, WebElement element) {
+	public void afterGetLocation(Event event, Point point, WebElement element) {
 	}
 
 	@Override
-	public void beforeGetSizeByElement(Step step, WebElement element) {
+	public void beforeGetSizeByElement(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterGetSizeByElement(Step step, Dimension dimension, WebElement element) {
+	public void afterGetSizeByElement(Event event, Dimension dimension, WebElement element) {
 	}
 
 	@Override
-	public void beforeGetRect(Step step, WebElement element) {
+	public void beforeGetRect(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterGetRect(Step step, Rectangle rectangle, WebElement element) {
+	public void afterGetRect(Event event, Rectangle rectangle, WebElement element) {
 	}
 
 	@Override
-	public void beforeSendKeysByElement(Step step, WebElement element, CharSequence... keysToSend) {
+	public void beforeSendKeysByElement(Event event, WebElement element, CharSequence... keysToSend) {
 	}
 
 	@Override
-	public void afterSendKeysByElement(Step step, WebElement element, CharSequence... keysToSend) {
+	public void afterSendKeysByElement(Event event, WebElement element, CharSequence... keysToSend) {
 	}
 
 	@Override
-	public void beforeSubmit(Step step, WebElement element) {
+	public void beforeSubmit(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterSubmit(Step step, WebElement element) {
+	public void afterSubmit(Event event, WebElement element) {
 	}
 
 	@Override
-	public void beforeSendKeysByKeyboard(Step step, CharSequence... keysToSend) {
+	public void beforeSendKeysByKeyboard(Event event, CharSequence... keysToSend) {
 	}
 
 	@Override
-	public void afterSendKeysByKeyboard(Step step, CharSequence... keysToSend) {
+	public void afterSendKeysByKeyboard(Event event, CharSequence... keysToSend) {
 	}
 
 	@Override
-	public void beforePressKey(Step step, CharSequence... keyToPress) {
+	public void beforePressKey(Event event, CharSequence... keyToPress) {
 	}
 
 	@Override
-	public void afterPressKey(Step step, CharSequence... keyToPress) {
+	public void afterPressKey(Event event, CharSequence... keyToPress) {
 	}
 
 	@Override
-	public void beforeReleaseKey(Step step, CharSequence... keyToPress) {
+	public void beforeReleaseKey(Event event, CharSequence... keyToPress) {
 	}
 
 	@Override
-	public void afterReleaseKey(Step step, CharSequence... keyToPress) {
+	public void afterReleaseKey(Event event, CharSequence... keyToPress) {
 	}
 
 	@Override
-	public void beforeClickByMouse(Step step, Coordinates where) {
+	public void beforeClickByMouse(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void afterClickByMouse(Step step, Coordinates where) {
+	public void afterClickByMouse(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void beforeDoubleClick(Step step, Coordinates where) {
+	public void beforeDoubleClick(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void afterDoubleClick(Step step, Coordinates where) {
+	public void afterDoubleClick(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void beforeMouseDown(Step step, Coordinates where) {
+	public void beforeMouseDown(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void afterMouseDown(Step step, Coordinates where) {
+	public void afterMouseDown(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void beforeMouseUp(Step step, Coordinates where) {
+	public void beforeMouseUp(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void afterMouseUp(Step step, Coordinates where) {
+	public void afterMouseUp(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void beforeMouseMove(Step step, Coordinates where) {
+	public void beforeMouseMove(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void afterMouseMove(Step step, Coordinates where) {
+	public void afterMouseMove(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void beforeMouseMove(Step step, Coordinates where, long xOffset, long yOffset) {
+	public void beforeMouseMove(Event event, Coordinates where, long xOffset, long yOffset) {
 	}
 
 	@Override
-	public void afterMouseMove(Step step, Coordinates where, long xOffset, long yOffset) {
+	public void afterMouseMove(Event event, Coordinates where, long xOffset, long yOffset) {
 	}
 
 	@Override
-	public void beforeContextClick(Step step, Coordinates where) {
+	public void beforeContextClick(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void afterContextClick(Step step, Coordinates where) {
+	public void afterContextClick(Event event, Coordinates where) {
 	}
 
 	@Override
-	public void onException(Step step, Cmd cmd, Throwable issue) {
+	public void onException(Event event, Cmd cmd, Throwable issue) {
 	}
 
 	/**
@@ -580,159 +580,159 @@ public abstract class AbstractEventListener implements IEventListener {
 	}
 
 	@Override
-	public void beforeAddCookie(Step step, Cookie cookie) {
+	public void beforeAddCookie(Event event, Cookie cookie) {
 	}
 
 	@Override
-	public void afterAddCookie(Step step, Cookie cookie) {
+	public void afterAddCookie(Event event, Cookie cookie) {
 	}
 
 	@Override
-	public void beforeDeleteCookieNamed(Step step, String name) {
+	public void beforeDeleteCookieNamed(Event event, String name) {
 	}
 
 	@Override
-	public void afterDeleteCookieNamed(Step step, String name) {
+	public void afterDeleteCookieNamed(Event event, String name) {
 	}
 
 	@Override
-	public void beforeDeleteCookie(Step step, Cookie cookie) {
+	public void beforeDeleteCookie(Event event, Cookie cookie) {
 	}
 
 	@Override
-	public void afterDeleteCookie(Step step, Cookie cookie) {
+	public void afterDeleteCookie(Event event, Cookie cookie) {
 	}
 
 	@Override
-	public void beforeDeleteAllCookies(Step step) {
+	public void beforeDeleteAllCookies(Event event) {
 	}
 
 	@Override
-	public void afterDeleteAllCookies(Step step) {
+	public void afterDeleteAllCookies(Event event) {
 	}
 
 	@Override
-	public void beforeGetCookies(Step step) {
+	public void beforeGetCookies(Event event) {
 	}
 
 	@Override
-	public void afterGetCookies(Step step, Set<Cookie> cookies) {
+	public void afterGetCookies(Event event, Set<Cookie> cookies) {
 	}
 
 	@Override
-	public void beforeGetCookieNamed(Step step, String name) {
+	public void beforeGetCookieNamed(Event event, String name) {
 	}
 
 	@Override
-	public void afterGetCookieNamed(Step step, String name, Cookie cookie) {
+	public void afterGetCookieNamed(Event event, String name, Cookie cookie) {
 	}
 
 	@Override
-	public void beforeGetAvailableEngines(Step step) {
+	public void beforeGetAvailableEngines(Event event) {
 	}
 
 	@Override
-	public void afterGetAvailableEngines(Step step, List<String> engines) {
+	public void afterGetAvailableEngines(Event event, List<String> engines) {
 	}
 
 	@Override
-	public void beforeGetActiveEngine(Step step) {
+	public void beforeGetActiveEngine(Event event) {
 	}
 
 	@Override
-	public void afterGetActiveEngine(Step step, String engine) {
+	public void afterGetActiveEngine(Event event, String engine) {
 	}
 
 	@Override
-	public void beforeIsActivated(Step step) {
+	public void beforeIsActivated(Event event) {
 	}
 
 	@Override
-	public void afterIsActivated(Step step, boolean isActive) {
+	public void afterIsActivated(Event event, boolean isActive) {
 	}
 
 	@Override
-	public void beforeDeactivate(Step step) {
+	public void beforeDeactivate(Event event) {
 	}
 
 	@Override
-	public void afterDeactivate(Step step) {
+	public void afterDeactivate(Event event) {
 	}
 
 	@Override
-	public void beforeActivateEngine(Step step, String engine) {
+	public void beforeActivateEngine(Event event, String engine) {
 	}
 
 	@Override
-	public void afterActivateEngine(Step step, String engine) {
+	public void afterActivateEngine(Event event, String engine) {
 	}
 
 	@Override
-	public void beforeToUrl(Step step, URL url) {
+	public void beforeToUrl(Event event, URL url) {
 	}
 
 	@Override
-	public void afterToUrl(Step step, URL url) {
+	public void afterToUrl(Event event, URL url) {
 	}
 
 	@Override
-	public void beforeDismiss(Step step) {
+	public void beforeDismiss(Event event) {
 	}
 
 	@Override
-	public void afterDismiss(Step step) {
+	public void afterDismiss(Event event) {
 	}
 
 	@Override
-	public void beforeAccept(Step step) {
+	public void beforeAccept(Event event) {
 	}
 
 	@Override
-	public void afterAccept(Step step) {
+	public void afterAccept(Event event) {
 	}
 
 	@Override
-	public void beforeGetTextByAlert(Step step) {
+	public void beforeGetTextByAlert(Event event) {
 	}
 
 	@Override
-	public void afterGetTextByAlert(Step step, String text) {
+	public void afterGetTextByAlert(Event event, String text) {
 	}
 
 	@Override
-	public void beforeSendKeysByAlert(Step step, String keysToSend) {
+	public void beforeSendKeysByAlert(Event event, String keysToSend) {
 	}
 
 	@Override
-	public void afterSendKeysByAlert(Step step, String keysToSend) {
+	public void afterSendKeysByAlert(Event event, String keysToSend) {
 	}
 
 	@Override
-	public void beforeGetCoordinates(Step step, WebElement element) {
+	public void beforeGetCoordinates(Event event, WebElement element) {
 	}
 
 	@Override
-	public void afterGetCoordinates(Step step, Coordinates coordinates, WebElement element) {
+	public void afterGetCoordinates(Event event, Coordinates coordinates, WebElement element) {
 	}
 
 	@Override
-	public <X> void beforeGetScreenshotAsByElement(Step step, OutputType<X> target, WebElement element) {
+	public <X> void beforeGetScreenshotAsByElement(Event event, OutputType<X> target, WebElement element) {
 	}
 
 	@Override
-	public <X> void afterGetScreenshotAsByElement(Step step, OutputType<X> target, X screenshot, WebElement element) {
+	public <X> void afterGetScreenshotAsByElement(Event event, OutputType<X> target, X screenshot, WebElement element) {
 	}
 
 	@Override
-	public void beforeUploadFile(Step step, WebElement element, File localFile) {
+	public void beforeUploadFile(Event event, WebElement element, File localFile) {
 	}
 
 	@Override
-	public void afterUploadFile(Step step, WebElement element, File localFile, String response) {
+	public void afterUploadFile(Event event, WebElement element, File localFile, String response) {
 	}
 
 	@Override
-	public List<Step> getListOfEventsRecorded() {
+	public List<Event> getListOfEventsRecorded() {
 		return Collections.unmodifiableList(logEntries);
 	}
 	
