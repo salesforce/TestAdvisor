@@ -7,9 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -29,17 +27,13 @@ public class JsonHelper {
 	 */
 	public static <T> T toObject(String fileName, Class<T> clazz) throws Exception {
 		T retrievedObject = null;
+		// Convert JSON string from file to Object
 		try {
-			// Convert JSON string from file to Object
 			retrievedObject = new ObjectMapper().readValue(new File(fileName), clazz);
-			System.out.println("Done reading object from JSON file " + fileName);
-		} catch (JsonGenerationException e) {
-			throw new Exception("Error while de-serializing object from JSON file " + fileName, e);
-		} catch (JsonMappingException e) {
-			throw new Exception("Error while de-serializing object from JSON file " + fileName, e);
 		} catch (IOException e) {
 			throw new Exception("Error while de-serializing object from JSON file " + fileName, e);
 		}
+		System.out.println("Done reading object from JSON file " + fileName);
 		return retrievedObject;
 	}
 
