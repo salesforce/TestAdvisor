@@ -35,6 +35,7 @@ import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Coordinates;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.salesforce.cqe.driver.listener.Event.Cmd;
 
 /**
@@ -49,6 +50,7 @@ import com.salesforce.cqe.driver.listener.Event.Cmd;
  * @since 1.0
  */
 public abstract class AbstractEventListener implements IEventListener {
+	@JsonProperty("logEntries")
 	protected List<Event> logEntries = new ArrayList<>();
 
 	/*--------------------------------------------------------------------
@@ -731,6 +733,7 @@ public abstract class AbstractEventListener implements IEventListener {
 	public void afterUploadFile(Event event, WebElement element, File localFile, String response) {
 	}
 
+	@JsonProperty("logEntries")
 	@Override
 	public List<Event> getListOfEventsRecorded() {
 		return Collections.unmodifiableList(logEntries);

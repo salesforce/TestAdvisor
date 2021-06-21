@@ -11,9 +11,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.salesforce.cqe.common.JsonHelper;
 import com.salesforce.cqe.driver.EventDispatcher;
 import com.salesforce.cqe.driver.listener.FullLogger;
 import com.salesforce.cqe.driver.listener.IEventListener;
@@ -95,6 +97,18 @@ public class TestEventDispatching {
 		int numOfEventsBefore = fullLogger.getListOfEventsRecorded().size();
 		assertEquals(MockCommandExecutor.STRING_ALLISWELL_VALUE, wd.getTitle());
 		assertNumOfLogEntries("getTitle", numOfEventsBefore, fullLogger.getListOfEventsRecorded().size(), 2);
+	}
+
+	@Test
+	public void testWriteEventsToDisk() {
+		WebElement we = wd.findElement(By.id("someId"));
+		assertNotNull(we);
+		final long timeStamp = System.currentTimeMillis();
+		try {
+			JsonHelper.toFile("test-output/state" + timeStamp + ".json", fullLogger.getListOfEventsRecorded());
+		} catch (Exception e) {
+			Assert.fail("writing full log details failed", e);
+		}
 	}
 	
 	private void assertNumOfLogEntries(String command, int before, int after, int expectedDifference) {
