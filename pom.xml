@@ -165,7 +165,13 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.12.1</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 	<scm>
 		<developerConnection>scm:git:git@git.soma.salesforce.com:cqe/DrillBit-Lib.git</developerConnection>
