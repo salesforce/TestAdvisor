@@ -5,13 +5,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -38,7 +36,7 @@ public class JsonReporter {
 	 * 
 	 * @return a String object containing the root directory of the registry
 	 */
-    static String retrieveRootDirectory() {
+    public static String retrieveRootDirectory() {
     	/*
     	 * Order of Precedence
     	 * 1) The environment variable's value has been set --> it can be entered via the CLI or read from a property's file
@@ -63,7 +61,7 @@ public class JsonReporter {
      * 
      * @return a String object containing the root directory of the Test Run folder
      */
-    static String retrieveAbsoluteRootDirectory() {
+    public static String retrieveAbsoluteRootDirectory() {
     	LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
         String formattedDate = localDateTime.format(formatter);
@@ -88,5 +86,10 @@ public class JsonReporter {
 			e.printStackTrace();
 		}
 	}
+	
+	// Overload this method public void saveToRegistry(TestCaseExecution testCaseExecution) --> support concurrent testing for v2
+	// Check for both cases:
+	// 1. the test-result.json already exists - append to existing file
+	// 2. the test-result.json doesn't exist - create new file and append to it as such ^
 
 }

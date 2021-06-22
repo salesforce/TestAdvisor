@@ -53,13 +53,21 @@ public class TestCaseExecution {
         return event;
     }
 
+    /**
+     * 
+     */
+    public void saveEndTime() {
+    	endTime = Instant.now().toString();
+    }
+    
 //    /**
 //     * Appends the current instance of the TestCaseExecution class
 //     * to the JSON file.
+//     * 
+//     * Move this to the DBA.java file
 //     */
 //    public void saveTestCaseExecution() {
-//        // Use the JSONReporter to write to JSON here
-//    	endTime = Instant.now().toString();
-//    	
+//    	// Instantiate a JSON Reporter here
+//    	// Use the JSONReporter to write to JSON here
 //    }
 }

@@ -32,8 +32,14 @@ public class DrillBitAdministrator { // Look at implementing the Singleton Patte
     private DrillBitAdministrator() {
         jsonReporter = new JsonReporter();
         payloadList = new ArrayList<TestCaseExecution>();
+        
+        createTestRun();
     }
 
+    /**
+     * 
+     * @return
+     */
     public static synchronized DrillBitAdministrator getInstance() {
     	
     	if (drillBitAdminInstance == null) {
@@ -50,17 +56,9 @@ public class DrillBitAdministrator { // Look at implementing the Singleton Patte
     /**
      * Creates a hierarchy of empty folders within the Registry for each test run.
      * 
-     * @return root_file represents the TestRun-yyyyMMdd-HHmmss folder that will contain the Screenshots subdirectory
+     * @return root_file represents the TestRun-yyyyMMdd-HHmmss folder that will contain the Screenshots sub-directory
      */
-    public File createTestRun() {
-//        LocalDateTime localDateTime = LocalDateTime.now();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
-//        String formattedDate = localDateTime.format(formatter);
-//
-//        // 	Look at PathObject.resolve() for creating a Path that works for all OSes
-////        String rootDirectory = JsonReporter.retrieveRootDirectory() + "/TestRun-" + formattedDate;
-////        Path rootPath = Paths.get(rootDirectory);
-//        Path rootPath = Paths.get(JsonReporter.retrieveRootDirectory(), "/TestRun-", formattedDate);
+    private File createTestRun() {
         String rootDirectory = JsonReporter.retrieveAbsoluteRootDirectory();
         
         File root_file = new File(rootDirectory);
@@ -68,8 +66,6 @@ public class DrillBitAdministrator { // Look at implementing the Singleton Patte
         System.out.println("Root Directory: " + rootDirectory);
         System.out.println("Screenshots Subdirectory: " + rootDirectory + "/Screenshots");
         if (!screenshots_file.exists()) {
-//            root_file.mkdirs();
-//            System.out.println("Root Directory successfully created!");
             screenshots_file.mkdirs();
             System.out.println("Root Directory + Screenshots Subdirectory successfully created!");
         }
