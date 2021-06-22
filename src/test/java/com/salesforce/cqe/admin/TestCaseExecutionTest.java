@@ -1,37 +1,24 @@
 package com.salesforce.cqe.admin;
 
 import com.salesforce.cqe.driver.listener.Event;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * @author gpahuja
+ *
+ */
 public class TestCaseExecutionTest {
 
-    TestCaseExecution testCaseExecution;
-    Event event;
-
-    @Before
-    public void setUp() throws Exception {
-        System.out.println("Setting up the for the TestCaseExecutionTest class");
-        testCaseExecution = new TestCaseExecution();
-        event = new Event();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        System.out.println("Tearing down the TestCaseExecutionTest class");
-
-        testCaseExecution = null;
-        event = null;
-
-        assertNull(testCaseExecution);
-        assertNull(event);
-    }
-
+    private TestCaseExecution testCaseExecution = new TestCaseExecution();
+    private Event event = new Event();
+    
+    /**
+     * Tests to make sure that the appendEvent() method works as expected
+     */
     @Test
-    public void appendEvent() {
+    public void testAppendEvent() {
         System.out.println("Running the test(s) for appendEvent()");
 
         assertEquals(0, testCaseExecution.eventList.size());
@@ -47,10 +34,12 @@ public class TestCaseExecutionTest {
         assertEquals(10, testCaseExecution.eventList.size());
     }
 
-    @Test
-    public void saveTestCaseExecution() {
-        System.out.println("Running the test(s) for saveTestCaseExecution()");
-
-
-    }
+//    /**
+//     * Tests to make sure that the saveTestCaseExecution() method works as expected
+//     */
+//    @Test
+//    public void testSaveTestCaseExecution() {
+//        System.out.println("Running the test(s) for saveTestCaseExecution()");
+//        fail("Not yet implemented");
+//    }
 }
