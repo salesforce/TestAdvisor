@@ -19,13 +19,17 @@ public class JsonHelper {
 	/**
 	 * Constructs instance of give type from JSON file.
 	 * 
-	 * @param <T> class to be de-serialized
+	 * @param <T>      class to be de-serialized
 	 * @param fileName JSON file to de-serialize.
-	 * @param clazz de-serialize JSON file as an object of this class
+	 * @param clazz    de-serialize JSON file as an object of this class
 	 * @return de-serialized object or null in case of any exception
-	 * @throws Exception if file got corrupted or does not fit the class to de-serialize
+	 * @throws Exception if file got corrupted or does not fit the class to
+	 *                   de-serialize
 	 */
 	public static <T> T toObject(String fileName, Class<T> clazz) throws Exception {
+		if (!(new File(fileName)).exists()) {
+			throw new Exception("Cannot de-serialize object from non-existing JSON file " + fileName);
+		}
 		T retrievedObject = null;
 		// Convert JSON string from file to Object
 		try {
@@ -39,18 +43,18 @@ public class JsonHelper {
 
 	/**
 	 * Saves given object to JSON file.
-	 *  
+	 * 
 	 * @param fileName JSON file with serialized object information
-	 * @param object to be serialized
+	 * @param object   to be serialized
 	 * @throws Exception if object could not be serialized to file
 	 */
 	public static void toFile(String fileName, Object object) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
-    	// Set pretty printing of json
-    	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+		// Set pretty printing of json
+		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-    	// convert object to JSON
-    	String logEntriesToJson = null;
+		// convert object to JSON
+		String logEntriesToJson = null;
 		try {
 			logEntriesToJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
 		} catch (JsonProcessingException e1) {
