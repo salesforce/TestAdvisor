@@ -35,3 +35,4 @@ bin/pom.xml
 bin/README.md
 drillbit-lib.iml
 drillbit-lib.iml
+/bin/
