@@ -1,12 +1,13 @@
 package com.salesforce.cqe.provider.listener;
 
 import org.testng.ITestListener;
+import org.testng.IExecutionListener;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
-import com.salesforce.cqe.context.ExecutionContext;
-import com.salesforce.cqe.manager.ExecutionManager;
-
+import com.salesforce.cqe.admin.DrillBitAdministrator;
+import com.salesforce.cqe.admin.TestCaseExecution;
+import com.salesforce.cqe.driver.listener.Event;
 
 
 /**
@@ -16,38 +17,67 @@ import com.salesforce.cqe.manager.ExecutionManager;
  * test listener will collect detailed test execution information, 
  * such as exact timestamp, error message and execeptions
  */
-public class TestListener implements ITestListener {
-    
-    private ExecutionContext executionContext = ExecutionManager.getExecutionContext();
+public class TestListener implements ITestListener, IExecutionListener {
 
+    DrillBitAdministrator administrator;
+
+    //ITestListener
     @Override
     public void onStart(ITestContext context){
-        //not implemented yet
-        //collect data before test starts
-        executionContext.getReporter().log();
+        //Invoked after the test class is instantiated and before any configuration method is called.
+        administrator.createTestCaseExecution();
     }
 
     @Override
     public void onFinish(ITestContext context){
-        //not implemented yet
-        //collect data before test starts
+        //Invoked after all the tests have run and all their Configuration methods have been called.
+        TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
+        testCaseExecution.saveEndTime();
     }
 
     @Override
     public void onTestFailure(ITestResult result){
-        //not implmented yet
-        //collect data when test failed
+        //Invoked each time a test fails.
+        TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
+        //append failure event
+        testCaseExecution.appendEvent(new Event());
     }
 
     @Override
     public void onTestSuccess(ITestResult result){
-        //not implmented yet
-        //collect data when test succeed
+        //Invoked each time a test succeeds.
+        TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
+        //append success event
+        testCaseExecution.appendEvent(new Event());
     }
 
     @Override
     public void onTestSkipped(ITestResult result){
-        //not implmented yet
-        //collect data when test skipped
+        //Invoked each time a test is skipped.
+        TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
+        //append skip event
+        testCaseExecution.appendEvent(new Event());
+    }
+
+    @Override
+    public void onTestStart(ITestResult result){
+        //Invoked each time before a test will be invoked.
+        TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
+        //append start event
+        testCaseExecution.appendEvent(new Event());
+        //save test name
+    }
+
+    //IExecutionListener 
+    @Override
+    public void onExecutionStart(){
+        //Invoked before the TestNG run starts.
+        administrator = DrillBitAdministrator.getInstance();
+    }
+
+    @Override
+    public void onExecutionFinish(){
+        //Invoked once all the suites have been run.
+        administrator.saveTestCaseExecutionList();
     }
 }
