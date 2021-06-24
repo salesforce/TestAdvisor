@@ -1,6 +1,5 @@
 package com.salesforce.cqe.admin;
 
-import com.salesforce.cqe.driver.listener.Event;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.File;
@@ -10,15 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * 
  * This class consolidates all of the events from a single test.
  * An instance of this class will be created at the start of a test and all of the events
  * emanating/resulting from that test will be collected for that specific test
  * and then flushed to the registry once the test has finished running.
+ * 
+ * @author gpahuja
  *
  */
 public class TestCaseExecution {
 
+	@JsonProperty
+	public String testName;
+	
     @JsonProperty
     public List<Event> eventList;
     
@@ -39,7 +43,43 @@ public class TestCaseExecution {
         testStatus = TestStatus.PASSED;
         startTime = Instant.now().toString();
     }
+    
+    /**
+     * This function will return the current test case's name
+     * 
+     * @return testName represents the current test case's name
+     */
+    public String getTestName() {
+    	return testName;
+    }
+    
+    /**
+     * This function will update the current test case's name to the value of 'testName'
+     * 
+     * @param testName represents the new test name for the current test case
+     */
+    public void setTestName(String testName) {
+    	this.testName = testName;
+    }
 
+    /**
+     * This function will return the current test case's status
+     * 
+     * @return testStatus represents the current test case's status
+     */
+    public TestStatus getTestStatus() {
+    	return testStatus;
+    }
+    
+    /**
+     * This function will update the current test case's status to the value of 'status'
+     * 
+     * @param status represents the new test status for the current test case
+     */
+    public void setTestStatus(TestStatus status) {
+    	testStatus = status;
+    }
+    
     /**
      * This function will append an Event instance 'event' to the 'eventList'
      * and also return 'event'
@@ -53,21 +93,11 @@ public class TestCaseExecution {
         return event;
     }
 
-    /**
-     * 
-     */
+	/**
+	 * Saves the current test case's end time of execution
+	 */
     public void saveEndTime() {
     	endTime = Instant.now().toString();
     }
     
-//    /**
-//     * Appends the current instance of the TestCaseExecution class
-//     * to the JSON file.
-//     * 
-//     * Move this to the DBA.java file
-//     */
-//    public void saveTestCaseExecution() {
-//    	// Instantiate a JSON Reporter here
-//    	// Use the JSONReporter to write to JSON here
-//    }
 }
