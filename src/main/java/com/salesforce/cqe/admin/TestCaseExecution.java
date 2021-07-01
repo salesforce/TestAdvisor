@@ -2,8 +2,6 @@ package com.salesforce.cqe.admin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.File;
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;

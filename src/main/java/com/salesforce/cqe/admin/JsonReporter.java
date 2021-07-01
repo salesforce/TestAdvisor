@@ -1,95 +1,107 @@
 package com.salesforce.cqe.admin;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 /**
- *
- * This class will assist in converting the information extracted from the test suite's payloads
- * into a properly formatted JSON file following a specific JSON Schema
+ * 
+ * This class will assist in converting the information extracted from 
+ * the test suite's payloads into a properly formatted JSON file
+ * following a specific JSON Schema
+ * 
+ * @author gpahuja
  *
  */
 public class JsonReporter {
 
 	
 	private ObjectMapper objectMapper;
-	private Map<String, Object> map;
+	private ObjectWriter objectWriter;
+	private Path testRunRoot;
 	
-	public JsonReporter() {
+	/**
+	 * A constructor for the JsonReporter class that takes in one argument
+	 * 
+	 * @param path represents the path of the folder that will contain the resulting JSON file
+	 */
+	public JsonReporter(String path) {
 		objectMapper = new ObjectMapper();
-		map = new HashMap<>();
+		objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
+        testRunRoot = Paths.get(path);
 	}
 	
-
-	/**
-	 * Returns the root directory of the registry based off of the user's OS (compatible with Mac OS, Windows, and Linux)
-	 * 
-	 * @return a String object containing the root directory of the registry
-	 */
-    public static String retrieveRootDirectory() {
-    	/*
-    	 * Order of Precedence
-    	 * 1) The environment variable's value has been set --> it can be entered via the CLI or read from a property's file
-    	 * 2) If the value for the environment variable hasn't been set, you use a default value (utilizes the current function)
-    	 */
-        String operating_system = System.getProperty("os.name");
-        String rootDirectory;
-
-        if (operating_system.contains("Mac") || operating_system.contains("Linux")) {
-        	rootDirectory = ".drillbit";
-        }
-        else { // Windows
-        	rootDirectory = "drillbit";
-        }
-        // You can use '/' regardless of the OS
-        
-        return rootDirectory;
-    }
     
     /**
-     * Returns the absolute path to the specific Test Run folder based off of the current time
+     * Saves the list of TestCaseExecution objects to a single JSON file
      * 
-     * @return a String object containing the root directory of the Test Run folder
+     * @param payloadList represents the list of TestCaseExecution objects
+     * @return a File object representing the JSON file containing the list of TestCaseExecution objects
      */
-    public static String retrieveAbsoluteRootDirectory() {
-    	LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
-        String formattedDate = localDateTime.format(formatter);
-        Path rootPath = Paths.get(JsonReporter.retrieveRootDirectory(), "TestRun-", formattedDate);
-        String rootDirectory = rootPath.toString();
+	public File saveToRegistry(List<TestCaseExecution> payloadList) { // ".drillbit/TestRun-yyyMMdd-HHmmss/test-result.json"
+			String outputFilePath = Paths.get(testRunRoot.toString(), "test-result.json").toString();
+			// Decide whether the program should stop if it hits an error or continue running
+			try {
+				objectWriter.writeValue(Paths.get(outputFilePath).toFile(), payloadList);
+			} catch (JsonGenerationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-        return rootDirectory;
-    }
-    
-	public void saveToRegistry(List<TestCaseExecution> payloadList) {
-		try {
-			String outputFilePath = Paths.get(retrieveAbsoluteRootDirectory(), "test-result.json").toString();
-			objectMapper.writeValue(Paths.get(outputFilePath).toFile(), payloadList);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			return Paths.get(outputFilePath).toFile();
 	}
 	
-	// Overload this method public void saveToRegistry(TestCaseExecution testCaseExecution) --> support concurrent testing for v2
-	// Check for both cases:
-	// 1. the test-result.json already exists - append to existing file
-	// 2. the test-result.json doesn't exist - create new file and append to it as such ^
+//	/**
+//	 * Saves a single TestCaseExecution instance to a single JSON file
+//	 * using two cases: 1) The JSON file exists and 2) A JSON file needs to be created
+//	 * 
+//	 * @param testCaseExecution represents a single TestCaseExecution object
+//	 */
+//	public void saveToRegistry(TestCaseExecution testCaseExecution) {
+//		File outputFile = new File(Paths.get(testRunRoot.toString(), "test-result.json").toString());
+//		String outputFilePath = Paths.get(testRunRoot.toString(), "test-result.json").toString();
+//		
+//		if (outputFile.exists()) {
+//			try {
+//				objectWriter.writeValue(Paths.get(outputFilePath).toFile(), testCaseExecution);
+//			} catch (JsonGenerationException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (JsonMappingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		else {
+//			try {
+//				objectWriter.writeValue(Paths.get(outputFilePath).toFile(), testCaseExecution);
+//			} catch (JsonGenerationException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (JsonMappingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 }
