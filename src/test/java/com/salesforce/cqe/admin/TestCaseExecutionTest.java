@@ -17,7 +17,7 @@ import java.time.Instant;
 public class TestCaseExecutionTest {
 
     private TestCaseExecution testCaseExecution = new TestCaseExecution();
-    private Event event = new Event();
+    private TestEvent event = new TestEvent();
     
 	/**
 	 * Tests to make sure that the default constructor for the TestCaseExecution class works as expected
