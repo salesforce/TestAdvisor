@@ -16,7 +16,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Coordinates;
 
-import com.salesforce.cqe.driver.listener.Event.Cmd;
+import com.salesforce.cqe.driver.listener.WebDriverEvent.Cmd;
 
 /**
  * Tracks the individual actions of the test.
@@ -33,7 +33,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	 *--------------------------------------------------------------------*/
 
 	@Override
-	public void afterClose(Event event) {
+	public void afterClose(WebDriverEvent event) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": close tab";
 		stepCounter++;
@@ -41,7 +41,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterGet(Event event, String url) {
+	public void afterGet(WebDriverEvent event, String url) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": open page " + url;
 		stepCounter++;
@@ -49,7 +49,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterQuit(Event event) {
+	public void afterQuit(WebDriverEvent event) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": close browser";
 		stepCounter++;
@@ -61,7 +61,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void afterBack(Event event) {
+	public void afterBack(WebDriverEvent event) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": press Back button";
 		stepCounter++;
@@ -69,7 +69,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterForward(Event event) {
+	public void afterForward(WebDriverEvent event) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": press Forward button";
 		stepCounter++;
@@ -77,7 +77,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterRefresh(Event event) {
+	public void afterRefresh(WebDriverEvent event) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": press Refresh button";
 		stepCounter++;
@@ -85,7 +85,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterTo(Event event, String url) {
+	public void afterTo(WebDriverEvent event, String url) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": in address bar go to URL " + url;
 		stepCounter++;
@@ -93,7 +93,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterToUrl(Event event, URL url) {
+	public void afterToUrl(WebDriverEvent event, URL url) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": go to URL " + url;
 		stepCounter++;
@@ -105,7 +105,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void afterAlert(Event event, Alert alert) {
+	public void afterAlert(WebDriverEvent event, Alert alert) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": switch to alert dialog.";
 		stepCounter++;
@@ -113,7 +113,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterDismiss(Event event) {
+	public void afterDismiss(WebDriverEvent event) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": dismissed alert dialog.";
 		stepCounter++;
@@ -121,7 +121,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterAccept(Event event) {
+	public void afterAccept(WebDriverEvent event) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": accepted alert dialog.";
 		stepCounter++;
@@ -129,7 +129,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterSendKeysByAlert(Event event, String keysToSend) {
+	public void afterSendKeysByAlert(WebDriverEvent event, String keysToSend) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": send text '" + keysToSend + "' to alert dialog.";
 		stepCounter++;
@@ -141,39 +141,39 @@ public class StepsToReproduce extends AbstractEventListener {
 	 *---------------------------------------------------------------------------*/
 
 	@Override
-	public void afterClick(Event event, WebElement element) {
+	public void afterClick(WebDriverEvent event, WebElement element) {
 		logEntries.add(event);
-		String result = "Step " + stepCounter + ": click on element " + Event.getLocatorFromWebElement(element);
+		String result = "Step " + stepCounter + ": click on element " + WebDriverEvent.getLocatorFromWebElement(element);
 		stepCounter++;
 		buffer.append(result).append(System.lineSeparator());
 	}
 
 	@Override
-	public void afterClear(Event event, WebElement element) {
+	public void afterClear(WebDriverEvent event, WebElement element) {
 		logEntries.add(event);
-		String result = "Step " + stepCounter + ": clear input field " + Event.getLocatorFromWebElement(element);
+		String result = "Step " + stepCounter + ": clear input field " + WebDriverEvent.getLocatorFromWebElement(element);
 		stepCounter++;
 		buffer.append(result).append(System.lineSeparator());
 	}
 
 	@Override
-	public void afterSendKeysByElement(Event event, WebElement element, CharSequence... keysToSend) {
+	public void afterSendKeysByElement(WebDriverEvent event, WebElement element, CharSequence... keysToSend) {
 		logEntries.add(event);
-		String result = "Step " + stepCounter + ": enter text '" + event.getParam2() + "' into input field " + Event.getLocatorFromWebElement(element);
+		String result = "Step " + stepCounter + ": enter text '" + event.getParam2() + "' into input field " + WebDriverEvent.getLocatorFromWebElement(element);
 		stepCounter++;
 		buffer.append(result).append(System.lineSeparator());
 	}
 
 	@Override
-	public void afterSubmit(Event event, WebElement element) {
+	public void afterSubmit(WebDriverEvent event, WebElement element) {
 		logEntries.add(event);
-		String result = "Step " + stepCounter + ": click on Submit button " + Event.getLocatorFromWebElement(element);
+		String result = "Step " + stepCounter + ": click on Submit button " + WebDriverEvent.getLocatorFromWebElement(element);
 		stepCounter++;
 		buffer.append(result).append(System.lineSeparator());
 	}
 
 	@Override
-	public void afterExecuteAsyncScript(Event event, String script, Map<String, ?> params, Object result) {
+	public void afterExecuteAsyncScript(WebDriverEvent event, String script, Map<String, ?> params, Object result) {
 		logEntries.add(event);
 		String msg = "Step " + stepCounter + ": async executed script " + script;
 		stepCounter++;
@@ -190,7 +190,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterExecuteScript(Event event, String script, Map<String, ?> params, Object result) {
+	public void afterExecuteScript(WebDriverEvent event, String script, Map<String, ?> params, Object result) {
 		logEntries.add(event);
 		String msg = "Step " + stepCounter + ": executed script " + script;
 		stepCounter++;
@@ -207,7 +207,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterAddCookie(Event event, Cookie cookie) {
+	public void afterAddCookie(WebDriverEvent event, Cookie cookie) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": added cookie " + cookie.toString();
 		stepCounter++;
@@ -215,7 +215,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterDeleteCookieNamed(Event event, String name) {
+	public void afterDeleteCookieNamed(WebDriverEvent event, String name) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": deleted cookie " + name;
 		stepCounter++;
@@ -223,7 +223,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterDeleteCookie(Event event, Cookie cookie) {
+	public void afterDeleteCookie(WebDriverEvent event, Cookie cookie) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": deleted cookie " + cookie.getName();
 		stepCounter++;
@@ -231,7 +231,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterDeleteAllCookies(Event event) {
+	public void afterDeleteAllCookies(WebDriverEvent event) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": deleted all cookies";
 		stepCounter++;
@@ -239,7 +239,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterWindow(Event event, String windowName) {
+	public void afterWindow(WebDriverEvent event, String windowName) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": switched to window " + windowName;
 		stepCounter++;
@@ -247,7 +247,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterUploadFile(Event event, WebElement element, File localFile, String response) {
+	public void afterUploadFile(WebDriverEvent event, WebElement element, File localFile, String response) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": uploaded file " + localFile.getName();
 		stepCounter++;
@@ -255,7 +255,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterSendKeysByKeyboard(Event event, CharSequence... keysToSend) {
+	public void afterSendKeysByKeyboard(WebDriverEvent event, CharSequence... keysToSend) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": entered text '" + keysToSend + "'";
 		stepCounter++;
@@ -263,7 +263,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterPressKey(Event event, CharSequence... keyToPress) {
+	public void afterPressKey(WebDriverEvent event, CharSequence... keyToPress) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": pressed key '" + keyToPress + "'";
 		stepCounter++;
@@ -271,7 +271,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterReleaseKey(Event event, CharSequence... keyToRelease) {
+	public void afterReleaseKey(WebDriverEvent event, CharSequence... keyToRelease) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": released key '" + keyToRelease + "'";
 		stepCounter++;
@@ -279,7 +279,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterClickByMouse(Event event, Coordinates where) {
+	public void afterClickByMouse(WebDriverEvent event, Coordinates where) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": left mouse click at page coordinates '" + where.onPage().toString() + "'";
 		stepCounter++;
@@ -287,7 +287,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterDoubleClick(Event event, Coordinates where) {
+	public void afterDoubleClick(WebDriverEvent event, Coordinates where) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": double mouse click at page coordinates '" + where.onPage().toString() + "'";
 		stepCounter++;
@@ -295,7 +295,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterMouseDown(Event event, Coordinates where) {
+	public void afterMouseDown(WebDriverEvent event, Coordinates where) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": mouse down at page coordinates '" + where.onPage().toString() + "'";
 		stepCounter++;
@@ -303,7 +303,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterMouseMove(Event event, Coordinates where) {
+	public void afterMouseMove(WebDriverEvent event, Coordinates where) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": mouse moved to page coordinates '" + where.onPage().toString() + "'";
 		stepCounter++;
@@ -311,7 +311,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterMouseMove(Event event, Coordinates where, long xOffset, long yOffset) {
+	public void afterMouseMove(WebDriverEvent event, Coordinates where, long xOffset, long yOffset) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": mouse moved to page coordinates '" + where.onPage().toString()
 				+ "' with x offset " + xOffset + " and y offset " + yOffset;
@@ -320,7 +320,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void afterContextClick(Event event, Coordinates where) {
+	public void afterContextClick(WebDriverEvent event, Coordinates where) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": context mouse click at page coordinates '" + where.onPage().toString() + "'";
 		stepCounter++;
@@ -328,7 +328,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public void onException(Event event, Cmd cmd, Throwable issue) {
+	public void onException(WebDriverEvent event, Cmd cmd, Throwable issue) {
 		logEntries.add(event);
 		String result = "Step " + stepCounter + ": command " + event.getCmd().getShortCmdString() + " failed with error " + issue.getMessage();
 		if (result.equals(lastResultString)) {
@@ -341,7 +341,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	}
 
 	@Override
-	public List<Event> getListOfEventsRecorded() {
+	public List<WebDriverEvent> getListOfEventsRecorded() {
 		return Collections.unmodifiableList(logEntries);
 	}
 	

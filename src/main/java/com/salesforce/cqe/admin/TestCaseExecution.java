@@ -1,9 +1,8 @@
 package com.salesforce.cqe.admin;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.File;
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class TestCaseExecution {
 	public String testName;
 	
     @JsonProperty
-    public List<Event> eventList;
+    public List<TestEvent> eventList;
     
     @JsonProperty
     public TestStatus testStatus;
@@ -35,15 +34,18 @@ public class TestCaseExecution {
     @JsonProperty
     public String endTime;
 
+    @JsonIgnore
+    private boolean isBeforeMethod=false;
+
     /**
      * A default constructor for the TestCaseExecution class
      */
     public TestCaseExecution () {
-        eventList = new ArrayList<Event>();
+        eventList = new ArrayList<TestEvent>();
         testStatus = TestStatus.PASSED;
         startTime = Instant.now().toString();
     }
-    
+
     /**
      * This function will return the current test case's name
      * 
@@ -87,7 +89,7 @@ public class TestCaseExecution {
      * @param event represents an event that was captured by the Event Listener
      * @return event represents the current event being read in from the Event Listener
      */
-    public Event appendEvent(Event event) {
+    public TestEvent appendEvent(TestEvent event) {
         eventList.add(event);
 
         return event;
@@ -100,4 +102,26 @@ public class TestCaseExecution {
     	endTime = Instant.now().toString();
     }
     
+    /**
+     * @return
+     * true if current test case is a before method, otherwise return false
+     */
+    @JsonIgnore
+    public boolean isBeforeMethod(){
+        return this.isBeforeMethod;
+    }
+
+    /**
+     * set current test case as before method
+     */
+    public void setBeforeMethod(){
+        this.isBeforeMethod = true;
+    }
+
+    /**
+     * set current test case as before method
+     */
+    public void unsetBeforeMethod(){
+        this.isBeforeMethod = false;
+    }
 }

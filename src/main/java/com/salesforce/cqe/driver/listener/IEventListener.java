@@ -35,7 +35,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Coordinates;
 
-import com.salesforce.cqe.driver.listener.Event.Cmd;
+import com.salesforce.cqe.driver.listener.WebDriverEvent.Cmd;
 
 /**
  * Interface which supports registering of a listener with {@link com.salesforce.cqe.driver.EventDispatcher} for logging
@@ -63,14 +63,14 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeClose(Event event);
+	void beforeClose(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#close close()}.
 	 * @param event
 	 *            event record
 	 */
-	void afterClose(Event event);
+	void afterClose(WebDriverEvent event);
 
 	/**
 	 * Called before {@link WebDriver#findElement WebDriver.findElement(...)}.
@@ -79,7 +79,7 @@ public interface IEventListener {
 	 * @param by
 	 *            locator being used
 	 */
-	void beforeFindElementByWebDriver(Event event, By by);
+	void beforeFindElementByWebDriver(WebDriverEvent event, By by);
 
 	/**
 	 * Called after {@link WebDriver#findElement WebDriver.findElement(...)}.
@@ -90,7 +90,7 @@ public interface IEventListener {
 	 * @param by
 	 *            locator being used
 	 */
-	void afterFindElementByWebDriver(Event event, WebElement element, By by);
+	void afterFindElementByWebDriver(WebDriverEvent event, WebElement element, By by);
 
 	/**
 	 * Called before {@link WebDriver#findElements WebDriver.findElements(...)}.
@@ -99,7 +99,7 @@ public interface IEventListener {
 	 * @param by
 	 *            locator being used
 	 */
-	void beforeFindElementsByWebDriver(Event event, By by);
+	void beforeFindElementsByWebDriver(WebDriverEvent event, By by);
 
 	/**
 	 * Called after{@link WebDriver#findElements WebDriver.findElements(...)}.
@@ -110,7 +110,7 @@ public interface IEventListener {
 	 * @param by
 	 *            locator being used
 	 */
-	void afterFindElementsByWebDriver(Event event, List<WebElement> elements, By by);
+	void afterFindElementsByWebDriver(WebDriverEvent event, List<WebElement> elements, By by);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#get get(String url)}.
@@ -120,7 +120,7 @@ public interface IEventListener {
 	 * @param url
 	 *            URL
 	 */
-	void beforeGet(Event event, String url);
+	void beforeGet(WebDriverEvent event, String url);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#get get(String url)}.
@@ -130,14 +130,14 @@ public interface IEventListener {
 	 * @param url
 	 *            URL
 	 */
-	void afterGet(Event event, String url);
+	void afterGet(WebDriverEvent event, String url);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#getCurrentUrl getCurrentUrl()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeGetCurrentUrl(Event event);
+	void beforeGetCurrentUrl(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#getCurrentUrl getCurrentUrl()}.
@@ -148,14 +148,14 @@ public interface IEventListener {
 	 * @param url
 	 *            returned URL
 	 */
-	void afterGetCurrentUrl(Event event, String url);
+	void afterGetCurrentUrl(WebDriverEvent event, String url);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#getPageSource getPageSource()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeGetPageSource(Event event);
+	void beforeGetPageSource(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#getPageSource getPageSource()}.
@@ -166,14 +166,14 @@ public interface IEventListener {
 	 * @param source
 	 *            returned page source
 	 */
-	void afterGetPageSource(Event event, String source);
+	void afterGetPageSource(WebDriverEvent event, String source);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#getTitle getTitle()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeGetTitle(Event event);
+	void beforeGetTitle(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#getTitle getTitle()}.
@@ -184,14 +184,14 @@ public interface IEventListener {
 	 * @param title
 	 *            returned page title
 	 */
-	void afterGetTitle(Event event, String title);
+	void afterGetTitle(WebDriverEvent event, String title);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#getWindowHandle getWindowHandle()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeGetWindowHandle(Event event);
+	void beforeGetWindowHandle(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#getWindowHandle getWindowHandle()}.
@@ -201,14 +201,14 @@ public interface IEventListener {
 	 * @param handle
 	 *            Handle to current window
 	 */
-	void afterGetWindowHandle(Event event, String handle);
+	void afterGetWindowHandle(WebDriverEvent event, String handle);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#getWindowHandles getWindowHandles()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeGetWindowHandles(Event event);
+	void beforeGetWindowHandles(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#getWindowHandles getWindowHandles()}.
@@ -217,21 +217,21 @@ public interface IEventListener {
 	 * @param handles
 	 *            Set of handles to windows currently open
 	 */
-	void afterGetWindowHandles(Event event, Set<String> handles);
+	void afterGetWindowHandles(WebDriverEvent event, Set<String> handles);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver#quit quit()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeQuit(Event event);
+	void beforeQuit(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver#quit quit()}.
 	 * @param event
 	 *            event record
 	 */
-	void afterQuit(Event event);
+	void afterQuit(WebDriverEvent event);
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver object
@@ -247,7 +247,7 @@ public interface IEventListener {
 	 * @param params
 	 *            arguments for script
 	 */
-	void beforeExecuteAsyncScript(Event event, String script, Map<String, ?> params);
+	void beforeExecuteAsyncScript(WebDriverEvent event, String script, Map<String, ?> params);
 
 	/**
 	 * Called after {@link org.openqa.selenium.JavascriptExecutor#executeAsyncScript(String, Object...) executingAsyncScript(String, Object...)}.
@@ -260,7 +260,7 @@ public interface IEventListener {
 	 * @param result
 	 *            returned object
 	 */
-	void afterExecuteAsyncScript(Event event, String script, Map<String, ?> params, Object result);
+	void afterExecuteAsyncScript(WebDriverEvent event, String script, Map<String, ?> params, Object result);
 
 	/**
 	 * Called before {@link org.openqa.selenium.JavascriptExecutor#executeScript(String, Object...) executingScript(String, Object...)}.
@@ -271,7 +271,7 @@ public interface IEventListener {
 	 * @param params
 	 *            arguments for script
 	 */
-	void beforeExecuteScript(Event event, String script, Map<String, ?> params);
+	void beforeExecuteScript(WebDriverEvent event, String script, Map<String, ?> params);
 
 	/**
 	 * Called after {@link org.openqa.selenium.JavascriptExecutor#executeScript(String, Object...) executingScript(String, Object...)}.
@@ -284,7 +284,7 @@ public interface IEventListener {
 	 * @param result
 	 *            returned object
 	 */
-	void afterExecuteScript(Event event, String script, Map<String, ?> params, Object result);
+	void afterExecuteScript(WebDriverEvent event, String script, Map<String, ?> params, Object result);
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.Options object
@@ -298,7 +298,7 @@ public interface IEventListener {
 	 * @param cookie
 	 *            cookie to add
 	 */
-	void beforeAddCookie(Event event, Cookie cookie);
+	void beforeAddCookie(WebDriverEvent event, Cookie cookie);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#addCookie(Cookie) addCookie(Cookie cookie)}.
@@ -307,7 +307,7 @@ public interface IEventListener {
 	 * @param cookie
 	 *            cookie to add
 	 */
-	void afterAddCookie(Event event, Cookie cookie);
+	void afterAddCookie(WebDriverEvent event, Cookie cookie);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Options#deleteCookieNamed(String) deleteCookieNamed(String name)}.
@@ -317,7 +317,7 @@ public interface IEventListener {
 	 * @param name
 	 *            name of cookie to delete
 	 */
-	void beforeDeleteCookieNamed(Event event, String name);
+	void beforeDeleteCookieNamed(WebDriverEvent event, String name);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#deleteCookieNamed(String) deleteCookieNamed(String name)}.
@@ -326,7 +326,7 @@ public interface IEventListener {
 	 * @param name
 	 *            name of cookie to delete
 	 */
-	void afterDeleteCookieNamed(Event event, String name);
+	void afterDeleteCookieNamed(WebDriverEvent event, String name);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Options#deleteCookie(Cookie) deleteCookie(Cookie cookie)}.
@@ -336,7 +336,7 @@ public interface IEventListener {
 	 * @param cookie
 	 *            cookie to delete
 	 */
-	void beforeDeleteCookie(Event event, Cookie cookie);
+	void beforeDeleteCookie(WebDriverEvent event, Cookie cookie);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#deleteCookie(Cookie) deleteCookie(Cookie cookie)}.
@@ -345,7 +345,7 @@ public interface IEventListener {
 	 * @param cookie
 	 *            cookie to delete
 	 */
-	void afterDeleteCookie(Event event, Cookie cookie);
+	void afterDeleteCookie(WebDriverEvent event, Cookie cookie);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Options#deleteAllCookies() deleteAllCookies()}.
@@ -353,14 +353,14 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeDeleteAllCookies(Event event);
+	void beforeDeleteAllCookies(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#deleteAllCookies() deleteAllCookies()}.
 	 * @param event
 	 *            event record
 	 */
-	void afterDeleteAllCookies(Event event);
+	void afterDeleteAllCookies(WebDriverEvent event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Options#getCookies() getCookies()}.
@@ -368,7 +368,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeGetCookies(Event event);
+	void beforeGetCookies(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#getCookies() getCookies()}.
@@ -377,7 +377,7 @@ public interface IEventListener {
 	 * @param cookies
 	 *            set of all cookies
 	 */
-	void afterGetCookies(Event event, Set<Cookie> cookies);
+	void afterGetCookies(WebDriverEvent event, Set<Cookie> cookies);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Options#addCookie(Cookie) getCookieNamed(String name)}.
@@ -387,7 +387,7 @@ public interface IEventListener {
 	 * @param name
 	 *            name of cookie to get
 	 */
-	void beforeGetCookieNamed(Event event, String name);
+	void beforeGetCookieNamed(WebDriverEvent event, String name);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Options#getCookieNamed(String) getCookieNamed(String name)}.
@@ -398,7 +398,7 @@ public interface IEventListener {
 	 * @param cookie
 	 *            returned cookie
 	 */
-	void afterGetCookieNamed(Event event, String name, Cookie cookie);
+	void afterGetCookieNamed(WebDriverEvent event, String name, Cookie cookie);
 	
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver object
@@ -415,7 +415,7 @@ public interface IEventListener {
 	 * @param target
 	 *            target type, @see OutputType
 	 */
-	<X> void beforeGetScreenshotAs(Event event, OutputType<X> target);
+	<X> void beforeGetScreenshotAs(WebDriverEvent event, OutputType<X> target);
 
 	/**
 	 * Called after {@link org.openqa.selenium.TakesScreenshot#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
@@ -429,7 +429,7 @@ public interface IEventListener {
 	 * @param screenshot
 	 *            screenshot captured
 	 */
-	<X> void afterGetScreenshotAs(Event event, OutputType<X> target, X screenshot);
+	<X> void afterGetScreenshotAs(WebDriverEvent event, OutputType<X> target, X screenshot);
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.ImeHandler object
@@ -441,7 +441,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeGetAvailableEngines(Event event);
+	void beforeGetAvailableEngines(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.ImeHandler#getAvailableEngines() getAvailableEngines()}.
@@ -451,7 +451,7 @@ public interface IEventListener {
 	 * @param engines
 	 *            list of names of available engines
 	 */
-	void afterGetAvailableEngines(Event event, List<String> engines);
+	void afterGetAvailableEngines(WebDriverEvent event, List<String> engines);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.ImeHandler#getActiveEngine() getActiveEngine()}.
@@ -459,7 +459,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeGetActiveEngine(Event event);
+	void beforeGetActiveEngine(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.ImeHandler#getActiveEngine() getActiveEngine()}.
@@ -469,7 +469,7 @@ public interface IEventListener {
 	 * @param engine
 	 *            names of active engine
 	 */
-	void afterGetActiveEngine(Event event, String engine);
+	void afterGetActiveEngine(WebDriverEvent event, String engine);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.ImeHandler#isActivated() isActivated()}.
@@ -477,7 +477,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeIsActivated(Event event);
+	void beforeIsActivated(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.ImeHandler#isActivated() isActivated()}.
@@ -487,7 +487,7 @@ public interface IEventListener {
 	 * @param isActive
 	 *            state of activation of current engine
 	 */
-	void afterIsActivated(Event event, boolean isActive);
+	void afterIsActivated(WebDriverEvent event, boolean isActive);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.ImeHandler#deactivate() deactivate()}.
@@ -495,7 +495,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeDeactivate(Event event);
+	void beforeDeactivate(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.ImeHandler#deactivate() deactivate()}.
@@ -503,7 +503,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void afterDeactivate(Event event);
+	void afterDeactivate(WebDriverEvent event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.ImeHandler#activateEngine(String) activateEngine(String engine)}.
@@ -513,7 +513,7 @@ public interface IEventListener {
 	 * @param engine
 	 *            name of engine to activate
 	 */
-	void beforeActivateEngine(Event event, String engine);
+	void beforeActivateEngine(WebDriverEvent event, String engine);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.ImeHandler#activateEngine(String) activateEngine(String engine)}.
@@ -523,7 +523,7 @@ public interface IEventListener {
 	 * @param engine
 	 *            name of engine to activate
 	 */
-	void afterActivateEngine(Event event, String engine);
+	void afterActivateEngine(WebDriverEvent event, String engine);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.Navigation object.
@@ -536,7 +536,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeBack(Event event);
+	void beforeBack(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation
@@ -545,7 +545,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void afterBack(Event event);
+	void afterBack(WebDriverEvent event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#forward
@@ -554,7 +554,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeForward(Event event);
+	void beforeForward(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#forward
@@ -563,7 +563,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void afterForward(Event event);
+	void afterForward(WebDriverEvent event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#refresh
@@ -572,7 +572,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeRefresh(Event event);
+	void beforeRefresh(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#refresh
@@ -581,7 +581,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void afterRefresh(Event event);
+	void afterRefresh(WebDriverEvent event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#to
@@ -592,7 +592,7 @@ public interface IEventListener {
 	 * @param url
 	 *            string representation of URL
 	 */
-	void beforeTo(Event event, String url);
+	void beforeTo(WebDriverEvent event, String url);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#to
@@ -603,7 +603,7 @@ public interface IEventListener {
 	 * @param url
 	 *            string representation of URL
 	 */
-	void afterTo(Event event, String url);
+	void afterTo(WebDriverEvent event, String url);
 
 	/**
 	 * Called before {@link org.openqa.selenium.WebDriver.Navigation#to
@@ -614,7 +614,7 @@ public interface IEventListener {
 	 * @param url
 	 *            URL
 	 */
-	void beforeToUrl(Event event, URL url);
+	void beforeToUrl(WebDriverEvent event, URL url);
 
 	/**
 	 * Called after {@link org.openqa.selenium.WebDriver.Navigation#to
@@ -625,7 +625,7 @@ public interface IEventListener {
 	 * @param url
 	 *            URL
 	 */
-	void afterToUrl(Event event, URL url);
+	void afterToUrl(WebDriverEvent event, URL url);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.Alert object.
@@ -637,7 +637,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeDismiss(Event event);
+	void beforeDismiss(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.Alert#dismiss switchTo().alert().dismiss()}.
@@ -646,7 +646,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void afterDismiss(Event event);
+	void afterDismiss(WebDriverEvent event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.Alert#accept switchTo().alert().accept()}.
@@ -654,7 +654,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeAccept(Event event);
+	void beforeAccept(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.Alert#accept switchTo().alert().accept()}. 
@@ -663,7 +663,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void afterAccept(Event event);
+	void afterAccept(WebDriverEvent event);
 
 	/**
 	 * Called before {@link org.openqa.selenium.Alert#getText switchTo().alert().getText()}.
@@ -671,7 +671,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeGetTextByAlert(Event event);
+	void beforeGetTextByAlert(WebDriverEvent event);
 
 	/**
 	 * Called after {@link org.openqa.selenium.Alert#getText switchTo().alert().getText()}.
@@ -682,7 +682,7 @@ public interface IEventListener {
 	 * @param text
 	 *            text shown in alert
 	 */
-	void afterGetTextByAlert(Event event, String text);
+	void afterGetTextByAlert(WebDriverEvent event, String text);
 
 	/**
 	 * Called before {@link org.openqa.selenium.Alert#sendKeys(String) switchTo().alert().sendKeys(String keysToSend)}.
@@ -692,7 +692,7 @@ public interface IEventListener {
 	 * @param keysToSend
 	 *            keys to enter
 	 */
-	void beforeSendKeysByAlert(Event event, String keysToSend);
+	void beforeSendKeysByAlert(WebDriverEvent event, String keysToSend);
 
 	/**
 	 * Called after {@link org.openqa.selenium.Alert#sendKeys(String) switchTo().alert().sendKeys(String keysToSend)}.
@@ -703,7 +703,7 @@ public interface IEventListener {
 	 * @param keysToSend
 	 *            keys to enter
 	 */
-	void afterSendKeysByAlert(Event event, String keysToSend);
+	void afterSendKeysByAlert(WebDriverEvent event, String keysToSend);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.TargetLocator object.
@@ -714,7 +714,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeActiveElement(Event event);
+	void beforeActiveElement(WebDriverEvent event);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#activeElement() TargetLocator.activeElement()}.
@@ -722,14 +722,14 @@ public interface IEventListener {
 	 * @param event event record
 	 * @param activeElement the current active WebElement
 	 */
-	void afterActiveElement(Event event, WebElement activeElement);
+	void afterActiveElement(WebDriverEvent event, WebElement activeElement);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#alert() TargetLocator.alert()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeAlert(Event event);
+	void beforeAlert(WebDriverEvent event);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#alert() TargetLocator.alert()}.
@@ -739,14 +739,14 @@ public interface IEventListener {
 	 * @param alert
 	 *            handle to the Alert
 	 */
-	void afterAlert(Event event, Alert alert);
+	void afterAlert(WebDriverEvent event, Alert alert);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#defaultContent() TargetLocator.defaultContent()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeDefaultContent(Event event);
+	void beforeDefaultContent(WebDriverEvent event);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#defaultContent() TargetLocator.defaultContent()}.
@@ -754,7 +754,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void afterDefaultContent(Event event);
+	void afterDefaultContent(WebDriverEvent event);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#frame(int) TargetLocator.frame(..)}.
@@ -763,7 +763,7 @@ public interface IEventListener {
 	 * @param frameIndex
 	 *            0-based index of frame on page
 	 */
-	void beforeFrameByIndex(Event event, int frameIndex);
+	void beforeFrameByIndex(WebDriverEvent event, int frameIndex);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#frame(int) TargetLocator.frame(..)}.
@@ -773,7 +773,7 @@ public interface IEventListener {
 	 * @param frameIndex
 	 *            0-based index of frame on page
 	 */
-	void afterFrameByIndex(Event event, int frameIndex);
+	void afterFrameByIndex(WebDriverEvent event, int frameIndex);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#frame(java.lang.String) TargetLocator.frame(..)}.
@@ -782,7 +782,7 @@ public interface IEventListener {
 	 * @param frameName
 	 *            name of frame
 	 */
-	void beforeFrameByName(Event event, String frameName);
+	void beforeFrameByName(WebDriverEvent event, String frameName);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#frame(java.lang.String) TargetLocator.frame(..)}.
@@ -792,7 +792,7 @@ public interface IEventListener {
 	 * @param frameName
 	 *            name of frame
 	 */
-	void afterFrameByName(Event event, String frameName);
+	void afterFrameByName(WebDriverEvent event, String frameName);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#frame(WebElement) TargetLocator.frame(..)}.
@@ -801,7 +801,7 @@ public interface IEventListener {
 	 * @param frameElement
 	 *            element inside frame
 	 */
-	void beforeFrameByElement(Event event, WebElement frameElement);
+	void beforeFrameByElement(WebDriverEvent event, WebElement frameElement);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#frame(java.lang.String) TargetLocator.frame(..)}.
@@ -811,14 +811,14 @@ public interface IEventListener {
 	 * @param frameElement
 	 *            element inside frame
 	 */
-	void afterFrameByElement(Event event, WebElement frameElement);
+	void afterFrameByElement(WebDriverEvent event, WebElement frameElement);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#parentFrame() TargetLocator.parentFrame()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeParentFrame(Event event);
+	void beforeParentFrame(WebDriverEvent event);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#parentFrame() TargetLocator.parentFrame()}.
@@ -826,7 +826,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void afterParentFrame(Event event);
+	void afterParentFrame(WebDriverEvent event);
 
 	/**
 	 * Called before {@link WebDriver.TargetLocator#window(java.lang.String) TargetLocator.window(..)}.
@@ -835,7 +835,7 @@ public interface IEventListener {
 	 * @param windowName
 	 *            name of window
 	 */
-	void beforeWindow(Event event, String windowName);
+	void beforeWindow(WebDriverEvent event, String windowName);
 
 	/**
 	 * Called after {@link WebDriver.TargetLocator#window(java.lang.String) TargetLocator.window(..)}.
@@ -845,7 +845,7 @@ public interface IEventListener {
 	 * @param windowName
 	 *            name of window
 	 */
-	void afterWindow(Event event, String windowName);
+	void afterWindow(WebDriverEvent event, String windowName);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.Timeouts object.
@@ -860,7 +860,7 @@ public interface IEventListener {
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void beforeImplicitlyWait(Event event, long time, TimeUnit unit);
+	void beforeImplicitlyWait(WebDriverEvent event, long time, TimeUnit unit);
 
 	/**
 	 * Called after {@link WebDriver.Timeouts#implicitlyWait(long, java.util.concurrent.TimeUnit) Timeouts.implicitlyWait(..)}.
@@ -872,7 +872,7 @@ public interface IEventListener {
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void afterImplicitlyWait(Event event, long time, TimeUnit unit);
+	void afterImplicitlyWait(WebDriverEvent event, long time, TimeUnit unit);
 
 	/**
 	 * Called before {@link WebDriver.Timeouts#pageLoadTimeout(long, java.util.concurrent.TimeUnit) Timeouts.pageLoadTimeout(..)}.
@@ -883,7 +883,7 @@ public interface IEventListener {
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void beforePageLoadTimeout(Event event, long time, TimeUnit unit);
+	void beforePageLoadTimeout(WebDriverEvent event, long time, TimeUnit unit);
 
 	/**
 	 * Called after {@link WebDriver.Timeouts#pageLoadTimeout(long, java.util.concurrent.TimeUnit) Timeouts.pageLoadTimeout(..)}.
@@ -895,7 +895,7 @@ public interface IEventListener {
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void afterPageLoadTimeout(Event event, long time, TimeUnit unit);
+	void afterPageLoadTimeout(WebDriverEvent event, long time, TimeUnit unit);
 
 	/**
 	 * Called before {@link WebDriver.Timeouts#setScriptTimeout(long, java.util.concurrent.TimeUnit) Timeouts.setScriptTimeout(..)}.
@@ -906,7 +906,7 @@ public interface IEventListener {
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void beforeSetScriptTimeout(Event event, long time, TimeUnit unit);
+	void beforeSetScriptTimeout(WebDriverEvent event, long time, TimeUnit unit);
 
 	/**
 	 * Called after {@link WebDriver.Timeouts#setScriptTimeout(long, java.util.concurrent.TimeUnit) Timeouts.setScriptTimeout(..)}.
@@ -918,7 +918,7 @@ public interface IEventListener {
 	 * @param unit
 	 *            time unit to use to convert the given time value
 	 */
-	void afterSetScriptTimeout(Event event, long time, TimeUnit unit);
+	void afterSetScriptTimeout(WebDriverEvent event, long time, TimeUnit unit);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver.Window object.
@@ -929,7 +929,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void beforeFullscreen(Event event);
+	void beforeFullscreen(WebDriverEvent event);
 
 	/**
 	 * Called after {@link WebDriver.Window#fullscreen() Window.fullscreen()}.
@@ -937,14 +937,14 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void afterFullscreen(Event event);
+	void afterFullscreen(WebDriverEvent event);
 
 	/**
 	 * Called before {@link WebDriver.Window#getPosition() getPosition()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeGetPosition(Event event);
+	void beforeGetPosition(WebDriverEvent event);
 
 	/**
 	 * Called after {@link WebDriver.Window#getPosition() getPosition()}.
@@ -954,14 +954,14 @@ public interface IEventListener {
 	 * @param targetPosition
 	 *            returned location on screen
 	 */
-	void afterGetPosition(Event event, Point targetPosition);
+	void afterGetPosition(WebDriverEvent event, Point targetPosition);
 
 	/**
 	 * Called before {@link WebDriver.Window#getSize() getSize()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeGetSizeByWindow(Event event);
+	void beforeGetSizeByWindow(WebDriverEvent event);
 
 	/**
 	 * Called after {@link WebDriver.Window#getSize() getSize()}.
@@ -971,14 +971,14 @@ public interface IEventListener {
 	 * @param targetSize
 	 *            returned window size on screen
 	 */
-	void afterGetSizeByWindow(Event event, Dimension targetSize);
+	void afterGetSizeByWindow(WebDriverEvent event, Dimension targetSize);
 
 	/**
 	 * Called before {@link WebDriver.Window#maximize() Window.window()}.
 	 * @param event
 	 *            event record
 	 */
-	void beforeMaximize(Event event);
+	void beforeMaximize(WebDriverEvent event);
 
 	/**
 	 * Called after {@link WebDriver.Window#maximize() Window.window()}.
@@ -986,7 +986,7 @@ public interface IEventListener {
 	 * @param event
 	 *            event record
 	 */
-	void afterMaximize(Event event);
+	void afterMaximize(WebDriverEvent event);
 
 	/**
 	 * Called before {@link WebDriver.Window#setPosition(Point) setPosition(..)}.
@@ -995,7 +995,7 @@ public interface IEventListener {
 	 * @param targetPosition
 	 *            location on screen
 	 */
-	void beforeSetPosition(Event event, Point targetPosition);
+	void beforeSetPosition(WebDriverEvent event, Point targetPosition);
 
 	/**
 	 * Called after {@link WebDriver.Window#setPosition(Point) setPosition(..)}.
@@ -1005,7 +1005,7 @@ public interface IEventListener {
 	 * @param targetPosition
 	 *            location on screen
 	 */
-	void afterSetPosition(Event event, Point targetPosition);
+	void afterSetPosition(WebDriverEvent event, Point targetPosition);
 
 	/**
 	 * Called before {@link WebDriver.Window#setSize(Dimension) setSize(..)}.
@@ -1014,7 +1014,7 @@ public interface IEventListener {
 	 * @param targetSize
 	 *            window size on screen
 	 */
-	void beforeSetSizeByWindow(Event event, Dimension targetSize);
+	void beforeSetSizeByWindow(WebDriverEvent event, Dimension targetSize);
 
 	/**
 	 * Called after {@link WebDriver.Window#setSize(Dimension) setSize(..)}.
@@ -1024,7 +1024,7 @@ public interface IEventListener {
 	 * @param targetSize
 	 *            window size on screen
 	 */
-	void afterSetSizeByWindow(Event event, Dimension targetSize);
+	void afterSetSizeByWindow(WebDriverEvent event, Dimension targetSize);
 
 	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebElement object.
@@ -1037,7 +1037,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeClick(Event event, WebElement element);
+	void beforeClick(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#click WebElement.click()}. Not called, if an
@@ -1047,7 +1047,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterClick(Event event, WebElement element);
+	void afterClick(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#clear WebElement.clear()}.
@@ -1056,7 +1056,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeClear(Event event, WebElement element);
+	void beforeClear(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#clear WebElement.clear()}.
@@ -1066,7 +1066,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterClear(Event event, WebElement element);
+	void afterClear(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#findElement WebElement.findElement(...)}.
@@ -1075,10 +1075,10 @@ public interface IEventListener {
 	 * @param by
 	 *            locator being used
 	 * @param element
-	 *            use {@link #beforeFindElementByWebDriver(Event, By) beforeFindElement(By, WebDriver)} if a find method of
+	 *            use {@link #beforeFindElementByWebDriver(WebDriverEvent, By) beforeFindElement(By, WebDriver)} if a find method of
 	 *            <code>WebDriver</code> is called.
 	 */
-	void beforeFindElementByElement(Event event, By by, WebElement element);
+	void beforeFindElementByElement(WebDriverEvent event, By by, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#findElement WebElement.findElement(...)}.
@@ -1090,10 +1090,10 @@ public interface IEventListener {
 	 * @param by
 	 *            locator being used
 	 * @param element
-	 *            use {@link #afterFindElementByWebDriver(Event, WebElement, By) afterFindElement(By, WebDriver)} if a find method of
+	 *            use {@link #afterFindElementByWebDriver(WebDriverEvent, WebElement, By) afterFindElement(By, WebDriver)} if a find method of
 	 *            <code>WebDriver</code> is called.
 	 */
-	void afterFindElementByElement(Event event, WebElement returnedElement, By by, WebElement element);
+	void afterFindElementByElement(WebDriverEvent event, WebElement returnedElement, By by, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#findElements WebElement.findElements(...)}.
@@ -1102,10 +1102,10 @@ public interface IEventListener {
 	 * @param by
 	 *            locator being used
 	 * @param element
-	 *            use {@link #beforeFindElementByWebDriver(Event, By) beforeFindElement(By, WebDriver)} if a find method of
+	 *            use {@link #beforeFindElementByWebDriver(WebDriverEvent, By) beforeFindElement(By, WebDriver)} if a find method of
 	 *            <code>WebDriver</code> is called.
 	 */
-	void beforeFindElementsByElement(Event event, By by, WebElement element);
+	void beforeFindElementsByElement(WebDriverEvent event, By by, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#findElements WebElement.findElements(...)}.
@@ -1117,10 +1117,10 @@ public interface IEventListener {
 	 * @param by
 	 *            locator being used
 	 * @param element
-	 *            use {@link #afterFindElementByWebDriver(Event, WebElement, By) afterFindElement(By, WebDriver)} if a find method of
+	 *            use {@link #afterFindElementByWebDriver(WebDriverEvent, WebElement, By) afterFindElement(By, WebDriver)} if a find method of
 	 *            <code>WebDriver</code> is called.
 	 */
-	void afterFindElementsByElement(Event event, List<WebElement> returnedElements, By by, WebElement element);
+	void afterFindElementsByElement(WebDriverEvent event, List<WebElement> returnedElements, By by, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#getAttribute WebElement.getAttribute(...)}.
@@ -1131,7 +1131,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetAttribute(Event event, String name, WebElement element);
+	void beforeGetAttribute(WebDriverEvent event, String name, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getAttribute WebElement.getAttribute(...)}.
@@ -1145,7 +1145,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetAttribute(Event event, String value, String name, WebElement element);
+	void afterGetAttribute(WebDriverEvent event, String value, String name, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#getCssValue WebElement.getCssValue()}.
@@ -1156,7 +1156,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetCssValue(Event event, String propertyName, WebElement element);
+	void beforeGetCssValue(WebDriverEvent event, String propertyName, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getCssValue WebElement.getCssValue()}.
@@ -1170,7 +1170,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetCssValue(Event event, String propertyName, String value, WebElement element);
+	void afterGetCssValue(WebDriverEvent event, String propertyName, String value, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#getTagName WebElement.getTagName()}.
@@ -1179,7 +1179,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetTagName(Event event, WebElement element);
+	void beforeGetTagName(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getTagName WebElement.getTagName()}.
@@ -1191,7 +1191,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetTagName(Event event, String tagName, WebElement element);
+	void afterGetTagName(WebDriverEvent event, String tagName, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#getText WebElement.getText()}.
@@ -1200,7 +1200,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetText(Event event, WebElement element);
+	void beforeGetText(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getText WebElement.getText()}.
@@ -1212,7 +1212,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetText(Event event, String text, WebElement element);
+	void afterGetText(WebDriverEvent event, String text, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#isDisplayed WebElement.isDisplayed()}.
@@ -1221,7 +1221,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeIsDisplayed(Event event, WebElement element);
+	void beforeIsDisplayed(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#isDisplayed WebElement.isDisplayed()}.
@@ -1233,7 +1233,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterIsDisplayed(Event event, boolean isDisplayed, WebElement element);
+	void afterIsDisplayed(WebDriverEvent event, boolean isDisplayed, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#isEnabled WebElement.isEnabled()}.
@@ -1242,7 +1242,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeIsEnabled(Event event, WebElement element);
+	void beforeIsEnabled(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#isEnabled WebElement.isEnabled()}.
@@ -1254,7 +1254,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterIsEnabled(Event event, boolean isEnabled, WebElement element);
+	void afterIsEnabled(WebDriverEvent event, boolean isEnabled, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#isSelected WebElement.isSelected()}.
@@ -1263,7 +1263,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeIsSelected(Event event, WebElement element);
+	void beforeIsSelected(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#isSelected WebElement.isSelected()}.
@@ -1275,7 +1275,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterIsSelected(Event event, boolean isSelected, WebElement element);
+	void afterIsSelected(WebDriverEvent event, boolean isSelected, WebElement element);
 	
 	/**
 	 * Called before {@link WebElement#getLocation WebElement.getLocation()}.
@@ -1284,7 +1284,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetLocation(Event event, WebElement element);
+	void beforeGetLocation(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getLocation WebElement.getLocation()}.
@@ -1296,7 +1296,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetLocation(Event event, Point point, WebElement element);
+	void afterGetLocation(WebDriverEvent event, Point point, WebElement element);
 	
 	/**
 	 * Called before {@link WebElement#getSize WebElement.getSize()}.
@@ -1305,7 +1305,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetSizeByElement(Event event, WebElement element);
+	void beforeGetSizeByElement(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getSize WebElement.getSize()}.
@@ -1318,7 +1318,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetSizeByElement(Event event, Dimension dimension, WebElement element);
+	void afterGetSizeByElement(WebDriverEvent event, Dimension dimension, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#getRect WebElement.getRect()}.
@@ -1328,7 +1328,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetRect(Event event, WebElement element);
+	void beforeGetRect(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#getRect WebElement.getRect()}.
@@ -1341,7 +1341,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetRect(Event event, Rectangle rectangle, WebElement element);
+	void afterGetRect(WebDriverEvent event, Rectangle rectangle, WebElement element);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Locatable#getCoordinates getCoordinates()}.
@@ -1351,7 +1351,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeGetCoordinates(Event event, WebElement element);
+	void beforeGetCoordinates(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Locatable#getCoordinates getCoordinates()}.
@@ -1364,7 +1364,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterGetCoordinates(Event event, Coordinates coordinates, WebElement element);
+	void afterGetCoordinates(WebDriverEvent event, Coordinates coordinates, WebElement element);
 
 	/**
 	 * Called before {@link org.openqa.selenium.TakesScreenshot#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
@@ -1378,7 +1378,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	<X> void beforeGetScreenshotAsByElement(Event event, OutputType<X> target, WebElement element);
+	<X> void beforeGetScreenshotAsByElement(WebDriverEvent event, OutputType<X> target, WebElement element);
 
 	/**
 	 * Called after {@link org.openqa.selenium.TakesScreenshot#getScreenshotAs(OutputType target) getScreenshotAs(OutputType&lt;X&gt; target)}.
@@ -1394,7 +1394,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	<X> void afterGetScreenshotAsByElement(Event event, OutputType<X> target, X screenshot, WebElement element);
+	<X> void afterGetScreenshotAsByElement(WebDriverEvent event, OutputType<X> target, X screenshot, WebElement element);
 
 	/**
 	 * Called before {@link WebElement#sendKeys WebElement.sendKeys(...)}.
@@ -1405,7 +1405,7 @@ public interface IEventListener {
 	 * @param keysToSend
 	 *            text to insert
 	 */
-	void beforeSendKeysByElement(Event event, WebElement element, CharSequence... keysToSend);
+	void beforeSendKeysByElement(WebDriverEvent event, WebElement element, CharSequence... keysToSend);
 
 	/**
 	 * Called after {@link WebElement#sendKeys WebElement.sendKeys(...)}}. Not called, if an
@@ -1417,7 +1417,7 @@ public interface IEventListener {
 	 * @param keysToSend
 	 *            text to insert
 	 */
-	void afterSendKeysByElement(Event event, WebElement element, CharSequence... keysToSend);
+	void afterSendKeysByElement(WebDriverEvent event, WebElement element, CharSequence... keysToSend);
 
 	/**
 	 * Called before {@link WebElement#sendKeys WebElement.sendKeys(...)} if the keys to send
@@ -1429,7 +1429,7 @@ public interface IEventListener {
 	 * @param localFile
 	 *            local file to upload
 	 */
-	void beforeUploadFile(Event event, WebElement element, File localFile);
+	void beforeUploadFile(WebDriverEvent event, WebElement element, File localFile);
 
 	/**
 	 * Called after {@link WebElement#sendKeys WebElement.sendKeys(...)}} if the keys to send
@@ -1443,7 +1443,7 @@ public interface IEventListener {
 	 * @param response
 	 *            response to file upload
 	 */
-	void afterUploadFile(Event event, WebElement element, File localFile, String response);
+	void afterUploadFile(WebDriverEvent event, WebElement element, File localFile, String response);
 	
 	/**
 	 * Called before {@link WebElement#submit WebElement.submit()}.
@@ -1452,7 +1452,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void beforeSubmit(Event event, WebElement element);
+	void beforeSubmit(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called after {@link WebElement#submit WebElement.submit()}. Not called, if an
@@ -1462,7 +1462,7 @@ public interface IEventListener {
 	 * @param element
 	 *            the WebElement being used for the action
 	 */
-	void afterSubmit(Event event, WebElement element);
+	void afterSubmit(WebDriverEvent event, WebElement element);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Keyboard#sendKeys Keyboard.sendKeys(...)}.
@@ -1471,7 +1471,7 @@ public interface IEventListener {
 	 * @param keysToSend
 	 *            text to insert
 	 */
-	void beforeSendKeysByKeyboard(Event event, CharSequence... keysToSend);
+	void beforeSendKeysByKeyboard(WebDriverEvent event, CharSequence... keysToSend);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Keyboard#sendKeys Keyboard.sendKeys(...)}}. Not called, if an
@@ -1481,7 +1481,7 @@ public interface IEventListener {
 	 * @param keysToSend
 	 *            text to insert
 	 */
-	void afterSendKeysByKeyboard(Event event, CharSequence... keysToSend);
+	void afterSendKeysByKeyboard(WebDriverEvent event, CharSequence... keysToSend);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Keyboard#pressKey Keyboard.pressKey(...)}.
@@ -1490,7 +1490,7 @@ public interface IEventListener {
 	 * @param keyToPress
 	 *            key to press
 	 */
-	void beforePressKey(Event event, CharSequence... keyToPress);
+	void beforePressKey(WebDriverEvent event, CharSequence... keyToPress);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Keyboard#pressKey Keyboard.pressKey(...)}}. Not called, if an
@@ -1500,7 +1500,7 @@ public interface IEventListener {
 	 * @param keyToPress
 	 *            key to press
 	 */
-	void afterPressKey(Event event, CharSequence... keyToPress);
+	void afterPressKey(WebDriverEvent event, CharSequence... keyToPress);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Keyboard#releaseKey Keyboard.releaseKey(...)}.
@@ -1509,7 +1509,7 @@ public interface IEventListener {
 	 * @param keyToRelease
 	 *            key to release
 	 */
-	void beforeReleaseKey(Event event, CharSequence... keyToRelease);
+	void beforeReleaseKey(WebDriverEvent event, CharSequence... keyToRelease);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Keyboard#releaseKey Keyboard.releaseKey(...)}}. Not called, if an
@@ -1519,7 +1519,7 @@ public interface IEventListener {
 	 * @param keyToRelease
 	 *            key to release
 	 */
-	void afterReleaseKey(Event event, CharSequence... keyToRelease);
+	void afterReleaseKey(WebDriverEvent event, CharSequence... keyToRelease);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#click Mouse.click(...)}.
@@ -1528,7 +1528,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where click is performed
 	 */
-	void beforeClickByMouse(Event event, Coordinates where);
+	void beforeClickByMouse(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#click Mouse.click(...)}}. Not called, if an
@@ -1538,7 +1538,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where click is performed
 	 */
-	void afterClickByMouse(Event event, Coordinates where);
+	void afterClickByMouse(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#doubleClick Mouse.doubleClick(...)}.
@@ -1547,7 +1547,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where double click is performed
 	 */
-	void beforeDoubleClick(Event event, Coordinates where);
+	void beforeDoubleClick(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#doubleClick Mouse.doubleClick(...)}}. Not called, if an
@@ -1557,7 +1557,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where double click is performed
 	 */
-	void afterDoubleClick(Event event, Coordinates where);
+	void afterDoubleClick(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#mouseDown Mouse.mouseDown(...)}.
@@ -1566,7 +1566,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where mouse down is performed
 	 */
-	void beforeMouseDown(Event event, Coordinates where);
+	void beforeMouseDown(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#mouseDown Mouse.mouseDown(...)}}. Not called, if an
@@ -1576,7 +1576,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where mouse down is performed
 	 */
-	void afterMouseDown(Event event, Coordinates where);
+	void afterMouseDown(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#mouseUp Mouse.mouseUp(...)}.
@@ -1585,7 +1585,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where mouse up is performed
 	 */
-	void beforeMouseUp(Event event, Coordinates where);
+	void beforeMouseUp(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#mouseUp Mouse.mouseUp(...)}}. Not called, if an
@@ -1595,7 +1595,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where mouse up is performed
 	 */
-	void afterMouseUp(Event event, Coordinates where);
+	void afterMouseUp(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#mouseMove(Coordinates) Mouse.mouseMove(Coordinates where)}.
@@ -1604,7 +1604,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where mouse is moved to
 	 */
-	void beforeMouseMove(Event event, Coordinates where);
+	void beforeMouseMove(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#mouseMove(Coordinates) Mouse.mouseMove(Coordinates where)}}. Not called, if an
@@ -1614,7 +1614,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where mouse is moved to
 	 */
-	void afterMouseMove(Event event, Coordinates where);
+	void afterMouseMove(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#mouseMove(Coordinates,long,long) Mouse.mouseMove(Coordinates where, longxOffset, long yOffset)}.
@@ -1627,7 +1627,7 @@ public interface IEventListener {
 	 * @param yOffset
 	 *            offset in y direction
 	 */
-	void beforeMouseMove(Event event, Coordinates where, long xOffset, long yOffset);
+	void beforeMouseMove(WebDriverEvent event, Coordinates where, long xOffset, long yOffset);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#mouseMove(Coordinates,long,long) Mouse.mouseMove(Coordinates where, longxOffset, long yOffset)}.
@@ -1641,7 +1641,7 @@ public interface IEventListener {
 	 * @param yOffset
 	 *            offset in y direction
 	 */
-	void afterMouseMove(Event event, Coordinates where, long xOffset, long yOffset);
+	void afterMouseMove(WebDriverEvent event, Coordinates where, long xOffset, long yOffset);
 
 	/**
 	 * Called before {@link org.openqa.selenium.interactions.Mouse#contextClick Mouse.contextClick(...)}.
@@ -1650,7 +1650,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where context click is performed
 	 */
-	void beforeContextClick(Event event, Coordinates where);
+	void beforeContextClick(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called after {@link org.openqa.selenium.interactions.Mouse#contextClick Mouse.contextClick(...)}}. Not called, if an
@@ -1660,7 +1660,7 @@ public interface IEventListener {
 	 * @param where
 	 *            coordinates where context click is performed
 	 */
-	void afterContextClick(Event event, Coordinates where);
+	void afterContextClick(WebDriverEvent event, Coordinates where);
 
 	/**
 	 * Called whenever a command throws an exception.
@@ -1671,7 +1671,7 @@ public interface IEventListener {
 	 * @param throwable
 	 *            the exception that will be thrown
 	 */
-	void onException(Event event, Cmd cmd, Throwable throwable);
+	void onException(WebDriverEvent event, Cmd cmd, Throwable throwable);
 	
 	/**
 	 * Gets the list of events logged so far by the implementing listener.
@@ -1682,7 +1682,7 @@ public interface IEventListener {
 	 * 
 	 * @return list of events logged so far
 	 */
-	List<Event> getListOfEventsRecorded();
+	List<WebDriverEvent> getListOfEventsRecorded();
 	
 	/**
 	 * Gets the events logged so far by the implementing listener as a string
