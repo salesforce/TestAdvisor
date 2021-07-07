@@ -73,7 +73,7 @@ public class DrillBitAdministrator {
         String operating_system = System.getProperty("os.name");
         String rootDirectory;
 
-        if (operating_system.contains("Mac") || operating_system.contains("Linux")) {
+        if (operating_system.toLowerCase().contains("mac") || operating_system.toLowerCase().contains("linux")) {
         	rootDirectory = ".drillbit";
         }
         else { // Windows
@@ -88,7 +88,7 @@ public class DrillBitAdministrator {
      * 
      * @return a String object containing the root directory of the Test Run folder
      */
-    public String retrieveAbsoluteRootDirectory() {
+    public String retrieveTestRunDirectory() {
     	LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
         String formattedDate = localDateTime.format(formatter);
@@ -104,11 +104,9 @@ public class DrillBitAdministrator {
      * @return root_file represents the TestRun-yyyyMMdd-HHmmss folder that will contain the Screenshots sub-directory
      */
     private File createTestRun() {
-        String rootDirectory = Paths.get(retrieveRootDirectory(), retrieveAbsoluteRootDirectory()).toString();
+        String rootDirectory = Paths.get(retrieveRootDirectory(), retrieveTestRunDirectory()).toString();
         File root_file = new File(rootDirectory);
         File screenshots_file = new File(rootDirectory + "/Screenshots");
-        System.out.println("Root Directory: " + rootDirectory);
-        System.out.println("Screenshots Subdirectory: " + rootDirectory + "/Screenshots");
         if (!screenshots_file.exists()) {
             screenshots_file.mkdirs();
         }

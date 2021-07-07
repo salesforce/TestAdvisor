@@ -45,7 +45,7 @@ public class JsonReporter {
      * @param payloadList represents the list of TestCaseExecution objects
      * @return a File object representing the JSON file containing the list of TestCaseExecution objects
      */
-	public File saveToRegistry(List<TestCaseExecution> payloadList) { // ".drillbit/TestRun-yyyMMdd-HHmmss/test-result.json"
+	public File saveToRegistry(List<TestCaseExecution> payloadList) {
 			String outputFilePath = Paths.get(testRunRoot.toString(), "test-result.json").toString();
 			// Decide whether the program should stop if it hits an error or continue running
 			try {

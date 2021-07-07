@@ -1,8 +1,5 @@
 package com.salesforce.cqe.admin;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,8 +7,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * 
@@ -25,7 +25,12 @@ public class JsonReporterTest {
 
 	private JsonReporter jsonReporter;
 	private Path root;
-	
+
+	/**
+	 * Creates a temporary test run directory before the test starts
+	 *
+	 * @throws IOException if an I/O error occurs or the temporary-file directory does not exist
+	 */
 	@Before
 	public void createFolderStructure() throws IOException {
 		root = Files.createTempDirectory("").resolve(".drillbit").resolve("TestRun-20210629-135657");
@@ -34,14 +39,21 @@ public class JsonReporterTest {
 		
 		jsonReporter = new JsonReporter(root.toString());
 	}
-	
+
+	/**
+	 * Deletes the previously-created temporary test run directory after all of the tests have finished running
+	 */
+	@After
+	public void deleteFolderStructure() {
+		root.toFile().deleteOnExit();
+	}
+
     /**
      * Tests to make sure that the saveToRegistry() method works as expected
      * @throws IOException if an I/O error occurs or if the temporary-file directory doesn't exist
      */
 	@Test
 	public void testSaveToRegistry() throws IOException {
-		System.out.println("Running the test(s) for saveToRegistry()");
 		System.setProperty("os.name", "Mac OS X");
 		
 		List<TestCaseExecution> payloadList = new ArrayList<TestCaseExecution>();
@@ -62,10 +74,6 @@ public class JsonReporterTest {
 		payloadList.add(testCaseThree);
 		
 		File outputFile = jsonReporter.saveToRegistry(payloadList);
-
-		System.out.println("Temporary Root Directory: " + root.toString());
-		System.out.println("Absolute JSON File Path: " + outputFile.getAbsolutePath());
-		
 		assertTrue(root.toFile().exists());
 		assertTrue(root.toFile().isDirectory());
 		assertTrue(outputFile.getParent().toString().contains("/var/folders/6q/xrc0l4q55ml64gxftyh2krlw0000gp/T/"));

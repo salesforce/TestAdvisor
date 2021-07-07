@@ -24,7 +24,6 @@ public class EventTest {
 	 */
 	@Test
 	public void testEvent() {
-        System.out.println("Running the test(s) for the default constructor for the Event class");
 		assertEquals("", defaultEvent.getEventName());
 		assertEquals("", defaultEvent.getEventContent());
 	}
@@ -34,7 +33,6 @@ public class EventTest {
 	 */
 	@Test
 	public void testEventStringString() {
-        System.out.println("Running the test(s) for the two argument constructor for the Event class");
 		assertEquals("Event X", argsEvent.getEventName());
 		assertEquals("Clicked on Space Bar", argsEvent.getEventContent());
 	}
@@ -44,7 +42,6 @@ public class EventTest {
      */
 	@Test
 	public void testGetEventName() {
-        System.out.println("Running the test(s) for getEventName()");
 		assertEquals("", defaultEvent.getEventName());
 		assertEquals("Event X", argsEvent.getEventName());
 	}
@@ -54,7 +51,6 @@ public class EventTest {
      */
 	@Test
 	public void testSetEventName() {
-		System.out.println("Running the test(s) for setEventName()");
 		assertEquals("", defaultEvent.getEventName());
 		assertEquals("Event X", argsEvent.getEventName());
 		
@@ -70,7 +66,6 @@ public class EventTest {
      */
 	@Test
 	public void testGetEventContent() {
-		System.out.println("Running the test(s) for getEventContent()");
 		assertEquals("", defaultEvent.getEventContent());
 		assertEquals("Clicked on Space Bar", argsEvent.getEventContent());
 	}
@@ -80,7 +75,6 @@ public class EventTest {
      */
 	@Test
 	public void testSetEventContent() {
-		System.out.println("Running the test(s) for setEventContent()");
 		assertEquals("", defaultEvent.getEventContent());
 		assertEquals("Clicked on Space Bar", argsEvent.getEventContent());
 		
@@ -96,7 +90,6 @@ public class EventTest {
      */
 	@Test
 	public void testSaveEndTime() {
-		System.out.println("Running the test(s) for saveEndTime()");
 		String expectedTime = Instant.now().toString();
 		defaultEvent.saveEndTime();
 		
