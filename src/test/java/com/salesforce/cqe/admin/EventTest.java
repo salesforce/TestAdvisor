@@ -3,6 +3,7 @@ package com.salesforce.cqe.admin;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
+import java.util.logging.Level;
 
 import org.junit.Test;
 
@@ -16,11 +17,11 @@ import org.junit.Test;
  */
 public class EventTest {
 
-	public Event defaultEvent = new Event();
-	public Event argsEvent = new Event("Event X", "Clicked on Space Bar");
+	public TestEvent defaultEvent = new TestEvent();
+	public TestEvent argsEvent = new TestEvent("Event X", "Clicked on Space Bar",Level.INFO);
 	
 	/**
-	 * Test method for {@link com.salesforce.cqe.admin.Event#Event()}.
+	 * Test method for {@link com.salesforce.cqe.admin.TestEvent#Event()}.
 	 */
 	@Test
 	public void testEvent() {
@@ -29,7 +30,7 @@ public class EventTest {
 	}
 
 	/**
-	 * Test method for {@link com.salesforce.cqe.admin.Event#Event(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.salesforce.cqe.admin.TestEvent#Event(java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public void testEventStringString() {
@@ -97,6 +98,12 @@ public class EventTest {
 		System.out.println(defaultEvent.endTime);
 		
 		assertEquals(expectedTime.substring(0, 23), defaultEvent.endTime.substring(0, 23));
+	}
+
+	@Test
+	public void testEventDefaultName() {
+		TestEvent event = new TestEvent("",Level.INFO);
+		assertEquals("com.salesforce.cqe.admin.EventTest.testEventDefaultName", event.getEventName());
 	}
 
 }
