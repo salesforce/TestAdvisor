@@ -89,15 +89,15 @@ public class DrillBitAdministrator { // Look at implementing the Singleton Patte
     /**
      * Returns the current TestCaseExecution instance which represents the current test case
      * 
-     * @return currentTest represents an instance of the TestCaseExecution class that represents the current test case 
+     * @return 
+     * currentTest represents an instance of the TestCaseExecution class that represents the current test case 
+     * null if no test case exists
      */
     public TestCaseExecution getTestCaseExecution() {
     	
     	// this works for v1 - sequential execution
     	// however, how can we modify this to work for v2 - parallel/concurrent execution
-    	TestCaseExecution currentTest = payloadList.get(payloadList.size() - 1);
-    	
-    	return currentTest;
+    	return payloadList.isEmpty() ? null : payloadList.get(payloadList.size() - 1);
     }
     
     /**
