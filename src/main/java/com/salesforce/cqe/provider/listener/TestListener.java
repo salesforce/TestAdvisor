@@ -7,7 +7,7 @@ import org.testng.ITestResult;
 
 import com.salesforce.cqe.admin.DrillBitAdministrator;
 import com.salesforce.cqe.admin.TestCaseExecution;
-import com.salesforce.cqe.driver.listener.Event;
+import com.salesforce.cqe.admin.Event;
 
 
 /**
