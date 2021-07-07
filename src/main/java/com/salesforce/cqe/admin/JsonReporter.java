@@ -65,16 +65,14 @@ public class JsonReporter {
     	LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
         String formattedDate = localDateTime.format(formatter);
-        Path rootPath = Paths.get(JsonReporter.retrieveRootDirectory(), "TestRun-", formattedDate);
-        String rootDirectory = rootPath.toString();
-
-        return rootDirectory;
+        Path rootPath = Paths.get(JsonReporter.retrieveRootDirectory(), "TestRun-"+formattedDate);
+        return rootPath.toString();
     }
     
 	public void saveToRegistry(List<TestCaseExecution> payloadList) {
 		try {
 			String outputFilePath = Paths.get(retrieveAbsoluteRootDirectory(), "test-result.json").toString();
-			objectMapper.writeValue(Paths.get(outputFilePath).toFile(), payloadList);
+			objectMapper.writerWithDefaultPrettyPrinter().writeValue(Paths.get(outputFilePath).toFile(), payloadList);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
