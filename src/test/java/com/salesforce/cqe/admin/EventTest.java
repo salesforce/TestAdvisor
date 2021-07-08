@@ -3,6 +3,7 @@ package com.salesforce.cqe.admin;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
+import java.util.logging.Level;
 
 import org.junit.Test;
 
@@ -16,8 +17,8 @@ import org.junit.Test;
  */
 public class EventTest {
 
-	private Event defaultEvent = new Event();
-	private Event argsEvent = new Event("Event X", "Clicked on Space Bar");
+	public TestEvent defaultEvent = new TestEvent();
+	public TestEvent argsEvent = new TestEvent("Event X", "Clicked on Space Bar",Level.INFO);
 	
 	/**
 	 * Tests to make sure that the default constructor for the Event class works as expected
@@ -94,6 +95,12 @@ public class EventTest {
 		defaultEvent.saveEndTime();
 		
 		assertEquals(expectedTime.substring(0, 23), defaultEvent.endTime.substring(0, 23));
+	}
+
+	@Test
+	public void testEventDefaultName() {
+		TestEvent event = new TestEvent("",Level.INFO);
+		assertEquals("com.salesforce.cqe.admin.EventTest.testEventDefaultName", event.getEventName());
 	}
 
 }

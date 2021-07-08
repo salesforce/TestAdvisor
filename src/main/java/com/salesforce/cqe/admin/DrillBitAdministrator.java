@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -21,7 +20,7 @@ import java.nio.file.Paths;
  */
 public class DrillBitAdministrator {
 
-	public String prefix;
+	private String prefix;
 	
     private JsonReporter jsonReporter;
 
@@ -35,9 +34,12 @@ public class DrillBitAdministrator {
      */
     private DrillBitAdministrator() {
     	prefix = System.getenv("DRILLBIT_REGISTRY");
+        if (prefix == null)
+            prefix = Paths.get(System.getProperty("user.dir")).resolve(Paths.get(".drillbit")).toString();
+                                    
     	Paths.get(prefix, createTestRun().toString()).toFile().mkdirs();
         jsonReporter = new JsonReporter(Paths.get(prefix, createTestRun().toString()).toString());
-        payloadList = new ArrayList<TestCaseExecution>();
+        payloadList = new ArrayList<>();
     }
 
     /**
@@ -70,10 +72,10 @@ public class DrillBitAdministrator {
     	 * 1) The environment variable's value has been set --> it can be entered via the CLI or read from a property's file
     	 * 2) If the value for the environment variable hasn't been set, you use a default value (utilizes the current function)
     	 */
-        String operating_system = System.getProperty("os.name");
+        String operatingSystem = System.getProperty("os.name");
         String rootDirectory;
 
-        if (operating_system.toLowerCase().contains("mac") || operating_system.toLowerCase().contains("linux")) {
+        if (operatingSystem.toLowerCase().contains("mac") || operatingSystem.toLowerCase().contains("linux")) {
         	rootDirectory = ".drillbit";
         }
         else { // Windows
@@ -92,10 +94,7 @@ public class DrillBitAdministrator {
     	LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
         String formattedDate = localDateTime.format(formatter);
-        Path rootPath = Paths.get("TestRun-" + formattedDate);
-        String rootDirectory = rootPath.toString();
-
-        return rootDirectory;
+        return Paths.get("TestRun-" + formattedDate).toString();
     }
     
     /**
@@ -105,12 +104,12 @@ public class DrillBitAdministrator {
      */
     private File createTestRun() {
         String rootDirectory = Paths.get(retrieveRootDirectory(), retrieveTestRunDirectory()).toString();
-        File root_file = new File(rootDirectory);
-        File screenshots_file = new File(rootDirectory + "/Screenshots");
-        if (!screenshots_file.exists()) {
-            screenshots_file.mkdirs();
+        File rootFile = new File(rootDirectory);
+        File screenshotsFile = new File(rootDirectory + "/Screenshots");
+        if (!screenshotsFile.exists()) {
+            screenshotsFile.mkdirs();
         }
-        return root_file;
+        return rootFile;
     }
     
     /**
@@ -129,15 +128,15 @@ public class DrillBitAdministrator {
     /**
      * Returns the current TestCaseExecution instance which represents the current test case
      * 
-     * @return currentTest represents an instance of the TestCaseExecution class that represents the current test case 
+     * @return 
+     * currentTest represents an instance of the TestCaseExecution class that represents the current test case 
+     * null if no test case exists
      */
     public TestCaseExecution getTestCaseExecution() {
     	
     	// this works for v1 - sequential execution
     	// however, how can we modify this to work for v2 - parallel/concurrent execution
-    	TestCaseExecution currentTest = payloadList.get(payloadList.size() - 1);
-    	
-    	return currentTest;
+    	return payloadList.isEmpty() ? null : payloadList.get(payloadList.size() - 1);
     }
     
 //    /**
@@ -154,9 +153,7 @@ public class DrillBitAdministrator {
      * by calling on the JsonReporter's saveToRegistry() function
      */
     public File saveTestCaseExecutionList() {
-    	File outputFile = jsonReporter.saveToRegistry(payloadList);
-    	
-    	return outputFile;
+    	return jsonReporter.saveToRegistry(payloadList);
     }
     
 }

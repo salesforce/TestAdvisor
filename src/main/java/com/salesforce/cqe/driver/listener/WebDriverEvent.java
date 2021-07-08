@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
  * @author gneumann
  * @since 1.0
  */
-public class Event {
+public class WebDriverEvent {
 	public enum Type { BeforeAction, AfterAction, BeforeGather, AfterGather, Exception }
 	// TODO add Alert
 	public enum WebDriverInterface { WebDriver, JavascriptExecutor, Options, ImeHandler, Navigation, TargetLocator, Timeouts, Window, Alert, WebElement, Keyboard, Mouse, TakesScreenshot }
@@ -220,12 +220,12 @@ public class Event {
 	/**
 	 * Empty Default constructor to be used by de-serialization.
 	 */
-	public Event( ) {
+	public WebDriverEvent( ) {
 		// no-op
 	}
 
-	public Event(Type typeOfLog, int eventNumber, Cmd cmd) {
-		this.recordNumber = Event.lastRecordNumber++;
+	public WebDriverEvent(Type typeOfLog, int eventNumber, Cmd cmd) {
+		this.recordNumber = WebDriverEvent.lastRecordNumber++;
 		this.typeOfLog = typeOfLog;
 		this.eventNumber = eventNumber;
 		this.cmd = cmd;
@@ -328,7 +328,7 @@ public class Event {
 
 	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("eventno:").append(eventNumber).append(",");
 		buffer.append("type:").append(typeOfLog).append(",");
 		buffer.append("timestamp:").append(timeStamp).append(" ms,");
@@ -359,10 +359,9 @@ public class Event {
 	}
 
 	public static String formattedNanoTime(long duration) {
-		String timeString = String.format("%d sec %d ms", TimeUnit.NANOSECONDS.toSeconds(duration),
+		return String.format("%d sec %d ms", TimeUnit.NANOSECONDS.toSeconds(duration),
 				TimeUnit.NANOSECONDS.toMillis(duration)
 						- TimeUnit.SECONDS.toMillis(TimeUnit.NANOSECONDS.toSeconds(duration)));
-		return timeString;
 	}
 
 	private void timeStampsForBeginAction() {

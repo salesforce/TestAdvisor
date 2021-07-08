@@ -49,7 +49,7 @@ public class JsonReporter {
 			String outputFilePath = Paths.get(testRunRoot.toString(), "test-result.json").toString();
 			// Decide whether the program should stop if it hits an error or continue running
 			try {
-				objectWriter.writeValue(Paths.get(outputFilePath).toFile(), payloadList);
+				objectWriter.withDefaultPrettyPrinter().writeValue(Paths.get(outputFilePath).toFile(), payloadList);
 			} catch (JsonGenerationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

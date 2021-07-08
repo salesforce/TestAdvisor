@@ -1,6 +1,7 @@
 package com.salesforce.cqe.admin;
 
 import java.time.Instant;
+import java.util.logging.Level;
 
 /**
  * 
@@ -9,9 +10,10 @@ import java.time.Instant;
  * @author gpahuja
  *
  */
-public class Event {
+public class TestEvent {
 	
 	public String eventName;
+	public Level eventLevel;
 	public String eventContent;
 	public String startTime;
 	public String endTime;
@@ -19,21 +21,28 @@ public class Event {
     /**
      * A default constructor for the Event class
      */
-	public Event() {
+	public TestEvent() {
 		eventName = "";
 		eventContent = "";
 		startTime = Instant.now().toString();
 	}
 	
+	public TestEvent(String eventContent, Level level) {
+		this( Thread.currentThread().getStackTrace()[2].getClassName() 
+				+ "." + Thread.currentThread().getStackTrace()[2].getMethodName() 
+				,eventContent,level);
+	}
+
 	/**
 	 * A constructor for the Event class that takes in two arguments
 	 * 
 	 * @param eventName represents the name of the new Event object
 	 * @param eventContent represents the content description of the new Event object
 	 */
-	public Event(String eventName, String eventContent) {
+	public TestEvent(String eventName, String eventContent, Level level) {
 		this.eventName = eventName;
 		this.eventContent = eventContent;
+		this.eventLevel = level;
 		startTime = Instant.now().toString();
 	}
 	

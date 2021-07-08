@@ -18,7 +18,7 @@ package com.salesforce.cqe.admin;
  * @author gpahuja
  *
  */
-enum TestStatus {
+public enum TestStatus {
     PASSED,
     FAILED, 
     SKIPPED
