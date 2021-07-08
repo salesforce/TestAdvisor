@@ -24,7 +24,6 @@ public class TestCaseExecutionTest {
 	 */
 	@Test
 	public void testTestCaseExecution() {
-		System.out.println("Running the test(s) for the default constructor for the TestCaseExecution class");
 		assertEquals(0, testCaseExecution.eventList.size());
 		assertEquals(TestStatus.PASSED, testCaseExecution.testStatus);
 		
@@ -80,8 +79,6 @@ public class TestCaseExecutionTest {
      */
     @Test
     public void testAppendEvent() {
-        System.out.println("Running the test(s) for appendEvent()");
-
         assertEquals(0, testCaseExecution.eventList.size());
 
         testCaseExecution.appendEvent(event);

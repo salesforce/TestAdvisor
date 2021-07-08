@@ -21,7 +21,7 @@ public class EventTest {
 	public TestEvent argsEvent = new TestEvent("Event X", "Clicked on Space Bar",Level.INFO);
 	
 	/**
-	 * Test method for {@link com.salesforce.cqe.admin.TestEvent#Event()}.
+	 * Tests to make sure that the default constructor for the Event class works as expected
 	 */
 	@Test
 	public void testEvent() {
@@ -30,7 +30,7 @@ public class EventTest {
 	}
 
 	/**
-	 * Test method for {@link com.salesforce.cqe.admin.TestEvent#Event(java.lang.String, java.lang.String)}.
+	 * Tests to make sure that the two argument constructor for the Event class works as expected
 	 */
 	@Test
 	public void testEventStringString() {
@@ -93,9 +93,6 @@ public class EventTest {
 	public void testSaveEndTime() {
 		String expectedTime = Instant.now().toString();
 		defaultEvent.saveEndTime();
-		
-		System.out.println(expectedTime);
-		System.out.println(defaultEvent.endTime);
 		
 		assertEquals(expectedTime.substring(0, 23), defaultEvent.endTime.substring(0, 23));
 	}
