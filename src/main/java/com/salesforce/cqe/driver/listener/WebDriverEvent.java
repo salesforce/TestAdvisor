@@ -328,7 +328,7 @@ public class WebDriverEvent {
 
 	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("eventno:").append(eventNumber).append(",");
 		buffer.append("type:").append(typeOfLog).append(",");
 		buffer.append("timestamp:").append(timeStamp).append(" ms,");
@@ -359,10 +359,9 @@ public class WebDriverEvent {
 	}
 
 	public static String formattedNanoTime(long duration) {
-		String timeString = String.format("%d sec %d ms", TimeUnit.NANOSECONDS.toSeconds(duration),
+		return String.format("%d sec %d ms", TimeUnit.NANOSECONDS.toSeconds(duration),
 				TimeUnit.NANOSECONDS.toMillis(duration)
 						- TimeUnit.SECONDS.toMillis(TimeUnit.NANOSECONDS.toSeconds(duration)));
-		return timeString;
 	}
 
 	private void timeStampsForBeginAction() {

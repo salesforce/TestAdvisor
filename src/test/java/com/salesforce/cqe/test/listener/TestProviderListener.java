@@ -66,7 +66,7 @@ public class TestProviderListener {
         assertTrue("Passed test case", true);
     }
 
-    @Test
+    @Test(expectedExceptions = { AssertionError.class })
     public void testTestCaseFailed() throws Exception{
         String methodName = new Object() {}
                                 .getClass()
