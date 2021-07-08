@@ -36,8 +36,12 @@ public class TestEvent {
 	/**
 	 * A constructor for the Event class that takes in two arguments
 	 * 
-	 * @param eventName represents the name of the new Event object
-	 * @param eventContent represents the content description of the new Event object
+	 * @param eventName 
+	 * represents the name of the new Event object
+	 * @param eventContent 
+	 * represents the content description of the new Event object
+	 * @param level
+	 * event level, {@link java.util.logging.Level}
 	 */
 	public TestEvent(String eventName, String eventContent, Level level) {
 		this.eventName = eventName;
