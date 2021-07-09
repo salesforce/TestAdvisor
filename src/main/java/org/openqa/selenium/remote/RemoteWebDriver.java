@@ -529,11 +529,11 @@ public class RemoteWebDriver implements WebDriver, JavascriptExecutor, FindsById
 
 		List<Object> convertedArgs = Stream.of(args).map(new WebElementToJsonConverter()).collect(Collectors.toList());
 
-		Map<String, ?> params = ImmutableMap.of("script", script, "args", convertedArgs);
-		
 		boolean sendToEventDispatcher = !script.startsWith(IGNORE_COMMAND_TAG);
 		if (!sendToEventDispatcher)
 			script = script.substring(IGNORE_COMMAND_TAG.length());
+
+		Map<String, ?> params = ImmutableMap.of("script", script, "args", convertedArgs);
 
 		if (sendToEventDispatcher)
 			eventDispatcher.beforeExecuteScript(script, params);
