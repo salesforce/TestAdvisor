@@ -151,6 +151,8 @@ public class DrillBitAdministrator {
     /**
      * Saves payloadList to the DrillBit Registry in JSON format
      * by calling on the JsonReporter's saveToRegistry() function
+     * @return
+     * File object of saved test excution list.
      */
     public File saveTestCaseExecutionList() {
     	return jsonReporter.saveToRegistry(payloadList);

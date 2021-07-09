@@ -28,4 +28,4 @@ based UI automation for the Salesforce platform.
 1. Go to the Releases [section](https://git.soma.salesforce.com/cqe/DrillBit-Lib/releases)
 2. Click on the "Draft a new release" button
 3. Enter the "tag version" and "Release title" value as drillbit-lib-v0.0.\<new-version\>
-4. Write one or more sentences about the changes pushed ([example](https://git.soma.salesforce.com/cqe/DrillBit-Lib/releases/tag/drillbit-lib-v0.0.53)) and publish the release.
+4. Write one or more sentences about the changes pushed ([example](https://git.soma.salesforce.com/cqe/DrillBit-Lib/releases/tag/drillbit-lib-v0.0.1)) and publish the release.
