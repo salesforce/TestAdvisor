@@ -54,7 +54,7 @@ import com.salesforce.cqe.driver.listener.WebDriverEvent.Cmd;
 public abstract class AbstractEventListener implements IEventListener {
 	@JsonProperty("logEntries")
 	protected List<WebDriverEvent> logEntries = new ArrayList<>();
-	protected TestCaseExecution testCaseExecution = DrillBitAdministrator.getInstance().getTestCaseExecution();
+	protected DrillBitAdministrator drillbitAdministrator = DrillBitAdministrator.getInstance();
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver object.
