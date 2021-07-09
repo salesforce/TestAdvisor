@@ -20,7 +20,7 @@ import java.nio.file.Paths;
  */
 public class DrillBitAdministrator {
 
-	private String prefix;
+	private String registryRoot;
 	
     private JsonReporter jsonReporter;
 
@@ -33,12 +33,12 @@ public class DrillBitAdministrator {
      * A default constructor for the DrillBitAdministrator class
      */
     private DrillBitAdministrator() {
-    	prefix = System.getenv("DRILLBIT_REGISTRY");
-        if (prefix == null)
-            prefix = Paths.get(System.getProperty("user.dir")).resolve(Paths.get(".drillbit")).toString();
-                                    
-    	Paths.get(prefix, createTestRun().toString()).toFile().mkdirs();
-        jsonReporter = new JsonReporter(Paths.get(prefix, createTestRun().toString()).toString());
+    	registryRoot = System.getenv("DRILLBIT_REGISTRY");
+        if (registryRoot == null)
+            registryRoot = Paths.get(System.getProperty("user.dir")).resolve(Paths.get(".drillbit")).toString();
+        String testRun = retrieveTestRunDirectory();                           
+    	Paths.get(registryRoot, testRun).toFile().mkdirs();
+        jsonReporter = new JsonReporter(Paths.get(registryRoot, testRun).toString());
         payloadList = new ArrayList<>();
     }
 

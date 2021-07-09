@@ -3,6 +3,7 @@ package com.salesforce.cqe.provider.listener;
 import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.IConfigurationListener;
+import org.testng.IConfigurationListener2;
 import org.testng.IExecutionListener;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
@@ -23,16 +24,24 @@ import com.salesforce.cqe.admin.TestStatus;
  * test listener will collect detailed test execution information, 
  * such as exact timestamp, error message and execeptions
  */
-public class TestListener implements ITestListener, IExecutionListener, IConfigurationListener{
+public class TestListener implements ITestListener, IExecutionListener, IConfigurationListener, IConfigurationListener2{
 
     //Singlton DrillBitAdministrator
     private DrillBitAdministrator administrator;
 
+    //IConfigurationListener2
+    @Override
+    public void beforeConfiguration(ITestResult result){
+        //Invoked before a configuration method is invoked.
+        TestCaseExecution testCaseExecution = getCurrentTestCaseExecution(result);
+        testCaseExecution.appendEvent(new TestEvent(result.getName(), "",Level.INFO) );
+    }
+    
     //IConfigurationListener
     @Override
     public void onConfigurationFailure(ITestResult result){     
         //Invoked whenever a configuration method failed.
-        TestCaseExecution testCaseExecution = getCurrentTestCaseExecution(result);
+        TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
         setConfigurationStatus(result, TestStatus.FAILED);
         //append failure event with failed method name and exception class name
         if (result.getThrowable() != null){
@@ -45,7 +54,7 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
     @Override
     public void onConfigurationSkip(ITestResult result){       
         //Invoked whenever a configuration method was skipped.
-        TestCaseExecution testCaseExecution = getCurrentTestCaseExecution(result);
+        TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
         setConfigurationStatus(result, TestStatus.SKIPPED);
         testCaseExecution.appendEvent(new TestEvent(result.getName(), "",Level.WARNING));
         testCaseExecution.saveEndTime();
@@ -54,7 +63,7 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
     @Override
     public void onConfigurationSuccess(ITestResult result){     
         //Invoked whenever a configuration method succeeded.
-        TestCaseExecution testCaseExecution = getCurrentTestCaseExecution(result);
+        TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
         setConfigurationStatus(result, TestStatus.PASSED);
         testCaseExecution.appendEvent(new TestEvent(result.getName(), "",Level.INFO));
         testCaseExecution.saveEndTime();
