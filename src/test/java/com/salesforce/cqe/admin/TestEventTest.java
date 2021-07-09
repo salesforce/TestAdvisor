@@ -15,7 +15,7 @@ import org.junit.Test;
  * @author gpahuja
  *
  */
-public class EventTest {
+public class TestEventTest {
 
 	public TestEvent defaultEvent = new TestEvent();
 	public TestEvent argsEvent = new TestEvent("Event X", "Clicked on Space Bar",Level.INFO);
@@ -100,7 +100,7 @@ public class EventTest {
 	@Test
 	public void testEventDefaultName() {
 		TestEvent event = new TestEvent("",Level.INFO);
-		assertEquals("com.salesforce.cqe.admin.EventTest.testEventDefaultName", event.getEventName());
+		assertEquals("com.salesforce.cqe.admin.TestEventTest.testEventDefaultName", event.getEventName());
 	}
 
 }
