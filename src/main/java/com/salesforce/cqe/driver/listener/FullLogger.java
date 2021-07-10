@@ -868,7 +868,7 @@ public class FullLogger extends AbstractEventListener {
 	@Override
 	public void onException(WebDriverEvent event, Cmd cmd, Throwable issue) {
 		logEntries.add(event);
-		drillbitAdministrator.getTestCaseExecution().appendEvent(new TestEvent(event.toString(), Level.WARNING));
+		drillbitAdministrator.getTestCaseExecution().appendEvent(new TestEvent(event.toString(), Level.WARNING.toString()));
 	}
 	
 	// This listener provides the events in the way defined in AbstractEventListener.
