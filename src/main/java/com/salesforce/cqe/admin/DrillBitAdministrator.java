@@ -33,9 +33,9 @@ public class DrillBitAdministrator {
      * A default constructor for the DrillBitAdministrator class
      */
     private DrillBitAdministrator() {
-    	registryRoot = System.getenv("DRILLBIT_REGISTRY");
+    	registryRoot = Paths.get(System.getenv("DRILLBIT_REGISTRY"), retrieveRootDirectory()).toString();
         if (registryRoot == null)
-            registryRoot = Paths.get(System.getProperty("user.dir")).resolve(Paths.get(".drillbit")).toString();
+            registryRoot = Paths.get(System.getProperty("user.dir")).resolve(Paths.get(retrieveRootDirectory())).toString();
         String testRun = retrieveTestRunDirectory();                           
     	Paths.get(registryRoot, testRun).toFile().mkdirs();
         jsonReporter = new JsonReporter(Paths.get(registryRoot, testRun).toString());

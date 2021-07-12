@@ -1,0 +1,33 @@
+package com.salesforce.cqe.admin;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author gpahuja
+ *
+ */
+public class ConfigTest {
+
+	private Config config = new Config();
+	
+    /**
+     * Tests to make sure that the getOS() method works as expected
+     */
+	@Test
+	public void testGetOS() {
+		assertEquals(System.getProperty("os.name"), config.getOS());
+		assertTrue(config.getOS().contains("Mac OS"));
+	}
+
+    /**
+     * Tests to make sure that the getUserDirectory() method works as expected
+     */
+	@Test
+	public void testGetUserDirectory() {
+		assertEquals(System.getProperty("user.dir"), config.getUserDirectory());
+		assertTrue(config.getUserDirectory().contains(System.getProperty("user.name")));
+	}
+
+}
