@@ -57,14 +57,6 @@ public class DrillBitAdministratorTest {
     	assertEquals(".drillbit", drillbitAdmin.retrieveRootDirectory());
     }
 
-//	/**
-//	 * Tests to make sure that createTestRun() method works as expected
-//	 */
-//	@Test
-//	public void testCreateTestRun() {
-//		fail("Not yet implemented");
-//	}
-
 	/**
 	 * Tests to make sure that createTestExecution() method works as expected
 	 */
@@ -86,9 +78,7 @@ public class DrillBitAdministratorTest {
 		assertEquals(TestCaseExecution.class, drillbitAdmin.getTestCaseExecution().getClass());
 	}
 	
-//	/**
-//	 * Tests to make sure that the saveTestCaseExecution() method works as expected
-//	 */
+// TODO: This function tests to make sure that the saveTestCaseExecution() method works as expected
 //	@Test
 //	public void testSaveTestCaseExecution() {
 //	    fail("Not yet implemented");
@@ -128,6 +118,8 @@ public class DrillBitAdministratorTest {
 		LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
         String formattedDate = localDateTime.format(formatter);
+        
+        System.out.println(outputFile.getAbsolutePath().toString());
         
 		assertTrue(outputFile.getAbsolutePath().toString().contains("/var/folders/6q/xrc0l4q55ml64gxftyh2krlw0000gp/T/"));
 		assertTrue(outputFile.getAbsolutePath().toString().contains(".drillbit/TestRun-" + formattedDate.substring(0, 13)));

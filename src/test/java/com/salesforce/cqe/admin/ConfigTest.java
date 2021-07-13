@@ -5,6 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
+ *
+ * ConfigTest will test all of the methods in the Config class
+ * to make sure that they run and perform as expected
+ *
  * @author gpahuja
  *
  */
