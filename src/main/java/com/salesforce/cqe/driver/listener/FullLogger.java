@@ -24,6 +24,7 @@ import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Coordinates;
 
+import com.salesforce.cqe.admin.TestCaseExecution;
 import com.salesforce.cqe.admin.TestEvent;
 import com.salesforce.cqe.driver.listener.WebDriverEvent.Cmd;
 
@@ -868,7 +869,14 @@ public class FullLogger extends AbstractEventListener {
 	@Override
 	public void onException(WebDriverEvent event, Cmd cmd, Throwable issue) {
 		logEntries.add(event);
-		drillbitAdministrator.getTestCaseExecution().appendEvent(new TestEvent(event.toString(), Level.WARNING));
+		
+		TestCaseExecution testInstance = drillbitAdministrator.getTestCaseExecution();
+		
+		if (testInstance != null)
+			testInstance.appendEvent(new TestEvent(event.toString(), Level.WARNING));
+		else
+			System.out.println("Failed to get current TestCaseExecution instance. "
+					+ "Please check if the WebDriver Event Listener has been configured correctly.");
 	}
 	
 	// This listener provides the events in the way defined in AbstractEventListener.
