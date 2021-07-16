@@ -1,11 +1,7 @@
 package com.salesforce.cqe.admin;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.File;
 import java.nio.file.Paths;
 
@@ -24,8 +20,7 @@ public class DrillBitAdministrator {
 	
     private JsonReporter jsonReporter;
 
-    @JsonProperty
-    public List<TestCaseExecution> payloadList;
+    public DrillbitTestResult testResult = new DrillbitTestResult();
 
     private static DrillBitAdministrator drillBitAdminInstance = null;
     
@@ -39,8 +34,7 @@ public class DrillBitAdministrator {
             registryRoot = Paths.get(System.getProperty("user.dir")).toString();
 
         File testRunFile = createTestRun(registryRoot);
-        jsonReporter = new JsonReporter(testRunFile.getAbsolutePath().toString());
-        payloadList = new ArrayList<>();
+        jsonReporter = new JsonReporter(testRunFile.getAbsolutePath());
     }
 
     /**
@@ -121,7 +115,7 @@ public class DrillBitAdministrator {
     public TestCaseExecution createTestCaseExecution() {
     	TestCaseExecution testCaseExecution = new TestCaseExecution();
     	
-    	payloadList.add(testCaseExecution);
+    	testResult.payloadList.add(testCaseExecution);
     	
     	return testCaseExecution;
     }
@@ -137,7 +131,7 @@ public class DrillBitAdministrator {
     	
     	// this works for v1 - sequential execution
     	// however, how can we modify this to work for v2 - parallel/concurrent execution
-    	return payloadList.isEmpty() ? null : payloadList.get(payloadList.size() - 1);
+    	return testResult.payloadList.isEmpty() ? null : testResult.payloadList.get(testResult.payloadList.size() - 1);
     }
     
 // TODO: This function appends the current instance of the TestCaseExecution class to the JSON file
@@ -154,7 +148,7 @@ public class DrillBitAdministrator {
      * File object of saved test excution list.
      */
     public File saveTestCaseExecutionList() {
-    	return jsonReporter.saveToRegistry(payloadList);
+    	return jsonReporter.saveToRegistry(testResult);
     }
     
 }

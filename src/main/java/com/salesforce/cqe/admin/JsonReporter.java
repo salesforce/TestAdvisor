@@ -45,11 +45,11 @@ public class JsonReporter {
      * @param payloadList represents the list of TestCaseExecution objects
      * @return a File object representing the JSON file containing the list of TestCaseExecution objects
      */
-	public File saveToRegistry(List<TestCaseExecution> payloadList) {
+	public File saveToRegistry(DrillbitTestResult testResult) {
 			String outputFilePath = Paths.get(testRunRoot.toString(), "test-result.json").toString();
 			// Decide whether the program should stop if it hits an error or continue running
 			try {
-				objectWriter.withDefaultPrettyPrinter().writeValue(Paths.get(outputFilePath).toFile(), payloadList);
+				objectWriter.withDefaultPrettyPrinter().writeValue(Paths.get(outputFilePath).toFile(), testResult);
 			} catch (JsonGenerationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -63,45 +63,5 @@ public class JsonReporter {
 
 			return Paths.get(outputFilePath).toFile();
 	}
-	
-//	/**
-//	 * Saves a single TestCaseExecution instance to a single JSON file
-//	 * using two cases: 1) The JSON file exists and 2) A JSON file needs to be created
-//	 * 
-//	 * @param testCaseExecution represents a single TestCaseExecution object
-//	 */
-//	public void saveToRegistry(TestCaseExecution testCaseExecution) {
-//		File outputFile = new File(Paths.get(testRunRoot.toString(), "test-result.json").toString());
-//		String outputFilePath = Paths.get(testRunRoot.toString(), "test-result.json").toString();
-//		
-//		if (outputFile.exists()) {
-//			try {
-//				objectWriter.writeValue(Paths.get(outputFilePath).toFile(), testCaseExecution);
-//			} catch (JsonGenerationException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (JsonMappingException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		else {
-//			try {
-//				objectWriter.writeValue(Paths.get(outputFilePath).toFile(), testCaseExecution);
-//			} catch (JsonGenerationException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (JsonMappingException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//	}
 
 }

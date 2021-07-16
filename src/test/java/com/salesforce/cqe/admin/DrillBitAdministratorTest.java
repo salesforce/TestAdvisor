@@ -28,7 +28,7 @@ public class DrillBitAdministratorTest {
 	@Before
 	public void beforeEachTestMethod() throws IOException {
 		drillbitAdmin = DrillBitAdministrator.getInstance();
-		drillbitAdmin.payloadList.clear();
+		drillbitAdmin.testResult.payloadList.clear();
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class DrillBitAdministratorTest {
 	 */
 	@Test
 	public void testDrillBitAdministrator() {
-		assertEquals(0, drillbitAdmin.payloadList.size());
+		assertEquals(0, drillbitAdmin.testResult.payloadList.size());
 		assertTrue(drillbitAdmin.getClass().toGenericString().startsWith("public class"));
 		assertTrue(drillbitAdmin.getClass().toGenericString().endsWith("DrillBitAdministrator"));
 	}
@@ -62,9 +62,9 @@ public class DrillBitAdministratorTest {
 	 */
 	@Test
 	public void testCreateTestCaseExecution() {
-		assertEquals(0, drillbitAdmin.payloadList.size());
+		assertEquals(0, drillbitAdmin.testResult.payloadList.size());
 		drillbitAdmin.createTestCaseExecution();
-		assertEquals(1, drillbitAdmin.payloadList.size());
+		assertEquals(1, drillbitAdmin.testResult.payloadList.size());
 	}
 
 	/**
@@ -72,9 +72,9 @@ public class DrillBitAdministratorTest {
 	 */
 	@Test
 	public void testGetTestCaseExecution() {
-		assertEquals(0, drillbitAdmin.payloadList.size());
+		assertEquals(0, drillbitAdmin.testResult.payloadList.size());
 		drillbitAdmin.createTestCaseExecution();
-		assertEquals(1, drillbitAdmin.payloadList.size());
+		assertEquals(1, drillbitAdmin.testResult.payloadList.size());
 		assertEquals(TestCaseExecution.class, drillbitAdmin.getTestCaseExecution().getClass());
 	}
 	

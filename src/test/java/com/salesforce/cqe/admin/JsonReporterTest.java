@@ -72,8 +72,11 @@ public class JsonReporterTest {
 		payloadList.add(testCaseOne);
 		payloadList.add(testCaseTwo);
 		payloadList.add(testCaseThree);
+
+		DrillbitTestResult testResult = new DrillbitTestResult();
+		testResult.payloadList = payloadList;
 		
-		File outputFile = jsonReporter.saveToRegistry(payloadList);
+		File outputFile = jsonReporter.saveToRegistry(testResult);
 		assertTrue(root.toFile().exists());
 		assertTrue(root.toFile().isDirectory());
 		assertTrue(outputFile.getParent().toString().contains("/var/folders/6q/xrc0l4q55ml64gxftyh2krlw0000gp/T/"));
