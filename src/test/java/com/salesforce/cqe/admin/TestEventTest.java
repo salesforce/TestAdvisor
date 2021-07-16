@@ -15,7 +15,7 @@ import org.junit.Test;
  * @author gpahuja
  *
  */
-public class EventTest {
+public class TestEventTest {
 
 	public TestEvent defaultEvent = new TestEvent();
 	public TestEvent argsEvent = new TestEvent("Event X", "Clicked on Space Bar",Level.INFO.toString());

@@ -33,12 +33,13 @@ public class DrillBitAdministrator {
      * A default constructor for the DrillBitAdministrator class
      */
     private DrillBitAdministrator() {
-    	registryRoot = System.getenv("DRILLBIT_REGISTRY");
+    	registryRoot = Paths.get(System.getenv("DRILLBIT_REGISTRY")).toString();
+
         if (registryRoot == null)
-            registryRoot = Paths.get(System.getProperty("user.dir")).resolve(Paths.get(".drillbit")).toString();
-        String testRun = retrieveTestRunDirectory();                           
-    	Paths.get(registryRoot, testRun).toFile().mkdirs();
-        jsonReporter = new JsonReporter(Paths.get(registryRoot, testRun).toString());
+            registryRoot = Paths.get(System.getProperty("user.dir")).toString();
+
+        File testRunFile = createTestRun(registryRoot);
+        jsonReporter = new JsonReporter(testRunFile.getAbsolutePath().toString());
         payloadList = new ArrayList<>();
     }
 
@@ -102,14 +103,14 @@ public class DrillBitAdministrator {
      * 
      * @return root_file represents the TestRun-yyyyMMdd-HHmmss folder that will contain the Screenshots sub-directory
      */
-    private File createTestRun() {
-        String rootDirectory = Paths.get(retrieveRootDirectory(), retrieveTestRunDirectory()).toString();
-        File rootFile = new File(rootDirectory);
-        File screenshotsFile = new File(rootDirectory + "/Screenshots");
+    private File createTestRun(String prefix) {
+        String testRunPath = Paths.get(prefix, retrieveRootDirectory(), retrieveTestRunDirectory()).toString();
+        File testRunFile = new File(testRunPath);
+        File screenshotsFile = new File(testRunPath + "/Screenshots");
         if (!screenshotsFile.exists()) {
             screenshotsFile.mkdirs();
         }
-        return rootFile;
+        return testRunFile;
     }
     
     /**
@@ -139,9 +140,7 @@ public class DrillBitAdministrator {
     	return payloadList.isEmpty() ? null : payloadList.get(payloadList.size() - 1);
     }
     
-//    /**
-//     * Appends the current instance of the TestCaseExecution class to the JSON file
-//     */
+// TODO: This function appends the current instance of the TestCaseExecution class to the JSON file
 //    public void saveTestCaseExecution() {
 //	 	// Instantiate a JSON Reporter here
 //    	// Use the JSONReporter to write to JSON here

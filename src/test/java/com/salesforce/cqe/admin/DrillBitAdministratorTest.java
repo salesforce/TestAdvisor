@@ -2,6 +2,8 @@ package com.salesforce.cqe.admin;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,14 +57,6 @@ public class DrillBitAdministratorTest {
     	assertEquals(".drillbit", drillbitAdmin.retrieveRootDirectory());
     }
 
-//	/**
-//	 * Tests to make sure that createTestRun() method works as expected
-//	 */
-//	@Test
-//	public void testCreateTestRun() {
-//		fail("Not yet implemented");
-//	}
-
 	/**
 	 * Tests to make sure that createTestExecution() method works as expected
 	 */
@@ -84,9 +78,7 @@ public class DrillBitAdministratorTest {
 		assertEquals(TestCaseExecution.class, drillbitAdmin.getTestCaseExecution().getClass());
 	}
 	
-//	/**
-//	 * Tests to make sure that the saveTestCaseExecution() method works as expected
-//	 */
+// TODO: This function tests to make sure that the saveTestCaseExecution() method works as expected
 //	@Test
 //	public void testSaveTestCaseExecution() {
 //	    fail("Not yet implemented");
@@ -98,10 +90,10 @@ public class DrillBitAdministratorTest {
 	 */
 	@Test
 	public void testSaveTestCaseExecutionListMac() {
-        System.setProperty("os.name", "Mac OS X");
+		Config mockConfig = mock(Config.class);
+		when(mockConfig.getOS()).thenReturn("Mac OS X");
 
 		DrillBitAdministrator drillbitAdminMac = DrillBitAdministrator.getInstance();
-
 
 		TestCaseExecution testCaseOne = drillbitAdminMac.createTestCaseExecution();
 		testCaseOne.setTestName("Test 1");
@@ -126,7 +118,9 @@ public class DrillBitAdministratorTest {
 		LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
         String formattedDate = localDateTime.format(formatter);
-
+        
+        System.out.println(outputFile.getAbsolutePath().toString());
+        
 		assertTrue(outputFile.getAbsolutePath().toString().contains("/var/folders/6q/xrc0l4q55ml64gxftyh2krlw0000gp/T/"));
 		assertTrue(outputFile.getAbsolutePath().toString().contains(".drillbit/TestRun-" + formattedDate.substring(0, 13)));
 		assertEquals("test-result.json", outputFile.getName());
@@ -140,7 +134,8 @@ public class DrillBitAdministratorTest {
 	 */
 	@Test
 	public void testSaveTestCaseExecutionListWindows() {
-		System.setProperty("os.name", "Windows 10");
+		Config mockConfig = mock(Config.class);
+		when(mockConfig.getOS()).thenReturn("Windows 10");
 
 		DrillBitAdministrator drillbitAdminWindows = DrillBitAdministrator.getInstance();
 
@@ -163,14 +158,8 @@ public class DrillBitAdministratorTest {
 
 		assertTrue(outputFile.exists());
 		assertTrue(outputFile.getParentFile().isDirectory());
-
-		LocalDateTime localDateTime = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
-		String formattedDate = localDateTime.format(formatter);
-
+		
 		assertTrue(outputFile.getAbsolutePath().toString().contains("/var/folders/6q/xrc0l4q55ml64gxftyh2krlw0000gp/T/"));
-		assertTrue(outputFile.getAbsolutePath().toString().contains("/drillbit/TestRun-" + formattedDate.substring(0, 13)));
-		assertEquals("test-result.json", outputFile.getName());
 		
 		outputFile.deleteOnExit();
 	}
