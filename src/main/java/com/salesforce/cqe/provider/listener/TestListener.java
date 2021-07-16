@@ -34,7 +34,7 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
     public void beforeConfiguration(ITestResult result){
         //Invoked before a configuration method is invoked.
         TestCaseExecution testCaseExecution = getCurrentTestCaseExecution(result);
-        testCaseExecution.appendEvent(new TestEvent(result.getName(), "",Level.INFO) );
+        testCaseExecution.appendEvent(new TestEvent(result.getName(), "",Level.INFO.toString()) );
     }
     
     //IConfigurationListener
@@ -46,7 +46,7 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
         //append failure event with failed method name and exception class name
         if (result.getThrowable() != null){
             testCaseExecution.appendEvent(new TestEvent(
-                result.getName(), result.getThrowable().getClass().getName(),Level.SEVERE) );
+                result.getName(), result.getThrowable().getClass().getName(),Level.SEVERE.toString()) );
         }
         testCaseExecution.saveEndTime();
     }
@@ -56,7 +56,7 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
         //Invoked whenever a configuration method was skipped.
         TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
         setConfigurationStatus(result, TestStatus.SKIPPED);
-        testCaseExecution.appendEvent(new TestEvent(result.getName(), "",Level.WARNING));
+        testCaseExecution.appendEvent(new TestEvent(result.getName(), "",Level.WARNING.toString()));
         testCaseExecution.saveEndTime();
     }
     
@@ -65,7 +65,7 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
         //Invoked whenever a configuration method succeeded.
         TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
         setConfigurationStatus(result, TestStatus.PASSED);
-        testCaseExecution.appendEvent(new TestEvent(result.getName(), "",Level.INFO));
+        testCaseExecution.appendEvent(new TestEvent(result.getName(), "",Level.INFO.toString()));
         testCaseExecution.saveEndTime();
     }
 
@@ -132,7 +132,7 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
         //append failure event with failed method name and exception class name
         if (result.getThrowable() != null){
             testCaseExecution.appendEvent(new TestEvent(
-                result.getName(), result.getThrowable().getClass().getName(),Level.SEVERE));
+                result.getName(), result.getThrowable().getClass().getName(),Level.SEVERE.toString()));
         }
         testCaseExecution.saveEndTime();
     }
