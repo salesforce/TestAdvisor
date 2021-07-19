@@ -46,6 +46,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -1087,9 +1088,13 @@ public class RemoteWebDriver implements WebDriver, JavascriptExecutor, FindsById
 	    	// choose from seven border colors for each call
 			String color = BORDER_COLORS[border_color_index % BORDER_COLORS.length];
 			border_color_index = border_color_index + 1;
-			// decorate element with a border
-			((JavascriptExecutor) this).executeScript(
-					IGNORE_COMMAND_TAG + BORDER_COLORING_PREFIX + color + BORDER_COLORING_POSTFIX, element);
+			try {
+				// decorate element with a border
+				((JavascriptExecutor) this).executeScript(
+						IGNORE_COMMAND_TAG + BORDER_COLORING_PREFIX + color + BORDER_COLORING_POSTFIX, element);
+			} catch (StaleElementReferenceException sere) {
+				; // ignore this exception, which could happen after a findElements() call
+			}
 	    }
 	}
 
