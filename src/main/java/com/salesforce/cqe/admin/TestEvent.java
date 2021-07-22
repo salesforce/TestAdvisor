@@ -27,6 +27,12 @@ public class TestEvent {
 		startTime = Instant.now().toString();
 	}
 	
+	/**
+	 * A constructor for the Event class that takes in 2 arguments
+	 * 
+	 * @param eventContent represents the content of the event
+	 * @param level represents the priority level of the event
+	 */
 	public TestEvent(String eventContent, String level) {
 		this( Thread.currentThread().getStackTrace()[2].getClassName() 
 				+ "." + Thread.currentThread().getStackTrace()[2].getMethodName() 
