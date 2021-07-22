@@ -18,7 +18,7 @@ import org.junit.Test;
 public class TestEventTest {
 
 	public TestEvent defaultEvent = new TestEvent();
-	public TestEvent argsEvent = new TestEvent("Event X", "Clicked on Space Bar",Level.INFO);
+	public TestEvent argsEvent = new TestEvent("Event X", "Clicked on Space Bar",Level.INFO.toString());
 	
 	/**
 	 * Tests to make sure that the default constructor for the Event class works as expected
@@ -99,8 +99,8 @@ public class TestEventTest {
 
 	@Test
 	public void testEventDefaultName() {
-		TestEvent event = new TestEvent("",Level.INFO);
-		assertEquals("com.salesforce.cqe.admin.TestEventTest.testEventDefaultName", event.getEventName());
+		TestEvent event = new TestEvent("",Level.INFO.toString());
+		assertEquals("com.salesforce.cqe.admin.EventTest.testEventDefaultName", event.getEventName());
 	}
 
 }

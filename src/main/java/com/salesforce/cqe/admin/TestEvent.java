@@ -13,7 +13,7 @@ import java.util.logging.Level;
 public class TestEvent {
 	
 	public String eventName;
-	public Level eventLevel;
+	public String eventLevel;
 	public String eventContent;
 	public String startTime;
 	public String endTime;
@@ -33,7 +33,7 @@ public class TestEvent {
 	 * @param eventContent represents the content of the event
 	 * @param level represents the priority level of the event
 	 */
-	public TestEvent(String eventContent, Level level) {
+	public TestEvent(String eventContent, String level) {
 		this( Thread.currentThread().getStackTrace()[2].getClassName() 
 				+ "." + Thread.currentThread().getStackTrace()[2].getMethodName() 
 				,eventContent,level);
@@ -49,7 +49,7 @@ public class TestEvent {
 	 * @param level
 	 * event level, {@link java.util.logging.Level}
 	 */
-	public TestEvent(String eventName, String eventContent, Level level) {
+	public TestEvent(String eventName, String eventContent, String level) {
 		this.eventName = eventName;
 		this.eventContent = eventContent;
 		this.eventLevel = level;

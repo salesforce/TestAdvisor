@@ -873,7 +873,7 @@ public class FullLogger extends AbstractEventListener {
 		TestCaseExecution testInstance = drillbitAdministrator.getTestCaseExecution();
 		
 		if (testInstance != null)
-			testInstance.appendEvent(new TestEvent(event.toString(), Level.WARNING));
+			testInstance.appendEvent(new TestEvent(event.toString(), Level.WARNING.toString()));
 		else
 			System.out.println("Failed to get current TestCaseExecution instance. "
 					+ "Please check if the WebDriver Event Listener has been configured correctly.");
