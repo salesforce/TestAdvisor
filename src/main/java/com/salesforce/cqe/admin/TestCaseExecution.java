@@ -35,7 +35,7 @@ public class TestCaseExecution {
     public String endTime;
 
     @JsonIgnore
-    private boolean isBeforeMethod=false;
+    private boolean isBeforeMethod = false;
 
     /**
      * A default constructor for the TestCaseExecution class
@@ -103,8 +103,10 @@ public class TestCaseExecution {
     }
     
     /**
-     * @return
-     * true if current test case is a before method, otherwise return false
+     * Checks if the current test case is a "Before" method
+     * 
+     * @return true if the current test case contains a "Before" annotation,
+     * otherwise returns false
      */
     @JsonIgnore
     public boolean isBeforeMethod(){
@@ -112,14 +114,14 @@ public class TestCaseExecution {
     }
 
     /**
-     * set current test case as before method
+     * Sets the current test case as a "Before" method
      */
     public void setBeforeMethod(){
         this.isBeforeMethod = true;
     }
 
     /**
-     * set current test case as before method
+     * Un-sets the current test case as a "Before" method
      */
     public void unsetBeforeMethod(){
         this.isBeforeMethod = false;

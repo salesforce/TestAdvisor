@@ -1211,7 +1211,10 @@ public class EventDispatcher {
 
 	public void beforeClickByMouse(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.BeforeAction, eventNumber, Cmd.clickByMouse);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		currentEvent = event;
 		for (IEventListener listener : eventListeners)
 			listener.beforeClickByMouse(event, where);
@@ -1219,14 +1222,20 @@ public class EventDispatcher {
 
 	public void afterClickByMouse(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.AfterAction, eventNumber++, Cmd.clickByMouse);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
 			listener.afterClickByMouse(event, where);
 	}
 
 	public void beforeContextClick(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.BeforeAction, eventNumber, Cmd.contextClick);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		currentEvent = event;
 		for (IEventListener listener : eventListeners)
 			listener.beforeContextClick(event, where);
@@ -1234,14 +1243,20 @@ public class EventDispatcher {
 
 	public void afterContextClick(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.AfterAction, eventNumber++, Cmd.contextClick);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
 			listener.afterContextClick(event, where);
 	}
 
 	public void beforeDoubleClick(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.BeforeAction, eventNumber, Cmd.doubleClick);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		currentEvent = event;
 		for (IEventListener listener : eventListeners)
 			listener.beforeDoubleClick(event, where);
@@ -1249,14 +1264,20 @@ public class EventDispatcher {
 
 	public void afterDoubleClick(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.AfterAction, eventNumber++, Cmd.doubleClick);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
 			listener.afterDoubleClick(event, where);
 	}
 
 	public void beforeMouseDown(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.BeforeAction, eventNumber, Cmd.mouseDown);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		currentEvent = event;
 		for (IEventListener listener : eventListeners)
 			listener.beforeMouseDown(event, where);
@@ -1264,14 +1285,20 @@ public class EventDispatcher {
 
 	public void afterMouseDown(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.AfterAction, eventNumber++, Cmd.mouseDown);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
 			listener.afterMouseDown(event, where);
 	}
 
 	public void beforeMouseUp(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.BeforeAction, eventNumber, Cmd.mouseUp);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		currentEvent = event;
 		for (IEventListener listener : eventListeners)
 			listener.beforeMouseUp(event, where);
@@ -1279,14 +1306,20 @@ public class EventDispatcher {
 
 	public void afterMouseUp(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.AfterAction, eventNumber++, Cmd.mouseUp);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
 			listener.afterMouseUp(event, where);
 	}
 
 	public void beforeMouseMove(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.BeforeAction, eventNumber, Cmd.mouseMove);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		currentEvent = event;
 		for (IEventListener listener : eventListeners)
 			listener.beforeMouseMove(event, where);
@@ -1294,14 +1327,20 @@ public class EventDispatcher {
 
 	public void afterMouseMove(Coordinates where) {
 		WebDriverEvent event = new WebDriverEvent(Type.AfterAction, eventNumber++, Cmd.mouseMove);
-		event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port", -1, -1));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port", where.inViewPort().x, where.inViewPort().y));
 		for (IEventListener listener : eventListeners)
 			listener.afterMouseMove(event, where);
 	}
 
 	public void beforeMouseMove(Coordinates where, long xOffset, long yOffset) {
 		WebDriverEvent event = new WebDriverEvent(Type.BeforeAction, eventNumber, Cmd.mouseMoveWithOffset);
-		event.setParam1(String.format("x:%d,y:%d in view port, x:%d,y:%d offset", where.inViewPort().x, where.inViewPort().y, xOffset, yOffset));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port, x:%d,y:%d offset", -1, -1, xOffset, yOffset));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port, x:%d,y:%d offset", where.inViewPort().x, where.inViewPort().y, xOffset, yOffset));
 		currentEvent = event;
 		for (IEventListener listener : eventListeners)
 			listener.beforeMouseMove(event, where, xOffset, yOffset);
@@ -1309,7 +1348,10 @@ public class EventDispatcher {
 
 	public void afterMouseMove(Coordinates where, long xOffset, long yOffset) {
 		WebDriverEvent event = new WebDriverEvent(Type.AfterAction, eventNumber++, Cmd.mouseMoveWithOffset);
-		event.setParam1(String.format("x:%d,y:%d in view port, x:%d,y:%d offset", where.inViewPort().x, where.inViewPort().y, xOffset, yOffset));
+		if (where == null || where.inViewPort() == null)
+			event.setParam1(String.format("x:%d,y:%d in view port, x:%d,y:%d offset", -1, -1, xOffset, yOffset));
+		else
+			event.setParam1(String.format("x:%d,y:%d in view port, x:%d,y:%d offset", where.inViewPort().x, where.inViewPort().y, xOffset, yOffset));
 		for (IEventListener listener : eventListeners)
 			listener.afterMouseMove(event, where, xOffset, yOffset);
 	}

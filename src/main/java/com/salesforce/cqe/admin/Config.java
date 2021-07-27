@@ -1,6 +1,6 @@
 package com.salesforce.cqe.admin;
 
-public class Config {
+class Config {
 
     String getOS() {
         return System.getProperty("os.name");
