@@ -281,7 +281,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	@Override
 	public void afterClickByMouse(WebDriverEvent event, Coordinates where) {
 		logEntries.add(event);
-		String result = "Step " + stepCounter + ": left mouse click at page coordinates '" + where.onPage().toString() + "'";
+		String result = "Step " + stepCounter + ": left mouse click at page coordinates '" + getWhereOnPageAsString(where) + "'";
 		stepCounter++;
 		buffer.append(result).append(System.lineSeparator());
 	}
@@ -289,7 +289,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	@Override
 	public void afterDoubleClick(WebDriverEvent event, Coordinates where) {
 		logEntries.add(event);
-		String result = "Step " + stepCounter + ": double mouse click at page coordinates '" + where.onPage().toString() + "'";
+		String result = "Step " + stepCounter + ": double mouse click at page coordinates '" + getWhereOnPageAsString(where) + "'";
 		stepCounter++;
 		buffer.append(result).append(System.lineSeparator());
 	}
@@ -297,7 +297,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	@Override
 	public void afterMouseDown(WebDriverEvent event, Coordinates where) {
 		logEntries.add(event);
-		String result = "Step " + stepCounter + ": mouse down at page coordinates '" + where.onPage().toString() + "'";
+		String result = "Step " + stepCounter + ": mouse down at page coordinates '" + getWhereOnPageAsString(where) + "'";
 		stepCounter++;
 		buffer.append(result).append(System.lineSeparator());
 	}
@@ -305,7 +305,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	@Override
 	public void afterMouseMove(WebDriverEvent event, Coordinates where) {
 		logEntries.add(event);
-		String result = "Step " + stepCounter + ": mouse moved to page coordinates '" + where.onPage().toString() + "'";
+		String result = "Step " + stepCounter + ": mouse moved to page coordinates '" + getWhereOnPageAsString(where) + "'";
 		stepCounter++;
 		buffer.append(result).append(System.lineSeparator());
 	}
@@ -313,7 +313,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	@Override
 	public void afterMouseMove(WebDriverEvent event, Coordinates where, long xOffset, long yOffset) {
 		logEntries.add(event);
-		String result = "Step " + stepCounter + ": mouse moved to page coordinates '" + where.onPage().toString()
+		String result = "Step " + stepCounter + ": mouse moved to page coordinates '" + getWhereOnPageAsString(where)
 				+ "' with x offset " + xOffset + " and y offset " + yOffset;
 		stepCounter++;
 		buffer.append(result).append(System.lineSeparator());
@@ -322,7 +322,7 @@ public class StepsToReproduce extends AbstractEventListener {
 	@Override
 	public void afterContextClick(WebDriverEvent event, Coordinates where) {
 		logEntries.add(event);
-		String result = "Step " + stepCounter + ": context mouse click at page coordinates '" + where.onPage().toString() + "'";
+		String result = "Step " + stepCounter + ": context mouse click at page coordinates '" + getWhereOnPageAsString(where) + "'";
 		stepCounter++;
 		buffer.append(result).append(System.lineSeparator());
 	}
@@ -348,5 +348,12 @@ public class StepsToReproduce extends AbstractEventListener {
 	@Override
 	public String getEventsFormatted() {
 		return buffer.toString();
+	}
+	
+	private String getWhereOnPageAsString(Coordinates where) {
+		if (where == null || where.onPage() == null)
+			return "x:<unknown>,y:<unknown>";
+		else
+			return where.onPage().toString();
 	}
 }
