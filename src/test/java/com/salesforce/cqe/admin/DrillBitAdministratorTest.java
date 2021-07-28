@@ -48,13 +48,13 @@ public class DrillBitAdministratorTest {
     public void testRetrieveRootDirectory() {
     	// Windows
     	System.setProperty("os.name", "Windows");
-    	assertEquals("drillbit", drillbitAdmin.retrieveRootDirectory());
+    	assertEquals("drillbit", DrillBitAdministrator.retrieveRootDirectory());
     	// MacOS
     	System.setProperty("os.name", "Mac OS X");
-    	assertEquals(".drillbit", drillbitAdmin.retrieveRootDirectory());
+    	assertEquals(".drillbit", DrillBitAdministrator.retrieveRootDirectory());
     	// Linux
     	System.setProperty("os.name", "Linux");
-    	assertEquals(".drillbit", drillbitAdmin.retrieveRootDirectory());
+    	assertEquals(".drillbit", DrillBitAdministrator.retrieveRootDirectory());
     }
 
 	/**
@@ -119,7 +119,6 @@ public class DrillBitAdministratorTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
         String formattedDate = localDateTime.format(formatter);
         
-		assertTrue(outputFile.getAbsolutePath().toString().contains("/var/folders/6q/xrc0l4q55ml64gxftyh2krlw0000gp/T/"));
 		assertTrue(outputFile.getAbsolutePath().toString().contains(".drillbit/TestRun-" + formattedDate.substring(0, 13)));
 		assertEquals("test-result.json", outputFile.getName());
 		
@@ -157,7 +156,10 @@ public class DrillBitAdministratorTest {
 		assertTrue(outputFile.exists());
 		assertTrue(outputFile.getParentFile().isDirectory());
 		
-		assertTrue(outputFile.getAbsolutePath().toString().contains("/var/folders/6q/xrc0l4q55ml64gxftyh2krlw0000gp/T/"));
+		LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+        String formattedDate = localDateTime.format(formatter);
+		assertTrue(outputFile.getAbsolutePath().toString().contains(".drillbit/TestRun-" + formattedDate.substring(0, 13)));
 		
 		outputFile.deleteOnExit();
 	}
