@@ -33,7 +33,9 @@ public class DrillBitAdministrator {
      * A default constructor for the DrillBitAdministrator class
      */
     private DrillBitAdministrator() {
-    	registryRoot = Paths.get(System.getenv("DRILLBIT_REGISTRY")).toString();
+    	String dbRegEnv = System.getenv("DRILLBIT_REGISTRY");
+    	if (dbRegEnv != null)
+    		registryRoot = Paths.get(dbRegEnv).toString();
 
         if (registryRoot == null)
             registryRoot = Paths.get(System.getProperty("user.dir")).toString();
