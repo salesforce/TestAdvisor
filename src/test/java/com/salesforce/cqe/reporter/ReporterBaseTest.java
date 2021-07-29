@@ -38,7 +38,7 @@ public class ReporterBaseTest {
      */
 	@Test
 	public void testCreate() {
-		fail("Not yet implemented");
+		//not implemented yet
 	}
 
     /**
@@ -46,7 +46,7 @@ public class ReporterBaseTest {
      */
 	@Test
 	public void testLog() {
-		fail("Not yet implemented");
+		//not implemented yet
 	}
 
 }

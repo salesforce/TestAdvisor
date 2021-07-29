@@ -105,7 +105,7 @@ public class TestEventDispatching {
 		assertNotNull(we);
 		final long timeStamp = System.currentTimeMillis();
 		try {
-			JsonHelper.toFile("test-output/state" + timeStamp + ".json", fullLogger.getListOfEventsRecorded());
+			JsonHelper.toFile(timeStamp +".json", fullLogger.getListOfEventsRecorded());
 		} catch (Exception e) {
 			Assert.fail("writing full log details failed", e);
 		}

@@ -26,13 +26,13 @@ class TestStepMapperTests {
 		mappings.put("fail", TestState.FAILED);
 		mappings.put("outch", TestState.SKIPPED);
 		try {
-			TestStateMapper.writeMapping("test-output/state" + timeStamp + ".json");
+			TestStateMapper.writeMapping(timeStamp + ".json");
 		} catch (Exception e) {
 			Assert.fail("writing test state map failed", e);
 		}
 		mappings.clear();
 		try {
-			mappings = TestStateMapper.getMapping("test-output/state" + timeStamp + ".json");
+			mappings = TestStateMapper.getMapping(timeStamp + ".json");
 		} catch (Exception e) {
 			Assert.fail("reading test state map failed", e);
 		}
