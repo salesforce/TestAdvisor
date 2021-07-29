@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * 
@@ -37,7 +39,7 @@ public class JsonReporterTest {
 		
 		root.toFile().mkdirs();
 		
-		jsonReporter = new JsonReporter(root.toString());
+		jsonReporter = new JsonReporter(root);
 	}
 
 	/**
@@ -54,7 +56,8 @@ public class JsonReporterTest {
      */
 	@Test
 	public void testSaveToRegistry() throws IOException {
-		System.setProperty("os.name", "Mac OS X");
+		Config mockConfig = mock(Config.class);
+		when(mockConfig.getOS()).thenReturn("Mac OS X");
 		
 		List<TestCaseExecution> payloadList = new ArrayList<TestCaseExecution>();
 		TestCaseExecution testCaseOne = new TestCaseExecution();
@@ -76,7 +79,6 @@ public class JsonReporterTest {
 		File outputFile = jsonReporter.saveToRegistry(payloadList);
 		assertTrue(root.toFile().exists());
 		assertTrue(root.toFile().isDirectory());
-		assertTrue(outputFile.getParent().toString().contains("/var/folders/6q/xrc0l4q55ml64gxftyh2krlw0000gp/T/"));
 		assertTrue(outputFile.getParent().toString().contains(".drillbit/TestRun-20210629-135657"));
 		assertEquals("test-result.json", outputFile.getName());
 	}

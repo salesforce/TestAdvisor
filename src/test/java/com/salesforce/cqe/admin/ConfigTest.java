@@ -22,7 +22,6 @@ public class ConfigTest {
 	@Test
 	public void testGetOS() {
 		assertEquals(System.getProperty("os.name"), config.getOS());
-		assertTrue(config.getOS().contains("Mac OS"));
 	}
 
     /**
