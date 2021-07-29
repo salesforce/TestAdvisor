@@ -45,16 +45,13 @@ public class DrillBitAdministratorTest {
      * Tests to make sure that the retrieveRootDirectory() method works as expected
      */
 	@Test
-    public void testRetrieveRootDirectory() {
-    	// Windows
-    	System.setProperty("os.name", "Windows");
-    	assertEquals("drillbit", drillbitAdmin.retrieveRootDirectory());
-    	// MacOS
-    	System.setProperty("os.name", "Mac OS X");
-    	assertEquals(".drillbit", drillbitAdmin.retrieveRootDirectory());
-    	// Linux
-    	System.setProperty("os.name", "Linux");
-    	assertEquals(".drillbit", drillbitAdmin.retrieveRootDirectory());
+    public void testRetrieveRootDirectoryForWindows() {
+		Config mockConfig = mock(Config.class);
+		when(mockConfig.getOS()).thenReturn("Windows").thenReturn("Mac OS X").thenReturn("Linux");
+		DrillBitAdministrator.getInstance().setConfig(mockConfig);
+    	assertEquals("drillbit", DrillBitAdministrator.getInstance().retrieveRootDirectory());
+    	assertEquals(".drillbit", DrillBitAdministrator.getInstance().retrieveRootDirectory());
+    	assertEquals(".drillbit", DrillBitAdministrator.getInstance().retrieveRootDirectory());
     }
 
 	/**
@@ -94,7 +91,7 @@ public class DrillBitAdministratorTest {
 		when(mockConfig.getOS()).thenReturn("Mac OS X");
 
 		DrillBitAdministrator drillbitAdminMac = DrillBitAdministrator.getInstance();
-
+		drillbitAdminMac.setConfig(mockConfig);
 		TestCaseExecution testCaseOne = drillbitAdminMac.createTestCaseExecution();
 		testCaseOne.setTestName("Test 1");
 		testCaseOne.saveEndTime();
@@ -135,7 +132,7 @@ public class DrillBitAdministratorTest {
 		when(mockConfig.getOS()).thenReturn("Windows 10");
 
 		DrillBitAdministrator drillbitAdminWindows = DrillBitAdministrator.getInstance();
-
+		drillbitAdminWindows.setConfig(mockConfig);
 		TestCaseExecution testCaseOne = drillbitAdminWindows.createTestCaseExecution();
 		testCaseOne.setTestName("Test 1");
 		testCaseOne.saveEndTime();

@@ -46,6 +46,14 @@ public class DrillBitAdministrator {
     }
 
     /**
+     * Set a configuration
+     * @param config
+     * new config instance
+     */
+    public void setConfig(Config config){
+        this.config = config;
+    }
+    /**
      * This function creates a new instance of DrillBitAdministrator
      * if it has not yet been created, otherwise it returns an existing instance.
      * 
