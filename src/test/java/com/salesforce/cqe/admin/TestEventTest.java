@@ -94,13 +94,13 @@ public class TestEventTest {
 		String expectedTime = Instant.now().toString();
 		defaultEvent.saveEndTime();
 		
-		assertEquals(expectedTime.substring(0, 23), defaultEvent.endTime.substring(0, 23));
+		assertEquals(expectedTime.substring(0, 22), defaultEvent.endTime.substring(0, 22));
 	}
 
 	@Test
 	public void testEventDefaultName() {
 		TestEvent event = new TestEvent("",Level.INFO.toString());
-		assertEquals("com.salesforce.cqe.admin.EventTest.testEventDefaultName", event.getEventName());
+		assertEquals("com.salesforce.cqe.admin.TestEventTest.testEventDefaultName", event.getEventName());
 	}
 
 }

@@ -3,6 +3,7 @@ package com.salesforce.cqe.admin;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.io.File;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -16,27 +17,33 @@ import java.nio.file.Paths;
  */
 public class DrillBitAdministrator {
 
-	private String registryRoot;
-	
-    private JsonReporter jsonReporter;
-
     public DrillbitTestResult testResult = new DrillbitTestResult();
 
+	private Path registryRoot;
+    private JsonReporter jsonReporter;
+    private Config config = new Config();
     private static DrillBitAdministrator drillBitAdminInstance = null;
     
     /**
      * A default constructor for the DrillBitAdministrator class
      */
     private DrillBitAdministrator() {
-    	registryRoot = Paths.get(System.getenv("DRILLBIT_REGISTRY")).toString();
+        registryRoot = System.getenv("DRILLBIT_REGISTRY") != null ?
+                            Paths.get(System.getenv("DRILLBIT_REGISTRY"))
+                            :Paths.get(System.getProperty("user.dir"),retrieveRootDirectory());   
 
-        if (registryRoot == null)
-            registryRoot = Paths.get(System.getProperty("user.dir")).toString();
-
-        File testRunFile = createTestRun(registryRoot);
-        jsonReporter = new JsonReporter(testRunFile.getAbsolutePath());
+        Path testRun = createTestRun(registryRoot);
+        jsonReporter = new JsonReporter(testRun);
     }
 
+    /**
+     * Set a configuration
+     * @param config
+     * new config instance
+     */
+    public void setConfig(Config config){
+        this.config = config;
+    }
     /**
      * This function creates a new instance of DrillBitAdministrator
      * if it has not yet been created, otherwise it returns an existing instance.
@@ -61,13 +68,13 @@ public class DrillBitAdministrator {
 	 * 
 	 * @return a String object containing the root directory of the registry
 	 */
-    public static String retrieveRootDirectory() {
+    public String retrieveRootDirectory() {
     	/*
     	 * Order of Precedence
     	 * 1) The environment variable's value has been set --> it can be entered via the CLI or read from a property's file
     	 * 2) If the value for the environment variable hasn't been set, you use a default value (utilizes the current function)
     	 */
-        String operatingSystem = System.getProperty("os.name");
+        String operatingSystem = config.getOS();
         String rootDirectory;
 
         if (operatingSystem.toLowerCase().contains("mac") || operatingSystem.toLowerCase().contains("linux")) {
@@ -97,14 +104,11 @@ public class DrillBitAdministrator {
      * 
      * @return root_file represents the TestRun-yyyyMMdd-HHmmss folder that will contain the Screenshots sub-directory
      */
-    private File createTestRun(String prefix) {
-        String testRunPath = Paths.get(prefix, retrieveRootDirectory(), retrieveTestRunDirectory()).toString();
-        File testRunFile = new File(testRunPath);
-        File screenshotsFile = new File(testRunPath + "/Screenshots");
-        if (!screenshotsFile.exists()) {
-            screenshotsFile.mkdirs();
-        }
-        return testRunFile;
+    private Path createTestRun(Path root) {
+        Path testRunPath = root.resolve(retrieveTestRunDirectory());
+        testRunPath.resolve("Screenshots").toFile().mkdirs();
+        
+        return testRunPath;
     }
     
     /**

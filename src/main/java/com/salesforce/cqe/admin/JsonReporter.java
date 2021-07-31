@@ -32,10 +32,10 @@ public class JsonReporter {
 	 * 
 	 * @param path represents the path of the folder that will contain the resulting JSON file
 	 */
-	public JsonReporter(String path) {
+	public JsonReporter(Path path) {
 		objectMapper = new ObjectMapper();
 		objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
-        testRunRoot = Paths.get(path);
+        testRunRoot = path;
 	}
 	
     
