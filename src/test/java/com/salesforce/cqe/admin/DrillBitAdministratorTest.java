@@ -28,7 +28,7 @@ public class DrillBitAdministratorTest {
 	@Before
 	public void beforeEachTestMethod() throws IOException {
 		drillbitAdmin = DrillBitAdministrator.getInstance();
-		drillbitAdmin.testResult.payloadList.clear();
+		drillbitAdmin.getTestResult().payloadList.clear();
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class DrillBitAdministratorTest {
 	 */
 	@Test
 	public void testDrillBitAdministrator() {
-		assertEquals(0, drillbitAdmin.testResult.payloadList.size());
+		assertEquals(0, drillbitAdmin.getTestResult().payloadList.size());
 		assertTrue(drillbitAdmin.getClass().toGenericString().startsWith("public class"));
 		assertTrue(drillbitAdmin.getClass().toGenericString().endsWith("DrillBitAdministrator"));
 	}
@@ -59,9 +59,9 @@ public class DrillBitAdministratorTest {
 	 */
 	@Test
 	public void testCreateTestCaseExecution() {
-		assertEquals(0, drillbitAdmin.testResult.payloadList.size());
+		assertEquals(0, drillbitAdmin.getTestResult().payloadList.size());
 		drillbitAdmin.createTestCaseExecution();
-		assertEquals(1, drillbitAdmin.testResult.payloadList.size());
+		assertEquals(1, drillbitAdmin.getTestResult().payloadList.size());
 	}
 
 	/**
@@ -69,9 +69,9 @@ public class DrillBitAdministratorTest {
 	 */
 	@Test
 	public void testGetTestCaseExecution() {
-		assertEquals(0, drillbitAdmin.testResult.payloadList.size());
+		assertEquals(0, drillbitAdmin.getTestResult().payloadList.size());
 		drillbitAdmin.createTestCaseExecution();
-		assertEquals(1, drillbitAdmin.testResult.payloadList.size());
+		assertEquals(1, drillbitAdmin.getTestResult().payloadList.size());
 		assertEquals(TestCaseExecution.class, drillbitAdmin.getTestCaseExecution().getClass());
 	}
 	
@@ -107,7 +107,7 @@ public class DrillBitAdministratorTest {
 		testCaseThree.saveEndTime();
 		assertEquals("Test 3", drillbitAdminMac.getTestCaseExecution().getTestName());
 		
-		File outputFile = drillbitAdminMac.saveTestCaseExecutionList();
+		File outputFile = drillbitAdminMac.saveTestResult();
 
 		assertTrue(outputFile.exists());
 		assertTrue(outputFile.getParentFile().isDirectory());
@@ -148,7 +148,7 @@ public class DrillBitAdministratorTest {
 		testCaseThree.saveEndTime();
 		assertEquals("Test 3", drillbitAdminWindows.getTestCaseExecution().getTestName());
 
-		File outputFile = drillbitAdminWindows.saveTestCaseExecutionList();
+		File outputFile = drillbitAdminWindows.saveTestResult();
 
 		assertTrue(outputFile.exists());
 		assertTrue(outputFile.getParentFile().isDirectory());

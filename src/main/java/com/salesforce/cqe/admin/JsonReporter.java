@@ -3,8 +3,6 @@ package com.salesforce.cqe.admin;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -46,10 +44,10 @@ public class JsonReporter {
      * @return a File object representing the JSON file containing the list of TestCaseExecution objects
      */
 	public File saveToRegistry(DrillbitTestResult testResult) {
-			String outputFilePath = Paths.get(testRunRoot.toString(), "test-result.json").toString();
+			Path outputFilePath = testRunRoot.resolve("test-result.json");
 			// Decide whether the program should stop if it hits an error or continue running
 			try {
-				objectWriter.withDefaultPrettyPrinter().writeValue(Paths.get(outputFilePath).toFile(), testResult);
+				objectWriter.withDefaultPrettyPrinter().writeValue(outputFilePath.toFile(), testResult);
 			} catch (JsonGenerationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -61,7 +59,7 @@ public class JsonReporter {
 				e.printStackTrace();
 			}
 
-			return Paths.get(outputFilePath).toFile();
+			return outputFilePath.toFile();
 	}
 
 }

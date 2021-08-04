@@ -1,6 +1,7 @@
 package com.salesforce.cqe.admin;
 
 import java.time.LocalDateTime;
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.io.File;
 import java.nio.file.Path;
@@ -17,8 +18,7 @@ import java.nio.file.Paths;
  */
 public class DrillBitAdministrator {
 
-    public DrillbitTestResult testResult = new DrillbitTestResult();
-
+    private DrillbitTestResult testResult = new DrillbitTestResult();
 	private Path registryRoot;
     private JsonReporter jsonReporter;
     private Config config = new Config();
@@ -44,6 +44,7 @@ public class DrillBitAdministrator {
     public void setConfig(Config config){
         this.config = config;
     }
+
     /**
      * This function creates a new instance of DrillBitAdministrator
      * if it has not yet been created, otherwise it returns an existing instance.
@@ -63,6 +64,13 @@ public class DrillBitAdministrator {
     	return drillBitAdminInstance;
     }
     
+    /**
+     * Get current test result object
+     * @return current test result
+     */
+    public DrillbitTestResult getTestResult(){
+        return this.testResult;
+    }
 	/**
 	 * Returns the root directory of the registry based off of the user's OS (compatible with Mac OS, Windows, and Linux)
 	 * 
@@ -137,21 +145,29 @@ public class DrillBitAdministrator {
     	// however, how can we modify this to work for v2 - parallel/concurrent execution
     	return testResult.payloadList.isEmpty() ? null : testResult.payloadList.get(testResult.payloadList.size() - 1);
     }
-    
-// TODO: This function appends the current instance of the TestCaseExecution class to the JSON file
-//    public void saveTestCaseExecution() {
-//	 	// Instantiate a JSON Reporter here
-//    	// Use the JSONReporter to write to JSON here
-//    	// Call on the saveToRegistry(TestCaseExecution testCaseExecution) function
-//    }
+
+    /**
+     * Start a test run, save start time
+     */
+    public void startTestRun(){
+        this.testResult.buildStartTime = Instant.now().toString();
+        this.testResult.version = DrillBitAdministrator.class.getClass().getPackage().getImplementationVersion();
+    }
+
+    /**
+     * End a test run, save end time
+     */
+    public void endTestRun(){
+        this.testResult.buildEndTime = Instant.now().toString();
+    }
     
     /**
-     * Saves payloadList to the DrillBit Registry in JSON format
+     * Saves test result to the DrillBit Registry in JSON format
      * by calling on the JsonReporter's saveToRegistry() function
      * @return
-     * File object of saved test excution list.
+     * File object of saved test result.
      */
-    public File saveTestCaseExecutionList() {
+    public File saveTestResult() {
     	return jsonReporter.saveToRegistry(testResult);
     }
     
