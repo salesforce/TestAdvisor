@@ -2,7 +2,6 @@ package com.salesforce.cqe.provider.listener;
 
 import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
-import org.testng.IConfigurationListener;
 import org.testng.IConfigurationListener2;
 import org.testng.IExecutionListener;
 import org.testng.ITestContext;
@@ -24,7 +23,7 @@ import com.salesforce.cqe.admin.TestStatus;
  * test listener will collect detailed test execution information, 
  * such as exact timestamp, error message and execeptions
  */
-public class TestListener implements ITestListener, IExecutionListener, IConfigurationListener, IConfigurationListener2{
+public class TestListener implements ITestListener, IExecutionListener, IConfigurationListener2{
 
     //Singlton DrillBitAdministrator
     private DrillBitAdministrator administrator;
@@ -165,12 +164,14 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
     @Override
     public void onExecutionStart(){
         //Invoked before the TestNG run starts.
-        administrator = DrillBitAdministrator.getInstance();
+        administrator = DrillBitAdministrator.getInstance();  
+        administrator.startTestRun();
     }
 
     @Override
     public void onExecutionFinish(){
         //Invoked once all the suites have been run.
-        administrator.saveTestCaseExecutionList();
+        administrator.endTestRun();
+        administrator.saveTestResult();
     }
 }

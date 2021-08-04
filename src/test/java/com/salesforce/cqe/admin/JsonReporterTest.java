@@ -75,8 +75,11 @@ public class JsonReporterTest {
 		payloadList.add(testCaseOne);
 		payloadList.add(testCaseTwo);
 		payloadList.add(testCaseThree);
+
+		DrillbitTestResult testResult = new DrillbitTestResult();
+		testResult.payloadList = payloadList;
 		
-		File outputFile = jsonReporter.saveToRegistry(payloadList);
+		File outputFile = jsonReporter.saveToRegistry(testResult);
 		assertTrue(root.toFile().exists());
 		assertTrue(root.toFile().isDirectory());
 		assertTrue(outputFile.getParent().toString().contains(".drillbit/TestRun-20210629-135657"));

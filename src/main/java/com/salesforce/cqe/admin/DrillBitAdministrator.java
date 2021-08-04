@@ -1,11 +1,8 @@
 package com.salesforce.cqe.admin;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.LocalDateTime;
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,15 +18,10 @@ import java.nio.file.Paths;
  */
 public class DrillBitAdministrator {
 
+    private DrillbitTestResult testResult = new DrillbitTestResult();
 	private Path registryRoot;
-	
     private JsonReporter jsonReporter;
-
     private Config config = new Config();
-
-    @JsonProperty
-    public List<TestCaseExecution> payloadList;
-
     private static DrillBitAdministrator drillBitAdminInstance = null;
     
     /**
@@ -42,7 +34,6 @@ public class DrillBitAdministrator {
 
         Path testRun = createTestRun(registryRoot);
         jsonReporter = new JsonReporter(testRun);
-        payloadList = new ArrayList<>();
     }
 
     /**
@@ -53,6 +44,7 @@ public class DrillBitAdministrator {
     public void setConfig(Config config){
         this.config = config;
     }
+
     /**
      * This function creates a new instance of DrillBitAdministrator
      * if it has not yet been created, otherwise it returns an existing instance.
@@ -72,6 +64,13 @@ public class DrillBitAdministrator {
     	return drillBitAdminInstance;
     }
     
+    /**
+     * Get current test result object
+     * @return current test result
+     */
+    public DrillbitTestResult getTestResult(){
+        return this.testResult;
+    }
 	/**
 	 * Returns the root directory of the registry based off of the user's OS (compatible with Mac OS, Windows, and Linux)
 	 * 
@@ -128,7 +127,7 @@ public class DrillBitAdministrator {
     public TestCaseExecution createTestCaseExecution() {
     	TestCaseExecution testCaseExecution = new TestCaseExecution();
     	
-    	payloadList.add(testCaseExecution);
+    	testResult.payloadList.add(testCaseExecution);
     	
     	return testCaseExecution;
     }
@@ -144,24 +143,32 @@ public class DrillBitAdministrator {
     	
     	// this works for v1 - sequential execution
     	// however, how can we modify this to work for v2 - parallel/concurrent execution
-    	return payloadList.isEmpty() ? null : payloadList.get(payloadList.size() - 1);
+    	return testResult.payloadList.isEmpty() ? null : testResult.payloadList.get(testResult.payloadList.size() - 1);
+    }
+
+    /**
+     * Start a test run, save start time
+     */
+    public void startTestRun(){
+        this.testResult.buildStartTime = Instant.now().toString();
+        this.testResult.version = DrillBitAdministrator.class.getClass().getPackage().getImplementationVersion();
+    }
+
+    /**
+     * End a test run, save end time
+     */
+    public void endTestRun(){
+        this.testResult.buildEndTime = Instant.now().toString();
     }
     
-// TODO: This function appends the current instance of the TestCaseExecution class to the JSON file
-//    public void saveTestCaseExecution() {
-//	 	// Instantiate a JSON Reporter here
-//    	// Use the JSONReporter to write to JSON here
-//    	// Call on the saveToRegistry(TestCaseExecution testCaseExecution) function
-//    }
-    
     /**
-     * Saves payloadList to the DrillBit Registry in JSON format
+     * Saves test result to the DrillBit Registry in JSON format
      * by calling on the JsonReporter's saveToRegistry() function
      * @return
-     * File object of saved test excution list.
+     * File object of saved test result.
      */
-    public File saveTestCaseExecutionList() {
-    	return jsonReporter.saveToRegistry(payloadList);
+    public File saveTestResult() {
+    	return jsonReporter.saveToRegistry(testResult);
     }
     
 }
