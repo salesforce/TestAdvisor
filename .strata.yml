@@ -1,0 +1,13 @@
+pipeline_template: jar/Jenkinsfile-1
+email_reply_to: ytao@salesforce.com         # Change this to your group's e-mail address!
+# time_out_mins: 180                                    # (Optional) default shown
+# number_of_artifacts_to_keep: 3                        # (Optional) default shown
+# compliance_required: true                             # (Optional) default shown
+docker_test_images: dva/sfdc_centos7_jdk8               # The image that will be used to run your tests. This image should work fine for most people.
+# This unit_tests_command is a good default that will keep your Maven output clean
+unit_tests_command: mvn -V -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn --batch-mode verify
+# production_branch:                                    # (Optional) default shown
+#     - master                                          # if using regex, append "r:" in front of pattern
+# unit_tests_mount_point: /tmp/project                  # (Optional) default shown
+# email_only_last_committer_on_dev_branch: false        # (Optional) default shown
+# publish_jar_image: dva/sfdc_centos7_java_rpmbuild     # (Optional) default shown. This image will be used to run publish jar command         
