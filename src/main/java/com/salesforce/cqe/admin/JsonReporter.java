@@ -40,7 +40,7 @@ public class JsonReporter {
     /**
      * Saves the list of TestCaseExecution objects to a single JSON file
      * 
-     * @param payloadList represents the list of TestCaseExecution objects
+     * @param testResult represents test result object
      * @return a File object representing the JSON file containing the list of TestCaseExecution objects
      */
 	public File saveToRegistry(DrillbitTestResult testResult) {
