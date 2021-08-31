@@ -30,8 +30,8 @@ public class ConfigTest {
 	@Test
 	public void testGetUserDirectory() {
 		assertEquals(System.getProperty("user.dir"), config.getUserDirectory());
-		assertTrue(String.format("user.dir=%s,user.name=%s", config.getUserDirectory(), config.getUserDirectory()), 
-				config.getUserDirectory().contains(System.getProperty("user.name")));
+		//assertTrue(String.format("user.dir=%s,user.name=%s", config.getUserDirectory(), config.getUserDirectory()), 
+		//		config.getUserDirectory().contains(System.getProperty("user.name")));
 	}
 
 }
