@@ -27,7 +27,7 @@ import static org.openqa.selenium.remote.CapabilityType.SUPPORTS_JAVASCRIPT;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.salesforce.cqe.driver.EventDispatcher;
+import com.salesforce.cte.listener.selenium.EventDispatcher;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Beta;
@@ -98,7 +98,7 @@ public class RemoteWebDriver implements WebDriver, JavascriptExecutor, FindsById
 	private static final String BORDER_COLORING_POSTFIX = "'";
 	private static final String[] BORDER_COLORS = new String[] { "red", "orange", "yellow", "green", "blue", "purple",
 			"magenta" };
-	private static final String IGNORE_COMMAND_TAG = "drillbit";
+	private static final String IGNORE_COMMAND_TAG = "testadvisor";
 	private int border_color_index = 0;
 
 	private EventDispatcher eventDispatcher = EventDispatcher.getInstance();

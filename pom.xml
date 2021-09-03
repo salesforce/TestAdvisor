@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.salesforce.cqe</groupId>
-	<artifactId>drillbit-lib</artifactId>
-	<version>0.0.9-SNAPSHOT</version>
-	<name>Drillbit framework</name>
-	<description>An selenium UI test framework to generate enhanced test logs</description>
+	<groupId>com.salesforce.cte</groupId>
+	<artifactId>testadvisor-lib</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<name>Test Advisor Library</name>
+	<description>An selenium UI test library to generate enhanced test logs</description>
 	<packaging>jar</packaging>
 
 	<developers>

@@ -20,7 +20,7 @@
 package org.openqa.selenium.remote;
 
 import com.google.common.collect.ImmutableMap;
-import com.salesforce.cqe.driver.EventDispatcher;
+import com.salesforce.cte.listener.selenium.EventDispatcher;
 
 import org.openqa.selenium.interactions.Keyboard;
 
