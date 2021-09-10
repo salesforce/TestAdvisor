@@ -37,7 +37,6 @@ import org.openqa.selenium.interactions.Coordinates;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.salesforce.cte.admin.TestAdvisorAdministrator;
-import com.salesforce.cte.common.TestCaseExecution;
 import com.salesforce.cte.listener.selenium.WebDriverEvent.Cmd;
 
 /**
