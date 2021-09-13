@@ -15,8 +15,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.salesforce.cte.common.JsonHelper;
 
 /**
  * @author gpahuja
