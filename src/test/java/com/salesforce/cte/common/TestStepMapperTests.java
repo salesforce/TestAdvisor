@@ -5,7 +5,6 @@ package com.salesforce.cte.common;
 
 import java.util.Map;
 
-import com.salesforce.cte.common.TestStateMapper;
 import com.salesforce.cte.common.TestStateMapper.TestState;
 
 import org.testng.Assert;

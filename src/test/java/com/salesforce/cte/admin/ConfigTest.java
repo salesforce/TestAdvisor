@@ -1,8 +1,6 @@
 package com.salesforce.cte.admin;
 
-import static org.junit.Assert.*;
-
-import com.salesforce.cte.admin.Config;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 

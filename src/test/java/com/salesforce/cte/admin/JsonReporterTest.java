@@ -7,8 +7,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.salesforce.cte.admin.Config;
-import com.salesforce.cte.admin.JsonReporter;
 import com.salesforce.cte.common.TestAdvisorResult;
 import com.salesforce.cte.common.TestCaseExecution;
 
