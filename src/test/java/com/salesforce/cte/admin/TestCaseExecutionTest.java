@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
+import java.util.logging.Level;
 
 import com.salesforce.cte.common.TestCaseExecution;
 import com.salesforce.cte.common.TestEvent;
@@ -21,7 +22,7 @@ import com.salesforce.cte.common.TestStatus;
 public class TestCaseExecutionTest {
 
     private TestCaseExecution testCaseExecution = new TestCaseExecution();
-    private TestEvent event = new TestEvent();
+    private TestEvent event = new TestEvent("",Level.INFO.toString());
     
 	/**
 	 * Tests to make sure that the default constructor for the TestCaseExecution class works as expected

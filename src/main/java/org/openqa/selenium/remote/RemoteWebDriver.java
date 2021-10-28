@@ -101,7 +101,7 @@ public class RemoteWebDriver implements WebDriver, JavascriptExecutor, FindsById
 	private static final String IGNORE_COMMAND_TAG = "testadvisor";
 	private int border_color_index = 0;
 
-	private EventDispatcher eventDispatcher = EventDispatcher.getInstance();
+	private EventDispatcher eventDispatcher = EventDispatcher.getInstance(this);
 
 	private static final Logger logger = Logger.getLogger(RemoteWebDriver.class.getName());
 	private Level level = Level.FINE;

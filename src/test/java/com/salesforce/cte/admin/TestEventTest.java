@@ -2,6 +2,8 @@ package com.salesforce.cte.admin;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.logging.Level;
 
@@ -19,90 +21,34 @@ import org.junit.Test;
  */
 public class TestEventTest {
 
-	public TestEvent defaultEvent = new TestEvent();
-	public TestEvent argsEvent = new TestEvent("Event X", "Clicked on Space Bar",Level.INFO.toString());
+	public TestEvent defaultEvent = new TestEvent("",Level.INFO.toString());
+	public TestEvent argsEvent = new TestEvent("Event X", Level.INFO.toString(),"Clicked on Space Bar","","//locator",5, new File(".","test"));
 	
 	/**
 	 * Tests to make sure that the default constructor for the Event class works as expected
 	 */
 	@Test
-	public void testEvent() {
-		assertEquals("", defaultEvent.getEventName());
+	public void testEventGeneralAttributes() {
+		assertEquals("com.salesforce.cte.admin.TestEventTest", defaultEvent.getEventSource());
 		assertEquals("", defaultEvent.getEventContent());
+		assertEquals(Level.INFO.toString(), defaultEvent.getEventLevel());
+		assertTrue(Duration.between(defaultEvent.getEventTime(),Instant.now()).toMillis()<1000);
 	}
 
 	/**
 	 * Tests to make sure that the two argument constructor for the Event class works as expected
 	 */
 	@Test
-	public void testEventStringString() {
-		assertEquals("Event X", argsEvent.getEventName());
-		assertEquals("Clicked on Space Bar", argsEvent.getEventContent());
-	}
-
-    /**
-     * Tests to make sure that the getEventName() method works as expected
-     */
-	@Test
-	public void testGetEventName() {
-		assertEquals("", defaultEvent.getEventName());
-		assertEquals("Event X", argsEvent.getEventName());
-	}
-
-    /**
-     * Tests to make sure that the setEventName() method works as expected
-     */
-	@Test
-	public void testSetEventName() {
-		assertEquals("", defaultEvent.getEventName());
-		assertEquals("Event X", argsEvent.getEventName());
+	public void testEventAllAttributes() {
+		assertEquals("com.salesforce.cte.admin.TestEventTest", argsEvent.getEventSource());
+		assertEquals("Event X", argsEvent.getEventContent());
+		assertEquals(Level.INFO.toString(), argsEvent.getEventLevel());
+		assertTrue(Duration.between(defaultEvent.getEventTime(),Instant.now()).toMillis()<1000);
 		
-		defaultEvent.setEventName("Event A");
-		argsEvent.setEventName("Event B");
-		
-		assertEquals("Event A", defaultEvent.getEventName());
-		assertEquals("Event B", argsEvent.getEventName());
+		assertEquals("Clicked on Space Bar", argsEvent.getSeleniumCmd());
+		assertEquals("", argsEvent.getSeleniumCmdParam());
+		assertEquals("//locator", argsEvent.getSeleniumLocator());
+		assertEquals(5, argsEvent.getScreenshotRecordNumber());
+		assertTrue(argsEvent.getScreenshotPath().contains("./test"));
 	}
-
-    /**
-     * Tests to make sure that the getEventContent() method works as expected
-     */
-	@Test
-	public void testGetEventContent() {
-		assertEquals("", defaultEvent.getEventContent());
-		assertEquals("Clicked on Space Bar", argsEvent.getEventContent());
-	}
-
-    /**
-     * Tests to make sure that the setEventContent() method works as expected
-     */
-	@Test
-	public void testSetEventContent() {
-		assertEquals("", defaultEvent.getEventContent());
-		assertEquals("Clicked on Space Bar", argsEvent.getEventContent());
-		
-		defaultEvent.setEventContent("Clicked on 'A' key");
-		argsEvent.setEventContent("Clicked on 'B' key");
-		
-		assertEquals("Clicked on 'A' key", defaultEvent.getEventContent());
-		assertEquals("Clicked on 'B' key", argsEvent.getEventContent());
-	}
-
-    /**
-     * Tests to make sure that the saveEndTime() method works as expected
-     */
-	@Test
-	public void testSaveEndTime() {
-		String expectedTime = Instant.now().toString();
-		defaultEvent.saveEndTime();
-		
-		assertEquals(expectedTime.substring(0, 22), defaultEvent.endTime.substring(0, 22));
-	}
-
-	@Test
-	public void testEventDefaultName() {
-		TestEvent event = new TestEvent("",Level.INFO.toString());
-		assertEquals("com.salesforce.cte.admin.TestEventTest.testEventDefaultName", event.getEventName());
-	}
-
 }

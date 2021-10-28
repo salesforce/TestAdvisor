@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TestAdvisorResult {
 
     @JsonProperty
-    public List<TestCaseExecution> payloadList = new ArrayList<>();
+    public List<TestCaseExecution> testCaseExecutionList = new ArrayList<>();
     @JsonProperty
     public String version;
     @JsonProperty

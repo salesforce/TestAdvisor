@@ -30,7 +30,7 @@ public class TestAdvisorAdministratorTest {
 	@Before
 	public void beforeEachTestMethod() throws IOException {
 		taAdmin = TestAdvisorAdministrator.getInstance();
-		taAdmin.getTestResult().payloadList.clear();
+		taAdmin.getTestResult().testCaseExecutionList.clear();
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class TestAdvisorAdministratorTest {
 	 */
 	@Test
 	public void testTestAdvisorAdministrator() {
-		assertEquals(0, taAdmin.getTestResult().payloadList.size());
+		assertEquals(0, taAdmin.getTestResult().testCaseExecutionList.size());
 		assertTrue(taAdmin.getClass().toGenericString().startsWith("public class"));
 		assertTrue(taAdmin.getClass().toGenericString().endsWith("TestAdvisorAdministrator"));
 	}
@@ -61,9 +61,9 @@ public class TestAdvisorAdministratorTest {
 	 */
 	@Test
 	public void testCreateTestCaseExecution() {
-		assertEquals(0, taAdmin.getTestResult().payloadList.size());
+		assertEquals(0, taAdmin.getTestResult().testCaseExecutionList.size());
 		taAdmin.createTestCaseExecution();
-		assertEquals(1, taAdmin.getTestResult().payloadList.size());
+		assertEquals(1, taAdmin.getTestResult().testCaseExecutionList.size());
 	}
 
 	/**
@@ -71,9 +71,9 @@ public class TestAdvisorAdministratorTest {
 	 */
 	@Test
 	public void testGetTestCaseExecution() {
-		assertEquals(0, taAdmin.getTestResult().payloadList.size());
+		assertEquals(0, taAdmin.getTestResult().testCaseExecutionList.size());
 		taAdmin.createTestCaseExecution();
-		assertEquals(1, taAdmin.getTestResult().payloadList.size());
+		assertEquals(1, taAdmin.getTestResult().testCaseExecutionList.size());
 		assertEquals(TestCaseExecution.class, taAdmin.getTestCaseExecution().getClass());
 	}
 	
@@ -86,9 +86,10 @@ public class TestAdvisorAdministratorTest {
 	/**
 	 * Tests to make sure that the saveTestCaseExecution() method works as expected
 	 * on a system running Mac OS
+	 * @throws IOException
 	 */
 	@Test
-	public void testSaveTestCaseExecutionListMac() {
+	public void testSaveTestCaseExecutionListMac() throws IOException {
 		Config mockConfig = mock(Config.class);
 		when(mockConfig.getOS()).thenReturn("Mac OS X");
 
@@ -127,9 +128,10 @@ public class TestAdvisorAdministratorTest {
 	/**
 	 * Tests to make sure that the saveTestCaseExecution() method works as expected
 	 * on a system running Windows
+	 * @throws IOException
 	 */
 	@Test
-	public void testSaveTestCaseExecutionListWindows() {
+	public void testSaveTestCaseExecutionListWindows() throws IOException {
 		Config mockConfig = mock(Config.class);
 		when(mockConfig.getOS()).thenReturn("Windows 10");
 

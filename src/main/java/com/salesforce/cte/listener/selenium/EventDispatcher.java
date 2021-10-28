@@ -22,6 +22,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Coordinates;
 
@@ -36,17 +37,16 @@ public class EventDispatcher {
 	private final List<IEventListener> eventListeners = new ArrayList<>();
 	private WebDriverEvent currentEvent = null;
 	private int eventNumber = 0;
-
-	public static EventDispatcher getInstance() {
+	
+	public static EventDispatcher getInstance(WebDriver driver) {
 		if (instance == null)
-			instance = new EventDispatcher();
+			instance = new EventDispatcher(driver);
 		return instance;
 	}
-	
-	private EventDispatcher() {
-		// TODO for the moment hardcode all event listeners here. We can make it dynamic at a later point in time.
+
+	private EventDispatcher(WebDriver driver) {
 		eventListeners.add(new FullLogger());
-		eventListeners.add(new StepsToReproduce());
+		eventListeners.add(new ScreenshotLogger(driver));
 	}
 
 	public List<IEventListener> getImmutableListOfEventListeners() {
