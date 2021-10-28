@@ -930,11 +930,15 @@ public class RemoteWebDriver implements WebDriver, JavascriptExecutor, FindsById
 	private class RemoteNavigation implements Navigation {
 
 		public void back() {
+			eventDispatcher.beforeBack();
 			execute(DriverCommand.GO_BACK);
+			eventDispatcher.afterBack();
 		}
 
 		public void forward() {
+			eventDispatcher.beforeForward();
 			execute(DriverCommand.GO_FORWARD);
+			eventDispatcher.afterForward();
 		}
 
 		public void to(String url) {
@@ -946,7 +950,9 @@ public class RemoteWebDriver implements WebDriver, JavascriptExecutor, FindsById
 		}
 
 		public void refresh() {
+			eventDispatcher.beforeRefresh();
 			execute(DriverCommand.REFRESH);
+			eventDispatcher.afterRefresh();
 		}
 	}
 
