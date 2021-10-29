@@ -34,7 +34,7 @@ public class RemoteKeyboard implements Keyboard {
 
 	public RemoteKeyboard(ExecuteMethod executor) {
 		this.executor = executor;
-		this.eventDispatcher = EventDispatcher.getInstance();
+		this.eventDispatcher = EventDispatcher.getInstance(null);
 	}
 
 	public void sendKeys(CharSequence... keysToSend) {

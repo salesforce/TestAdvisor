@@ -4,6 +4,7 @@
 package com.salesforce.cte.test.webdriver;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +40,6 @@ public class MockCommandExecutor implements CommandExecutor {
 
 	@Override
 	public Response execute(Command command) throws IOException {
-//		System.out.println(command.toString());
 		Response response = new Response();
     	response.setState(STATE_OK);
    	
@@ -74,11 +74,58 @@ public class MockCommandExecutor implements CommandExecutor {
 	    	} else {
 	    		response.setValue("script executed");
 	    	}
-	    } else if (NEW_SESSION.equals(command.getName())) {
+	    } else if (EXECUTE_ASYNC_SCRIPT.equals(command.getName())){
+			response.setValue("script executed");
+		} else if (NEW_SESSION.equals(command.getName())) {
 	    	Map<String, Object> rawCapabilities = new HashMap<>();
 	    	response.setValue(rawCapabilities);
 	    	response.setSessionId(MockRemoteWebDriver.DUMMY_SESSION_ID);
-	    } else {
+	    } else if(SCREENSHOT.equals(command.getName())){
+			response.setValue(Base64.getEncoder().encodeToString(STRING_ALLISWELL_VALUE.getBytes()));
+		} else if(SUBMIT_ELEMENT.equals(command.getName())) {
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (SEND_KEYS_TO_ELEMENT.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (CLEAR_ELEMENT.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (DISMISS_ALERT.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (ACCEPT_ALERT.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (SEND_KEYS_TO_ELEMENT.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (GO_BACK.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (GO_FORWARD.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (GET.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (SET_CURRENT_WINDOW_SIZE.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (SET_CURRENT_WINDOW_POSITION.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (REFRESH.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (GET_CURRENT_URL.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (GET_PAGE_SOURCE.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (GET_CURRENT_WINDOW_HANDLE.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (DELETE_ALL_COOKIES.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (ADD_COOKIE.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (GET_ALL_COOKIES.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (GET_COOKIE.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (DELETE_COOKIE.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} else if (SET_TIMEOUT.equals(command.getName())){
+			response.setValue(STRING_ALLISWELL_VALUE);
+		} 
+		else {
 	    	System.out.println(String.format("Command %s not yet covered by %s", command.getName(), this.getClass().getName()));
 	    }
 		return response;
@@ -93,5 +140,4 @@ public class MockCommandExecutor implements CommandExecutor {
 		}
 		return value;
 	}
-
 }
