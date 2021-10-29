@@ -38,7 +38,7 @@ public class RemoteMouse implements Mouse {
 
 	public RemoteMouse(ExecuteMethod executor) {
 		this.executor = executor;
-		this.eventDispatcher = EventDispatcher.getInstance();
+		this.eventDispatcher = EventDispatcher.getInstance(null);
 	}
 
 	protected Map<String, Object> paramsFromCoordinates(Coordinates where) {

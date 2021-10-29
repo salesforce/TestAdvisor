@@ -8,6 +8,7 @@ import com.salesforce.cte.common.TestAdvisorResult;
 import com.salesforce.cte.common.TestCaseExecution;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -131,7 +132,7 @@ public class TestAdvisorAdministrator {
     public TestCaseExecution createTestCaseExecution() {
     	TestCaseExecution testCaseExecution = new TestCaseExecution();
     	
-    	testResult.payloadList.add(testCaseExecution);
+    	testResult.testCaseExecutionList.add(testCaseExecution);
     	
     	return testCaseExecution;
     }
@@ -147,7 +148,7 @@ public class TestAdvisorAdministrator {
     	
     	// this works for v1 - sequential execution
     	// however, how can we modify this to work for v2 - parallel/concurrent execution
-    	return testResult.payloadList.isEmpty() ? null : testResult.payloadList.get(testResult.payloadList.size() - 1);
+    	return testResult.testCaseExecutionList.isEmpty() ? null : testResult.testCaseExecutionList.get(testResult.testCaseExecutionList.size() - 1);
     }
 
     /**
@@ -170,8 +171,10 @@ public class TestAdvisorAdministrator {
      * by calling on the JsonReporter's saveToRegistry() function
      * @return
      * File object of saved test result.
+     * @throws IOException
+     * throws IOException when fail to write result file
      */
-    public File saveTestResult() {
+    public File saveTestResult() throws IOException {
     	return jsonReporter.saveToRegistry(testResult);
     }
     

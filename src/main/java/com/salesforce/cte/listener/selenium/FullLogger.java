@@ -12,10 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
-import com.salesforce.cte.common.TestCaseExecution;
-import com.salesforce.cte.common.TestEvent;
 import com.salesforce.cte.listener.selenium.WebDriverEvent.Cmd;
 
 import org.openqa.selenium.Alert;
@@ -869,14 +866,6 @@ public class FullLogger extends AbstractEventListener {
 	@Override
 	public void onException(WebDriverEvent event, Cmd cmd, Throwable issue) {
 		logEntries.add(event);
-		
-		TestCaseExecution testInstance = taAdministrator.getTestCaseExecution();
-		
-		if (testInstance != null)
-			testInstance.appendEvent(new TestEvent(event.toString(), Level.WARNING.toString()));
-		else
-			System.out.println("Failed to get current TestCaseExecution instance. "
-					+ "Please check if the WebDriver Event Listener has been configured correctly.");
 	}
 	
 	// This listener provides the events in the way defined in AbstractEventListener.

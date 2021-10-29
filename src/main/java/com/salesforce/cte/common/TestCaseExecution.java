@@ -3,6 +3,7 @@ package com.salesforce.cte.common;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.File;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,19 @@ public class TestCaseExecution {
     @JsonProperty
     public String endTime;
 
+    @JsonProperty 
+    public String browser;
+
+    @JsonProperty 
+    public String browserVersion;
+
+    @JsonProperty 
+    public String screenResolution;
+
     @JsonIgnore
     private boolean isBeforeMethod = false;
 
+    private List<File> screenShotFileList = new ArrayList<>();
     /**
      * A default constructor for the TestCaseExecution class
      */
@@ -125,5 +136,9 @@ public class TestCaseExecution {
      */
     public void unsetBeforeMethod(){
         this.isBeforeMethod = false;
+    }
+
+    public List<File> getScreenShotFileList(){
+        return this.screenShotFileList;
     }
 }

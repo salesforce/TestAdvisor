@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.salesforce.cte.common.TestAdvisorResult;
 import com.salesforce.cte.common.TestCaseExecution;
+import com.salesforce.cte.common.TestEvent;
+import com.salesforce.cte.common.TestStatus;
 
 import org.junit.After;
 import org.junit.Before;
@@ -80,8 +83,26 @@ public class JsonReporterTest {
 		payloadList.add(testCaseThree);
 
 		TestAdvisorResult testResult = new TestAdvisorResult();
-		testResult.payloadList = payloadList;
+		testResult.testCaseExecutionList = payloadList;
 		
+		Instant now = Instant.now();
+        TestAdvisorResult result = new TestAdvisorResult();
+        result.buildStartTime = now.toString();
+        result.buildEndTime = now.plusSeconds(5).toString();
+        result.version = "1.1.1";
+        result.testCaseExecutionList = new ArrayList<TestCaseExecution>();
+
+        TestCaseExecution testCaseExecution = new TestCaseExecution();
+        testCaseExecution.browser = "Chrome";
+        testCaseExecution.browserVersion = "90.1";
+        testCaseExecution.screenResolution = "1920*1080";
+        testCaseExecution.startTime = now.toString();
+        testCaseExecution.endTime = now.plusSeconds(5).toString();
+        testCaseExecution.testStatus = TestStatus.PASSED;
+        testCaseExecution.testName = "TestCase1";
+        testCaseExecution.eventList = new ArrayList<>();
+        testCaseExecution.eventList.add(new TestEvent("test content", "Info"));
+
 		File outputFile = jsonReporter.saveToRegistry(testResult);
 		assertTrue(root.toFile().exists());
 		assertTrue(root.toFile().isDirectory());
