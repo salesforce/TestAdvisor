@@ -21,7 +21,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
@@ -372,6 +371,18 @@ public class TestEventDispatching {
 		int numOfEventsBefore = fullLogger.getListOfEventsRecorded().size();
 		wd.manage().timeouts().pageLoadTimeout(5000, TimeUnit.MILLISECONDS);
 		assertNumOfLogEntries("pageLoadTimeout", numOfEventsBefore, fullLogger.getListOfEventsRecorded().size(), 2);
+	}
+
+	@Test
+	public void testTakeScreenshots() {
+		int numOfEventsBefore = fullLogger.getListOfEventsRecorded().size();
+		int numOfScreenshotEventsBefore = screenshotLogger.getListOfEventsRecorded().size();
+		wd.getScreenshotAs(OutputType.FILE);
+		WebElement we = wd.findElement(By.id("someId"));
+		assertNotNull(we);
+		we.getScreenshotAs(OutputType.FILE);
+		assertNumOfLogEntries("takeScreenshots", numOfEventsBefore, fullLogger.getListOfEventsRecorded().size(), 6);
+		assertEquals(numOfScreenshotEventsBefore, screenshotLogger.getListOfEventsRecorded().size());
 	}
 
 	@Test

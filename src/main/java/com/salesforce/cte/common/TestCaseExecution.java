@@ -30,10 +30,10 @@ public class TestCaseExecution {
     public TestStatus testStatus;
     
     @JsonProperty
-    public String startTime;
+    public Instant startTime;
     
     @JsonProperty
-    public String endTime;
+    public Instant endTime;
 
     @JsonProperty 
     public String browser;
@@ -54,7 +54,7 @@ public class TestCaseExecution {
     public TestCaseExecution () {
         eventList = new ArrayList<TestEvent>();
         testStatus = TestStatus.PASSED;
-        startTime = Instant.now().toString();
+        startTime = Instant.now();
     }
 
     /**
@@ -110,7 +110,7 @@ public class TestCaseExecution {
 	 * Saves the current test case's end time of execution
 	 */
     public void saveEndTime() {
-    	endTime = Instant.now().toString();
+    	endTime = Instant.now();
     }
     
     /**

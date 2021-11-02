@@ -65,7 +65,6 @@ public class TestAdvisorAdministrator {
     			}
     		}
     	} 
-    	
     	return taAdminInstance;
     }
     
@@ -155,7 +154,7 @@ public class TestAdvisorAdministrator {
      * Start a test run, save start time
      */
     public void startTestRun(){
-        this.testResult.buildStartTime = Instant.now().toString();
+        this.testResult.buildStartTime = Instant.now();
         this.testResult.version = TestAdvisorAdministrator.class.getClass().getPackage().getImplementationVersion();
     }
 
@@ -163,7 +162,7 @@ public class TestAdvisorAdministrator {
      * End a test run, save end time
      */
     public void endTestRun(){
-        this.testResult.buildEndTime = Instant.now().toString();
+        this.testResult.buildEndTime = Instant.now();
     }
     
     /**

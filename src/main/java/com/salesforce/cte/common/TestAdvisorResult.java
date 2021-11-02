@@ -1,5 +1,6 @@
 package com.salesforce.cte.common;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class TestAdvisorResult {
     @JsonProperty
     public String version;
     @JsonProperty
-    public String buildStartTime;
+    public Instant buildStartTime;
     @JsonProperty
-    public String buildEndTime;
+    public Instant buildEndTime;
     
 }

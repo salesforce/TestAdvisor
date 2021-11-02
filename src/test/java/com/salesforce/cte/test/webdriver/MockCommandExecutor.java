@@ -80,7 +80,7 @@ public class MockCommandExecutor implements CommandExecutor {
 	    	Map<String, Object> rawCapabilities = new HashMap<>();
 	    	response.setValue(rawCapabilities);
 	    	response.setSessionId(MockRemoteWebDriver.DUMMY_SESSION_ID);
-	    } else if(SCREENSHOT.equals(command.getName())){
+	    } else if(SCREENSHOT.equals(command.getName()) || ELEMENT_SCREENSHOT.equals(command.getName())){
 			response.setValue(Base64.getEncoder().encodeToString(STRING_ALLISWELL_VALUE.getBytes()));
 		} else if(SUBMIT_ELEMENT.equals(command.getName())) {
 			response.setValue(STRING_ALLISWELL_VALUE);
