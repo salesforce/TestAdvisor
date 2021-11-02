@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.salesforce.cte</groupId>
 	<artifactId>testadvisor-lib</artifactId>
-	<version>0.1.3</version>
+	<version>0.1.4-SNAPSHOT</version>
 	<name>Test Advisor Library</name>
 	<description>An selenium UI test library to generate enhanced test logs</description>
 	<packaging>jar</packaging>
@@ -225,7 +225,7 @@
 
 	<scm>
 		<developerConnection>scm:git:git@git.soma.salesforce.com:cqe/DrillBit-Lib.git</developerConnection>
-		<tag>v0.1.3</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
