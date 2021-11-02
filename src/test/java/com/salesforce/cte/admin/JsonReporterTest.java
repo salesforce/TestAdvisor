@@ -87,8 +87,8 @@ public class JsonReporterTest {
 		
 		Instant now = Instant.now();
         TestAdvisorResult result = new TestAdvisorResult();
-        result.buildStartTime = now.toString();
-        result.buildEndTime = now.plusSeconds(5).toString();
+        result.buildStartTime = now;
+        result.buildEndTime = now.plusSeconds(5);
         result.version = "1.1.1";
         result.testCaseExecutionList = new ArrayList<TestCaseExecution>();
 
@@ -96,8 +96,8 @@ public class JsonReporterTest {
         testCaseExecution.browser = "Chrome";
         testCaseExecution.browserVersion = "90.1";
         testCaseExecution.screenResolution = "1920*1080";
-        testCaseExecution.startTime = now.toString();
-        testCaseExecution.endTime = now.plusSeconds(5).toString();
+        testCaseExecution.startTime = now;
+        testCaseExecution.endTime = now.plusSeconds(5);
         testCaseExecution.testStatus = TestStatus.PASSED;
         testCaseExecution.testName = "TestCase1";
         testCaseExecution.eventList = new ArrayList<>();

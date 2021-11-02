@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.logging.Level;
 
@@ -32,11 +33,10 @@ public class TestCaseExecutionTest {
 		assertEquals(0, testCaseExecution.eventList.size());
 		assertEquals(TestStatus.PASSED, testCaseExecution.testStatus);
 		
-		String expectedTime = Instant.now().toString();
+		Instant expectedTime = Instant.now();
 		testCaseExecution.saveEndTime();
 		
-		assertEquals(expectedTime.substring(0, 23), testCaseExecution.endTime.substring(0, 23));
-		
+		assertTrue(Duration.between(expectedTime, testCaseExecution.endTime).toMillis()<100);
 	}
 	
     /**

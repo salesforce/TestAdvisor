@@ -13,18 +13,23 @@ import java.time.Instant;
 public class TestEvent {
 	
 	//General event attribute
-	private String eventSource;
-	private String eventLevel;
-	private String eventContent;
-	private Instant eventTime;
+	public String eventSource;
+	public String eventLevel;
+	public String eventContent;
+	public Instant eventTime;
 
 	//Selenium event attribute
-	private String seleniumCmd;
-    private String seleniumCmdParam;
-    private String seleniumLocator;
-    private int screenshotRecordNumber;
-    private String screenshotPath;
+	public String seleniumCmd;
+    public String seleniumCmdParam;
+    public String seleniumLocator;
+    public int screenshotRecordNumber;
+    public String screenshotPath;
 	
+	/**
+	 * Default constructor for desearialization
+	 */
+	public TestEvent(){}
+
 	/**
 	 * A constructor to set general attributes
 	 * @param eventContent 
