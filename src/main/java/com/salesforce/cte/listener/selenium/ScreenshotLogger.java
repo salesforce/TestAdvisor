@@ -27,11 +27,6 @@ public class ScreenshotLogger extends AbstractEventListener{
         captureScreenShot(event); 
 	}
 
-    @Override
-	public void beforeQuit(WebDriverEvent event) {
-        captureScreenShot(event); 
-	}
-
 	@Override
 	public void beforeGet(WebDriverEvent event, String url) {
 		captureScreenShot(event);
