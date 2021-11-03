@@ -155,15 +155,6 @@ public class TestEventDispatching {
 	}
 
 	@Test
-	public void testQuit() {
-		int numOfEventsBefore = fullLogger.getListOfEventsRecorded().size();
-		int numOfScreenshotEventsBefore = screenshotLogger.getListOfEventsRecorded().size();
-		wd.quit();
-		assertNumOfLogEntries("quit", numOfEventsBefore, fullLogger.getListOfEventsRecorded().size(), 4);
-		assertNumOfLogEntries("quit", numOfScreenshotEventsBefore, screenshotLogger.getListOfEventsRecorded().size(), 1);
-	}
-
-	@Test
 	public void testTo() {
 		int numOfEventsBefore = fullLogger.getListOfEventsRecorded().size();
 		int numOfScreenshotEventsBefore = screenshotLogger.getListOfEventsRecorded().size();
@@ -395,6 +386,13 @@ public class TestEventDispatching {
 		} catch (Exception e) {
 			Assert.fail("writing full log details failed", e);
 		}
+	}
+
+	@Test
+	public void testQuit() {
+		int numOfEventsBefore = fullLogger.getListOfEventsRecorded().size();
+		wd.quit();
+		assertNumOfLogEntries("quit", numOfEventsBefore, fullLogger.getListOfEventsRecorded().size(), 2);
 	}
 
 	private void assertNumOfLogEntries(String command, int before, int after, int expectedDifference) {
