@@ -41,6 +41,8 @@ public class EventDispatcher {
 	public static EventDispatcher getInstance(WebDriver driver) {
 		if (instance == null)
 			instance = new EventDispatcher(driver);
+		if(driver != null)
+			instance.setWebDriver(driver);
 		return instance;
 	}
 
@@ -49,6 +51,13 @@ public class EventDispatcher {
 		eventListeners.add(new ScreenshotLogger(driver));
 	}
 
+	public void setWebDriver(WebDriver driver){
+		for(IEventListener listener : eventListeners){
+			if (listener instanceof ScreenshotLogger){
+				((ScreenshotLogger)listener).setWebDriver(driver);
+			}
+		}
+	}
 	public List<IEventListener> getImmutableListOfEventListeners() {
 		return Collections.unmodifiableList(eventListeners);
 	}

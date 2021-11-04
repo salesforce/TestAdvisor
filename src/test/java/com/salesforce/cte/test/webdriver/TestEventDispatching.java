@@ -395,6 +395,20 @@ public class TestEventDispatching {
 		assertNumOfLogEntries("quit", numOfEventsBefore, fullLogger.getListOfEventsRecorded().size(), 2);
 	}
 
+	@Test
+	public void testSecondWebDriver(){
+		wd.quit();
+		MutableCapabilities mcap = new MutableCapabilities();
+		mcap.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, "true");
+		MockCommandExecutor mce = new MockCommandExecutor();
+		wd = new MockRemoteWebDriver(mce, mcap);
+		mce.setRemoteWebDriver(wd);
+
+		int numOfEventsBefore = fullLogger.getListOfEventsRecorded().size();
+		wd.manage().timeouts().setScriptTimeout(5000, TimeUnit.MILLISECONDS);
+		assertNumOfLogEntries("setScriptTimeout", numOfEventsBefore, fullLogger.getListOfEventsRecorded().size(), 2);
+	}
+
 	private void assertNumOfLogEntries(String command, int before, int after, int expectedDifference) {
 		System.out.println(String.format("Number of events logged before %s(): %d, and after: %d", command, before, after));
 		assertTrue(after > before);
