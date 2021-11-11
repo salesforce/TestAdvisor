@@ -55,10 +55,13 @@ public class JsonReporter {
 	public File saveToRegistry(TestAdvisorResult testResult) throws IOException {
 			//process screenshot files
 			Path screenshotPath = testRunRoot.resolve("Screenshots");
+			if (!screenshotPath.toFile().exists())
+				screenshotPath.toFile().mkdirs();
 			for (TestCaseExecution test : testResult.testCaseExecutionList) {
 				for(TestEvent event : test.eventList){
 					if (event.getScreenshotPath() == null || event.getScreenshotPath().trim().isEmpty()) continue;
-					File newScreenshot = screenshotPath.resolve(String.valueOf(event.getScreenshotRecordNumber())).toFile();
+					String newName = String.format("%s-%05d.png",test.getTestName(),event.getScreenshotRecordNumber());
+					File newScreenshot = screenshotPath.resolve(newName).toFile();
 					Files.move(Paths.get(event.getScreenshotPath()).toFile(), newScreenshot);
 					event.setStreenshotPath(newScreenshot.getAbsolutePath());
 				}
