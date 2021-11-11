@@ -86,11 +86,11 @@ public class JsonReporterTest {
 		testResult.testCaseExecutionList = payloadList;
 		
 		Instant now = Instant.now();
-        TestAdvisorResult result = new TestAdvisorResult();
-        result.buildStartTime = now;
-        result.buildEndTime = now.plusSeconds(5);
-        result.version = "1.1.1";
-        result.testCaseExecutionList = new ArrayList<TestCaseExecution>();
+    
+        testResult.buildStartTime = now;
+        testResult.buildEndTime = now.plusSeconds(5);
+        testResult.version = "1.1.1";
+        testResult.testCaseExecutionList = new ArrayList<TestCaseExecution>();
 
         TestCaseExecution testCaseExecution = new TestCaseExecution();
         testCaseExecution.browser = "Chrome";
@@ -102,10 +102,14 @@ public class JsonReporterTest {
         testCaseExecution.testName = "TestCase1";
         testCaseExecution.eventList = new ArrayList<>();
         testCaseExecution.eventList.add(new TestEvent("test content", "Info"));
-
+		testCaseExecution.eventList.add(new TestEvent("screentshot", "Info", "click", "null", "locator", 1, File.createTempFile("screenshot","")));
+		
+		testResult.testCaseExecutionList.add(testCaseExecution);
 		File outputFile = jsonReporter.saveToRegistry(testResult);
 		assertTrue(root.toFile().exists());
 		assertTrue(root.toFile().isDirectory());
+		assertTrue(root.resolve("Screenshots").toFile().isDirectory());
+		assertTrue(root.resolve("Screenshots").resolve("TestCase1-00001.png").toFile().exists());
 		assertTrue(outputFile.getParent().toString().contains(".testadvisor/TestRun-20210629-135657"));
 		assertEquals("test-result.json", outputFile.getName());
 	}
