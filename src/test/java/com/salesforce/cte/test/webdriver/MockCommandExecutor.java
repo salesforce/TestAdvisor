@@ -8,6 +8,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.Command;
 import org.openqa.selenium.remote.CommandExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -26,10 +27,13 @@ import static org.testng.Assert.assertNotNull;
 public class MockCommandExecutor implements CommandExecutor {
 	public static String STATE_OK = "OK";
 	public static String STRING_ALLISWELL_VALUE = "All is well";
+	public static String STATE_EXCEPTION = "Exception";
+	
+	private static boolean doTriggerWebDriverException;
 
 	private RemoteWebDriver webDriver;
 	private String id;
-	
+
 	public void setRemoteWebDriver(RemoteWebDriver webDriver) {
 		this.webDriver = webDriver;
 	}
@@ -40,6 +44,13 @@ public class MockCommandExecutor implements CommandExecutor {
 
 	@Override
 	public Response execute(Command command) throws IOException {
+		if (doTriggerWebDriverException) {
+			// automatically reset flag so that exception
+			// thrown below is a one-time-thing
+			doTriggerWebDriverException = false;
+			throw new WebDriverException(STATE_EXCEPTION);
+		}
+
 		Response response = new Response();
     	response.setState(STATE_OK);
    	
@@ -129,6 +140,10 @@ public class MockCommandExecutor implements CommandExecutor {
 	    	System.out.println(String.format("Command %s not yet covered by %s", command.getName(), this.getClass().getName()));
 	    }
 		return response;
+	}
+	
+	public static void setDoTriggerWebDriverException() {
+		doTriggerWebDriverException = true;
 	}
 	
 	private String getStringValueFromParameters(Command command, String key) {

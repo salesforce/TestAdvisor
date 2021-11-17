@@ -1321,6 +1321,11 @@ public class EventDispatcher {
 	}
 
 	public void onException(String cmd, Throwable throwable) {
+		// if the field currentEvent is NULL, then we haven't established
+		// a session and it makes no sense to process the exception
+		if (currentEvent == null)
+			return;
+
 		WebDriverEvent event = new WebDriverEvent(Type.Exception, eventNumber, currentEvent.getCmd());
 		event.setParam1(String.format("Exception Type: %s, message: %s", throwable.getClass().getName(), throwable.getMessage()));
 		for (IEventListener listener : eventListeners)

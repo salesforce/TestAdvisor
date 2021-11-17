@@ -30,7 +30,6 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
  */
 public class WebDriverEvent {
 	public enum Type { BeforeAction, AfterAction, BeforeGather, AfterGather, Exception }
-	// TODO add Alert
 	public enum WebDriverInterface { WebDriver, JavascriptExecutor, Options, ImeHandler, Navigation, TargetLocator, Timeouts, Window, Alert, WebElement, Keyboard, Mouse, TakesScreenshot }
 	public enum Cmd {
 		// commands called directly from WebDriver object
