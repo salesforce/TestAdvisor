@@ -8,6 +8,7 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import com.salesforce.cte.admin.TestAdvisorAdministrator;
@@ -129,10 +130,12 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
         //Invoked each time a test fails.
         TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
         testCaseExecution.setTestStatus(TestStatus.FAILED);
-        //append failure event with failed method name and exception class name
+        testCaseExecution.appendEvent(new TestEvent(
+                result.toString(),Level.SEVERE.toString()));
+        //append failure event with stack trace
         if (result.getThrowable() != null){
             testCaseExecution.appendEvent(new TestEvent(
-                result.toString(),Level.SEVERE.toString()));
+                Arrays.toString(result.getThrowable().getStackTrace()),Level.SEVERE.toString()));
         }
         testCaseExecution.saveEndTime();
     }

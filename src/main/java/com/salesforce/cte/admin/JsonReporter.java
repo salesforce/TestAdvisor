@@ -63,7 +63,7 @@ public class JsonReporter {
 					String newName = String.format("%s-%05d.png",test.getTestName(),event.getScreenshotRecordNumber());
 					File newScreenshot = screenshotPath.resolve(newName).toFile();
 					Files.move(Paths.get(event.getScreenshotPath()).toFile(), newScreenshot);
-					event.setStreenshotPath(newScreenshot.getAbsolutePath());
+					event.setStreenshotPath(newScreenshot.toString());
 				}
 			}
 

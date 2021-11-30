@@ -107,11 +107,17 @@ public class ScreenshotLogger extends AbstractEventListener{
     private void captureScreenShot(WebDriverEvent event){
         logEntries.add(event);
         File file=tss.getScreenshotAs(OutputType.FILE);
+		String param1 = event.getParam1() == null ? "" : event.getParam1();
+		String param2 = event.getParam2() == null ? "" : event.getParam2();
+		String cmd = event.getCmd().getLongCmdString();
+		cmd = cmd == null ? "" : cmd;
+		String locator = event.getElementLocator();
+		locator = locator == null ? "" : locator;
         TestEvent testEvent = new TestEvent(event.toString(), 
                                             Level.INFO.toString(),
-                                            event.getCmd().getLongCmdString(), 
-                                            event.getParam1() + event.getParam2(), 
-                                            event.getElementLocator(),
+                                            cmd, 
+                                            param1 + param2, 
+                                            locator,
                                             event.getRecordNumber(), 
                                             file);
         taAdministrator.getTestCaseExecution().appendEvent(testEvent);
