@@ -96,10 +96,7 @@ public class RemoteWebDriver implements WebDriver, JavascriptExecutor, FindsById
 
 	private static final String BORDER_COLORING_PREFIX = "arguments[0].style.border='3px solid ";
 	private static final String BORDER_COLORING_POSTFIX = "'";
-	private static final String[] BORDER_COLORS = new String[] { "red", "orange", "yellow", "green", "blue", "purple",
-			"magenta" };
 	private static final String IGNORE_COMMAND_TAG = "testadvisor";
-	private int border_color_index = 0;
 
 	private EventDispatcher eventDispatcher = EventDispatcher.getInstance(this);
 
@@ -1091,9 +1088,9 @@ public class RemoteWebDriver implements WebDriver, JavascriptExecutor, FindsById
 	 */
 	void highlightElement(WebElement element) {
 	    if (isJavascriptEnabled()) {
-	    	// choose from seven border colors for each call
-			String color = BORDER_COLORS[border_color_index % BORDER_COLORS.length];
-			border_color_index = border_color_index + 1;
+			//hardcode border color to blue to satisfy screenshot comparision
+			//use a customized blue code so it won't conflict with common blue may be used on the page
+			String color = "#2C1BD8";
 			try {
 				// decorate element with a border
 				((JavascriptExecutor) this).executeScript(
