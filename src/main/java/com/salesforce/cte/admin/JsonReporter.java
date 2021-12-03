@@ -67,7 +67,7 @@ public class JsonReporter {
 			for (TestCaseExecution test : testResult.testCaseExecutionList) {
 				for(TestEvent event : test.eventList){
 					if (event.getScreenshotPath() == null || event.getScreenshotPath().trim().isEmpty()) continue;
-					String newName = String.format("%s-%05d.png",test.getTestName(),event.getScreenshotRecordNumber());
+					String newName = String.format("%05d.png",event.getScreenshotRecordNumber());
 					File newScreenshot = screenshotPath.resolve(newName).toFile();
 					Files.move(Paths.get(event.getScreenshotPath()).toFile(), newScreenshot);
 					event.setStreenshotPath(newScreenshot.toString());
