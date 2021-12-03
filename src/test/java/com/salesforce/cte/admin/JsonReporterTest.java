@@ -116,7 +116,7 @@ public class JsonReporterTest {
 		assertTrue(root.toFile().exists());
 		assertTrue(root.toFile().isDirectory());
 		assertTrue(root.resolve("Screenshots").toFile().isDirectory());
-		assertTrue(root.resolve("Screenshots").resolve("TestCase1-00001.png").toFile().exists());
+		assertTrue(root.resolve("Screenshots").resolve("00001.png").toFile().exists());
 		assertTrue(outputFile.getParent().toString().contains(".testadvisor/TestRun-20210629-135657"));
 		assertEquals("test-result.json", outputFile.getName());
 	}
