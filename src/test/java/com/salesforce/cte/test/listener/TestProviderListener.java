@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.salesforce.cte.listener.testng.TestListener;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
@@ -73,14 +74,15 @@ public class TestProviderListener {
         assertTrue("Passed test case", true);
     }
 
-    @Test(expectedExceptions = { AssertionError.class })
+    @Test(expectedExceptions = { NoSuchElementException.class })
     public void testTestCaseFailed() throws Exception{
         String methodName = new Object() {}
                                 .getClass()
                                 .getEnclosingMethod()
                                 .getName();
         System.out.println(methodName);
-        assertTrue("Failed test case", false);
+        throw new NoSuchElementException("Test NoSuchElement Exception");
+        
     }
 
     @AfterTest

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import com.salesforce.cte.listener.selenium.WebDriverEvent.Cmd;
 
@@ -867,6 +868,7 @@ public class FullLogger extends AbstractEventListener {
 	@Override
 	public void onException(WebDriverEvent event, Cmd cmd, Throwable issue) {
 		logEntries.add(event);
+		administrator.getTestCaseExecution().appendEvent(createTestEvent(event, Level.WARNING));
 	}
 	
 	// This listener provides the events in the way defined in AbstractEventListener.

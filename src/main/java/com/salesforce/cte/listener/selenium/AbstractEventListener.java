@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -37,6 +38,7 @@ import org.openqa.selenium.interactions.Coordinates;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.salesforce.cte.admin.TestAdvisorAdministrator;
+import com.salesforce.cte.common.TestEvent;
 import com.salesforce.cte.listener.selenium.WebDriverEvent.Cmd;
 
 /**
@@ -53,7 +55,7 @@ import com.salesforce.cte.listener.selenium.WebDriverEvent.Cmd;
 public abstract class AbstractEventListener implements IEventListener {
 	@JsonProperty("logEntries")
 	protected List<WebDriverEvent> logEntries = new ArrayList<>();
-	protected TestAdvisorAdministrator taAdministrator = TestAdvisorAdministrator.getInstance();
+	protected TestAdvisorAdministrator administrator = TestAdvisorAdministrator.getInstance();
 
 	/*--------------------------------------------------------------------
 	 * Section for all commands called directly from WebDriver object.
@@ -744,5 +746,21 @@ public abstract class AbstractEventListener implements IEventListener {
 	@Override
 	public String getEventsFormatted() {
 		return null;
+	}
+
+	protected TestEvent createTestEvent(WebDriverEvent event, Level eventLevel){
+		String param1 = event.getParam1() == null ? "" : event.getParam1();
+		String param2 = event.getParam2() == null ? "" : event.getParam2();
+		String cmd = event.getCmd().getLongCmdString();
+		cmd = cmd == null ? "" : cmd;
+		String locator = event.getElementLocator();
+		locator = locator == null ? "" : locator;
+        return new TestEvent(event.toString(), 
+							eventLevel.toString(),
+							cmd, 
+							param1 + param2, 
+							locator,
+							event.getRecordNumber(), 
+							null);
 	}
 }
