@@ -79,7 +79,7 @@ public class TestEvent {
 		this.seleniumCmdParam = seleniumParam;
         this.seleniumLocator=locator;
         this.screenshotRecordNumber=recordNumber;
-        this.screenshotPath=screenshot.getAbsolutePath();
+        this.screenshotPath= screenshot != null ? screenshot.getAbsolutePath() : "";
     }
 
 	/**

@@ -137,13 +137,12 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
         //Invoked each time a test fails.
         TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
         testCaseExecution.setTestStatus(TestStatus.FAILED);
-        testCaseExecution.appendEvent(new TestEvent(
-                result.toString(),Level.SEVERE.toString()));
-        //append failure event with stack trace
+        String eventContent = result.toString();
         if (result.getThrowable() != null){
-            testCaseExecution.appendEvent(new TestEvent(
-                Arrays.toString(result.getThrowable().getStackTrace()),Level.SEVERE.toString()));
+            eventContent += result.getThrowable().toString();
         }
+        
+        testCaseExecution.appendEvent(new TestEvent(eventContent,Level.SEVERE.toString()));
         testCaseExecution.saveEndTime();
     }
 
