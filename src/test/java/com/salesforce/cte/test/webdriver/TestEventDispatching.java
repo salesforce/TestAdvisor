@@ -160,6 +160,19 @@ public class TestEventDispatching {
 	}
 
 	@Test(priority = 2)
+	public void testSendKeysByElementSendingCharsOneByOne() {
+		int numOfEventsBefore = fullLogger.getListOfEventsRecorded().size();
+		int numOfScreenshotEventsBefore = screenshotLogger.getListOfEventsRecorded().size();
+		WebElement we = wd.findElement(By.id("someOtherId"));
+		assertNotNull(we);
+		we.sendKeys("a");
+		we.sendKeys("b");
+		we.sendKeys("c");
+		assertNumOfLogEntries("sendkeys", numOfEventsBefore, fullLogger.getListOfEventsRecorded().size(), 10);
+		assertNumOfLogEntries("sendkeys", numOfScreenshotEventsBefore, screenshotLogger.getListOfEventsRecorded().size(), 1);
+	}
+
+	@Test(priority = 2)
 	public void testClose() {
 		int numOfEventsBefore = fullLogger.getListOfEventsRecorded().size();
 		int numOfScreenshotEventsBefore = screenshotLogger.getListOfEventsRecorded().size();
