@@ -18,7 +18,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class ScreenshotLogger extends AbstractEventListener{
+public class ScreenshotLogger extends AbstractEventListener {
+	private ThreadLocal<String> cachedSendKeysLocator = new ThreadLocal<>();
     
     private TakesScreenshot tss;
     
@@ -68,7 +69,7 @@ public class ScreenshotLogger extends AbstractEventListener{
         captureScreenShot(event);
 	}
 
-/*---------------------------------------------------------------------------
+	/*---------------------------------------------------------------------------
 	 * Section for all commands called directly from WebElement object.
 	 *---------------------------------------------------------------------------*/
 
@@ -84,7 +85,10 @@ public class ScreenshotLogger extends AbstractEventListener{
 
 	@Override
 	public void beforeSendKeysByElement(WebDriverEvent event, WebElement element, CharSequence... keysToSend) {
-        captureScreenShot(event);
+		// Skip capturing a screenshot if it is the same locator, because it means
+		// a test is sending text character by character to the same text field.
+		if (isDifferentLocator(element))
+			captureScreenShot(event);
 	}
 
 	@Override
@@ -117,5 +121,27 @@ public class ScreenshotLogger extends AbstractEventListener{
         TestEvent testEvent = createTestEvent(event,Level.SEVERE);
 		testEvent.setStreenshotPath(file.getAbsolutePath());
         administrator.getTestCaseExecution().appendEvent(testEvent);
+    }
+    
+    private boolean isDifferentLocator(WebElement elem) {
+    	String locator = WebDriverEvent.getLocatorFromWebElement(elem);
+    	// if locator is null we assume it's a different locator
+    	if (locator == null)
+    		return true;
+    	
+    	String cachedLocator = cachedSendKeysLocator.get();
+    	// if cachedLocator is null we assume it's a different locator
+    	if (cachedLocator == null) {
+    		// cache the currently used locator
+    		cachedSendKeysLocator.set(locator);
+    		return true;    		
+    	}
+
+    	if (cachedLocator.equals(locator))
+    		return false;
+    	
+    	// currently used locator is different from cached one; replace the cached locator
+    	cachedSendKeysLocator.set(locator);
+    	return true;
     }
 }
