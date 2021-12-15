@@ -41,7 +41,7 @@ public class TestAdvisorAdministrator {
     private static TestAdvisorAdministrator taAdminInstance = null;
     
     private static final String VERSION_PROPERTY="testadvisor.lib.version";
-    private String version;
+    private String version = "";
     public String getVersion(){
         return this.version;
     }
