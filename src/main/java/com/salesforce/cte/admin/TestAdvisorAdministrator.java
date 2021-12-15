@@ -40,8 +40,11 @@ public class TestAdvisorAdministrator {
     private Config config = new Config();
     private static TestAdvisorAdministrator taAdminInstance = null;
     
-    private static final String VERSION_PROPERTY="version";
-    public String version;
+    private static final String VERSION_PROPERTY="testadvisor.lib.version";
+    private String version;
+    public String getVersion(){
+        return this.version;
+    }
 
     /**
      * A default constructor for the TestAdvisorAdministrator class

@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.salesforce.cte.common.TestCaseExecution;
 
@@ -167,6 +169,14 @@ public class TestAdvisorAdministratorTest {
 		assertTrue(outputFile.getAbsolutePath().toString().contains("testadvisor/TestRun-"));
 		
 		outputFile.deleteOnExit();
+	}
+
+	@Test
+	public void versionTest(){
+		TestAdvisorAdministrator admin = TestAdvisorAdministrator.getInstance();
+		Pattern pattern = Pattern.compile("(\\d+.\\d+.*)");
+		Matcher matcher = pattern.matcher(admin.getVersion());
+		assertTrue(matcher.find());
 	}
 
 }
