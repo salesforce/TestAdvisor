@@ -96,7 +96,7 @@ public class JsonReporterTest {
     
         testResult.buildStartTime = now;
         testResult.buildEndTime = now.plusSeconds(5);
-        testResult.version = "1.1.1";
+        testResult.version = TestAdvisorAdministrator.getInstance().getVersion();
         testResult.testCaseExecutionList = new ArrayList<TestCaseExecution>();
 
         TestCaseExecution testCaseExecution = new TestCaseExecution();

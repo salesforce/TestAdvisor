@@ -23,7 +23,7 @@ public class TestAdvisorResult {
     @JsonProperty
     public List<TestCaseExecution> testCaseExecutionList = new ArrayList<>();
     @JsonProperty
-    public String version;
+    public String version = "";
     @JsonProperty
     public Instant buildStartTime;
     @JsonProperty
