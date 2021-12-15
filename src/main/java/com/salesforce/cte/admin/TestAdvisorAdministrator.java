@@ -10,6 +10,9 @@ package com.salesforce.cte.admin;
 import java.time.LocalDateTime;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.salesforce.cte.common.TestAdvisorResult;
 import com.salesforce.cte.common.TestCaseExecution;
@@ -29,13 +32,17 @@ import java.nio.file.Paths;
  *
  */
 public class TestAdvisorAdministrator {
-
+    private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
+    
     private TestAdvisorResult testResult = new TestAdvisorResult();
 	private Path registryRoot;
     private JsonReporter jsonReporter;
     private Config config = new Config();
     private static TestAdvisorAdministrator taAdminInstance = null;
     
+    private static final String VERSION_PROPERTY="version";
+    public String version;
+
     /**
      * A default constructor for the TestAdvisorAdministrator class
      */
@@ -46,6 +53,14 @@ public class TestAdvisorAdministrator {
 
         Path testRun = createTestRun(registryRoot);
         jsonReporter = new JsonReporter(testRun);
+        
+        final Properties properties = new Properties();
+        try {
+            properties.load(this.getClass().getClassLoader().getResourceAsStream("project.properties"));
+            version = (properties.getProperty(VERSION_PROPERTY));
+        }catch(IOException ex){
+            LOGGER.log(Level.SEVERE, ex.toString());
+        }
     }
 
     /**
@@ -162,7 +177,7 @@ public class TestAdvisorAdministrator {
      */
     public void startTestRun(){
         this.testResult.buildStartTime = Instant.now();
-        this.testResult.version = TestAdvisorAdministrator.class.getClass().getPackage().getImplementationVersion();
+        this.testResult.version = TestAdvisorAdministrator.getInstance().version;
     }
 
     /**
