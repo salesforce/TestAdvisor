@@ -64,6 +64,7 @@ public class TestEventDispatching {
 				screenshotLogger = (ScreenshotLogger) listener;
 			}
 		}
+		System.setProperty("testadvisor.capturescreenshot", "true");
 	}
 
 	@Test(priority = 1)

@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.logging.Level;
 
+import com.salesforce.cte.admin.TestAdvisorConfiguration;
 import com.salesforce.cte.common.TestEvent;
 
 import org.openqa.selenium.OutputType;
@@ -117,10 +118,12 @@ public class ScreenshotLogger extends AbstractEventListener {
 
     private void captureScreenShot(WebDriverEvent event){
         logEntries.add(event);
-        File file=tss.getScreenshotAs(OutputType.FILE);
-        TestEvent testEvent = createTestEvent(event,Level.SEVERE);
-		testEvent.setStreenshotPath(file.getAbsolutePath());
-        administrator.getTestCaseExecution().appendEvent(testEvent);
+		if (TestAdvisorConfiguration.getIsScreenshotCaptureEnabled()){
+			File file=tss.getScreenshotAs(OutputType.FILE);
+			TestEvent testEvent = createTestEvent(event,Level.SEVERE);
+			testEvent.setStreenshotPath(file.getAbsolutePath());
+			administrator.getTestCaseExecution().appendEvent(testEvent);
+		}
     }
     
     private boolean isDifferentLocator(WebElement elem) {

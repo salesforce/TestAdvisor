@@ -9,8 +9,6 @@ package com.salesforce.cte.admin;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,11 +55,11 @@ public class TestAdvisorAdministratorTest {
      */
 	@Test
     public void testRetrieveRootDirectoryForWindows() {
-		Config mockConfig = mock(Config.class);
-		when(mockConfig.getOS()).thenReturn("Windows").thenReturn("Mac OS X").thenReturn("Linux");
-		TestAdvisorAdministrator.getInstance().setConfig(mockConfig);
+		System.setProperty("os.name", "Windows");
     	assertEquals("testadvisor", TestAdvisorAdministrator.getInstance().retrieveRootDirectory());
+		System.setProperty("os.name", "Mac OS X");
     	assertEquals(".testadvisor", TestAdvisorAdministrator.getInstance().retrieveRootDirectory());
+		System.setProperty("os.name", "Linux");
     	assertEquals(".testadvisor", TestAdvisorAdministrator.getInstance().retrieveRootDirectory());
     }
 
@@ -86,12 +84,6 @@ public class TestAdvisorAdministratorTest {
 		assertEquals(TestCaseExecution.class, taAdmin.getTestCaseExecution().getClass());
 	}
 	
-// TODO: This function tests to make sure that the saveTestCaseExecution() method works as expected
-//	@Test
-//	public void testSaveTestCaseExecution() {
-//	    fail("Not yet implemented");
-//	}
-	
 	/**
 	 * Tests to make sure that the saveTestCaseExecution() method works as expected
 	 * on a system running Mac OS
@@ -99,11 +91,8 @@ public class TestAdvisorAdministratorTest {
 	 */
 	@Test
 	public void testSaveTestCaseExecutionListMac() throws IOException {
-		Config mockConfig = mock(Config.class);
-		when(mockConfig.getOS()).thenReturn("Mac OS X");
-
+		System.setProperty("os.name", "Mac OS X");
 		TestAdvisorAdministrator taAdminMac = TestAdvisorAdministrator.getInstance();
-		taAdminMac.setConfig(mockConfig);
 		TestCaseExecution testCaseOne = taAdminMac.createTestCaseExecution();
 		testCaseOne.setTestName("Test 1");
 		testCaseOne.saveEndTime();
@@ -141,11 +130,8 @@ public class TestAdvisorAdministratorTest {
 	 */
 	@Test
 	public void testSaveTestCaseExecutionListWindows() throws IOException {
-		Config mockConfig = mock(Config.class);
-		when(mockConfig.getOS()).thenReturn("Windows 10");
-
+		System.setProperty("os.name", "Windows 10");
 		TestAdvisorAdministrator taAdminWindows = TestAdvisorAdministrator.getInstance();
-		taAdminWindows.setConfig(mockConfig);
 		TestCaseExecution testCaseOne = taAdminWindows.createTestCaseExecution();
 		testCaseOne.setTestName("Test 1");
 		testCaseOne.saveEndTime();

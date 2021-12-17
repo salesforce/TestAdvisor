@@ -37,7 +37,6 @@ public class TestAdvisorAdministrator {
     private TestAdvisorResult testResult = new TestAdvisorResult();
 	private Path registryRoot;
     private JsonReporter jsonReporter;
-    private Config config = new Config();
     private static TestAdvisorAdministrator taAdminInstance = null;
     
     private static final String VERSION_PROPERTY="testadvisor.lib.version";
@@ -64,15 +63,6 @@ public class TestAdvisorAdministrator {
         }catch(IOException ex){
             LOGGER.log(Level.SEVERE, ex.toString());
         }
-    }
-
-    /**
-     * Set a configuration
-     * @param config
-     * new config instance
-     */
-    public void setConfig(Config config){
-        this.config = config;
     }
 
     /**
@@ -111,7 +101,7 @@ public class TestAdvisorAdministrator {
     	 * 1) The environment variable's value has been set --> it can be entered via the CLI or read from a property's file
     	 * 2) If the value for the environment variable hasn't been set, you use a default value (utilizes the current function)
     	 */
-        String operatingSystem = config.getOS();
+        String operatingSystem = TestAdvisorConfiguration.getOS();
         String rootDirectory;
 
         if (operatingSystem.toLowerCase().contains("mac") || operatingSystem.toLowerCase().contains("linux")) {

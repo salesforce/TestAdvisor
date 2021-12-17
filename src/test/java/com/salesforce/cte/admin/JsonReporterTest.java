@@ -25,8 +25,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * 
@@ -69,9 +67,7 @@ public class JsonReporterTest {
      */
 	@Test
 	public void testSaveToRegistry() throws IOException {
-		Config mockConfig = mock(Config.class);
-		when(mockConfig.getOS()).thenReturn("Mac OS X");
-		
+		System.setProperty("os.name", "Mac OS X");
 		List<TestCaseExecution> payloadList = new ArrayList<TestCaseExecution>();
 		TestCaseExecution testCaseOne = new TestCaseExecution();
 		TestCaseExecution testCaseTwo = new TestCaseExecution();
