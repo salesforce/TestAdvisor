@@ -4,7 +4,7 @@
 	<artifactId>testadvisor-lib</artifactId>
 	<version>0.1.12-SNAPSHOT</version>
 	<name>Test Advisor Library</name>
-	<description>An selenium UI test library to generate enhanced test logs</description>
+	<description>UI test automation library to generate enhanced test logs</description>
 	<packaging>jar</packaging>
 
 	<developers>
@@ -174,22 +174,6 @@
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>7.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>3.141.59</version>
-			<!-- explicitly exclude dependencies on JNA to avoid dependency on a different license type. -->
-			<exclusions>
-				<exclusion>
-					<groupId>net.java.dev.jna</groupId>
-					<artifactId>jna</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>net.java.dev.jna</groupId>
-					<artifactId>jna-platform</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
