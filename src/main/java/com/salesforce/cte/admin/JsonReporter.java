@@ -9,15 +9,16 @@ package com.salesforce.cte.admin;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.google.common.io.Files;
 import com.salesforce.cte.common.TestAdvisorResult;
 import com.salesforce.cte.common.TestCaseExecution;
 import com.salesforce.cte.common.TestEvent;
@@ -67,10 +68,9 @@ public class JsonReporter {
 			for (TestCaseExecution test : testResult.testCaseExecutionList) {
 				for(TestEvent event : test.eventList){
 					if (event.getScreenshotPath() == null || event.getScreenshotPath().trim().isEmpty()) continue;
-					String newName = String.format("%05d.png",event.getScreenshotRecordNumber());
-					File newScreenshot = screenshotPath.resolve(newName).toFile();
-					Files.move(Paths.get(event.getScreenshotPath()).toFile(), newScreenshot);
-					event.setStreenshotPath(newScreenshot.toString());
+					String newName = String.format("%05d.png", event.getScreenshotRecordNumber());
+					Files.move(Paths.get(event.getScreenshotPath()), screenshotPath.resolve(newName), StandardCopyOption.REPLACE_EXISTING);
+					event.setStreenshotPath(screenshotPath.resolve(newName).toString());
 				}
 			}
 
