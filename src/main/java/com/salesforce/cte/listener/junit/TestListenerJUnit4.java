@@ -9,6 +9,7 @@ package com.salesforce.cte.listener.junit;
 
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.runner.Description;
 import org.junit.runner.Result;
@@ -29,6 +30,8 @@ import com.salesforce.cte.common.TestStatus;
  *
  */
 public class TestListenerJUnit4 extends org.junit.runner.notification.RunListener {
+	private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
+
 	// Singleton TestAdvisorAdministrator
 	private TestAdvisorAdministrator administrator;
 
@@ -52,8 +55,7 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
 		try {
 			administrator.saveTestResult();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, e.toString());
 		}
     }
 
@@ -74,7 +76,7 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
 	@Override
     public void testFinished(Description description) throws Exception {
 		TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-		// test status is already set to correct value; 
+		// test status is already set to correct value 
 		// i.e. don't set it here to PASS as it may override a FAIL
 		testCaseExecution.saveEndTime();
     }

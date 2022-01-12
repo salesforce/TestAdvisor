@@ -14,6 +14,7 @@ import java.io.File;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * 
@@ -27,7 +28,7 @@ import java.util.List;
  */
 public class TestCaseExecution {
 
-	@JsonProperty
+    @JsonProperty
 	public String testName;
 	
     @JsonProperty
@@ -55,13 +56,20 @@ public class TestCaseExecution {
     private boolean isBeforeMethod = false;
 
     private List<File> screenShotFileList = new ArrayList<>();
+
+    @JsonProperty
+    private String traceId;
+
+    private Random rand;
     /**
      * A default constructor for the TestCaseExecution class
      */
     public TestCaseExecution () {
-        eventList = new ArrayList<TestEvent>();
+        eventList = new ArrayList<>();
         testStatus = TestStatus.PASSED;
         startTime = Instant.now();
+        rand = new Random();
+        traceId=generateTraceId();
     }
 
     /**
@@ -147,5 +155,17 @@ public class TestCaseExecution {
 
     public List<File> getScreenShotFileList(){
         return this.screenShotFileList;
+    }
+
+    public String getTraceId(){
+        return traceId;
+    }
+    
+    private String generateTraceId() {
+        StringBuilder sb = new StringBuilder();
+        while (sb.length() < 16) {
+            sb.append(Integer.toHexString(rand.nextInt()));
+        }
+        return sb.toString().substring(0, 16);
     }
 }

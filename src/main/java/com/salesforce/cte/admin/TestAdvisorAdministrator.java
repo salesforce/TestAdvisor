@@ -50,8 +50,8 @@ public class TestAdvisorAdministrator {
      */
     private TestAdvisorAdministrator() {
         registryRoot = System.getenv("TEST_ADVISOR_REGISTRY") != null ?
-                            Paths.get(System.getenv("TEST_ADVISOR_REGISTRY"))
-                            :Paths.get(System.getProperty("user.dir"),retrieveRootDirectory());   
+                            Paths.get(System.getenv("TEST_ADVISOR_REGISTRY")).normalize()
+                            :Paths.get(System.getProperty("user.dir"),retrieveRootDirectory()).normalize();   
 
         Path testRun = createTestRun(registryRoot);
         jsonReporter = new JsonReporter(testRun);
