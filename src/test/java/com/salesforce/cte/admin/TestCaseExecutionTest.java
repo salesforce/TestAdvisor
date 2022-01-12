@@ -107,6 +107,9 @@ public class TestCaseExecutionTest {
 	@Test
 	public void testTraceId(){
 		assertEquals(16, testCaseExecution.getTraceId().length());
+
+		TestCaseExecution testCaseExecution2 = new TestCaseExecution();
+		assertNotEquals(testCaseExecution.getTraceId(), testCaseExecution2.getTraceId());
 	}
 
 }
