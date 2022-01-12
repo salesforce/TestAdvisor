@@ -16,6 +16,7 @@ import org.testng.ITestResult;
 
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.salesforce.cte.admin.TestAdvisorAdministrator;
 import com.salesforce.cte.common.TestCaseExecution;
@@ -31,6 +32,8 @@ import com.salesforce.cte.common.TestStatus;
  * @author Yibing Tao
  */
 public class TestListener implements ITestListener, IExecutionListener, IConfigurationListener {
+	private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
+	
 	// Singleton TestAdvisorAdministrator
 	private TestAdvisorAdministrator administrator;
 
@@ -178,8 +181,7 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
 		try {
 			administrator.saveTestResult();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, e.toString());
 		}
 	}
 }
