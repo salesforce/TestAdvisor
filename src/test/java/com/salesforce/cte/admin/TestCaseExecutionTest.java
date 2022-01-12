@@ -104,4 +104,9 @@ public class TestCaseExecutionTest {
         assertEquals(10, testCaseExecution.eventList.size());
     }
 
+	@Test
+	public void testTraceId(){
+		assertEquals(16, testCaseExecution.getTraceId().length());
+	}
+
 }
