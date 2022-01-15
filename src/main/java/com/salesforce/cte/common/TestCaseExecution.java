@@ -58,7 +58,7 @@ public class TestCaseExecution {
     private List<File> screenShotFileList = new ArrayList<>();
 
     @JsonProperty
-    private String traceId;
+    private String traceId="";
 
     private Random rand;
     /**
@@ -69,7 +69,6 @@ public class TestCaseExecution {
         testStatus = TestStatus.PASSED;
         startTime = Instant.now();
         rand = new Random();
-        traceId=generateTraceId();
     }
 
     /**
@@ -161,11 +160,17 @@ public class TestCaseExecution {
         return traceId;
     }
     
-    private String generateTraceId() {
+    /**
+     * If trace is is emtpy, generate a random 16 character trace id 
+     * @return trace id
+     */
+    public String generateTraceId() {
+        if (!traceId.isEmpty()) return traceId;
         StringBuilder sb = new StringBuilder();
         while (sb.length() < 16) {
             sb.append(Integer.toHexString(rand.nextInt()));
         }
-        return sb.toString().substring(0, 16);
+        traceId = sb.toString().substring(0, 16);
+        return traceId;
     }
 }

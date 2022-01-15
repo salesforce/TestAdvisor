@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
 
 
 @Listeners(TestListener.class)
-public class TestProviderListener {
+public class TestTestNGListener {
 
     @BeforeTest
     public void beforeTest() throws Exception{
