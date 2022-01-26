@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.salesforce.cte</groupId>
 	<artifactId>testadvisor-lib</artifactId>
-	<version>0.1.18-SNAPSHOT</version>
+	<version>0.2.1-SNAPSHOT</version>
 	<name>Test Advisor Library</name>
 	<description>UI test automation library to generate enhanced test logs</description>
 	<packaging>jar</packaging>
@@ -56,6 +56,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<excludes>
+					  <exclude>**/TestJUnitListener.java</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 			<plugin>
 		        <groupId>org.jacoco</groupId>

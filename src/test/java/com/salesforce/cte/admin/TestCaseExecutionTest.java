@@ -106,10 +106,14 @@ public class TestCaseExecutionTest {
 
 	@Test
 	public void testTraceId(){
-		assertEquals(16, testCaseExecution.getTraceId().length());
+		assertEquals("", testCaseExecution.getTraceId());
+		String traceId = testCaseExecution.generateTraceId();
+		assertEquals(16, traceId.length());
+		assertEquals(traceId, testCaseExecution.getTraceId());
+		assertEquals(traceId, testCaseExecution.generateTraceId());
 
-		TestCaseExecution testCaseExecution2 = new TestCaseExecution();
-		assertNotEquals(testCaseExecution.getTraceId(), testCaseExecution2.getTraceId());
+		String traceId2 = new TestCaseExecution().generateTraceId();
+		assertNotEquals(traceId, traceId2);
 	}
 
 }
