@@ -161,7 +161,7 @@ public class TestCaseExecution {
     }
     
     /**
-     * If trace is is emtpy, generate a random 16 character trace id 
+     * If trace id is emtpy, generate a random 16 character trace id 
      * @return trace id
      */
     public String generateTraceId() {
@@ -170,7 +170,7 @@ public class TestCaseExecution {
         while (sb.length() < 16) {
             sb.append(Integer.toHexString(rand.nextInt()));
         }
-        traceId = sb.toString().substring(0, 16);
+        traceId = sb.substring(0, 16);
         return traceId;
     }
 }
