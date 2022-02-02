@@ -10,6 +10,7 @@ package com.salesforce.cte.listener.testng;
 import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.IConfigurationListener;
+import org.testng.IConfigurationListener2;
 import org.testng.IExecutionListener;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
@@ -31,7 +32,8 @@ import com.salesforce.cte.common.TestStatus;
  * 
  * @author Yibing Tao
  */
-public class TestListener implements ITestListener, IExecutionListener, IConfigurationListener {
+public class TestListener implements ITestListener, IExecutionListener, IConfigurationListener, IConfigurationListener2 {
+	//add IConfigurationListener2 for TestNG 6 compatibility
 	private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 	
 	// Singleton TestAdvisorAdministrator
