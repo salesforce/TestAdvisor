@@ -10,6 +10,8 @@ package com.salesforce.cte.admin;
 import java.time.LocalDateTime;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +37,7 @@ public class TestAdvisorAdministrator {
     private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
     
     private TestAdvisorResult testResult = new TestAdvisorResult();
+    private Map<Long,TestCaseExecution> threadTestCaseMap = new HashMap<>();
 	private Path registryRoot;
     private JsonReporter jsonReporter;
     private static TestAdvisorAdministrator taAdminInstance = null;
@@ -139,30 +142,31 @@ public class TestAdvisorAdministrator {
     }
     
     /**
-     * Creates an instance of the TestCaseExecution class and appends it to payloadList, and then returns the instance.
+     * Creates an instance of the TestCaseExecution class and appends it to test result
+     * update thread test case map and then returns the instance.
      * 
-     * @return testCaseExecution represents an instance of the TestCaseExecution class that represents the current test case
+     * @return TestCaseExecution object that represents the current test case
      */
-    public TestCaseExecution createTestCaseExecution() {
+    public synchronized TestCaseExecution createTestCaseExecution() {
     	TestCaseExecution testCaseExecution = new TestCaseExecution();
-    	
     	testResult.testCaseExecutionList.add(testCaseExecution);
-    	
+
+        //only track the current test case executioni object for the running thread
+        //every thread contains its own test case execution object
+    	threadTestCaseMap.put(Thread.currentThread().getId(), testCaseExecution);
     	return testCaseExecution;
     }
     
     /**
-     * Returns the current TestCaseExecution instance which represents the current test case
+     * Returns the current TestCaseExecution instance for current thread
+     * which represents the current test case
      * 
      * @return 
-     * currentTest represents an instance of the TestCaseExecution class that represents the current test case 
+     * TestCaseExecution object 
      * null if no test case exists
      */
-    public TestCaseExecution getTestCaseExecution() {
-    	
-    	// this works for v1 - sequential execution
-    	// however, how can we modify this to work for v2 - parallel/concurrent execution
-    	return testResult.testCaseExecutionList.isEmpty() ? null : testResult.testCaseExecutionList.get(testResult.testCaseExecutionList.size() - 1);
+    public synchronized TestCaseExecution getTestCaseExecution() {
+        return threadTestCaseMap.get(Thread.currentThread().getId());
     }
 
     /**
