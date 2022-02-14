@@ -42,8 +42,8 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
 	// IConfigurationListener
 	@Override
 	public void beforeConfiguration(ITestResult result) {
-		// Invoked before a configuration method is invoked.
-		TestCaseExecution testCaseExecution = getCurrentTestCaseExecution(result);
+		TestCaseExecution testCaseExecution = administrator.createTestCaseExecution(result.getTestClass().getName() + "." + result.getName());
+		testCaseExecution.setIsConfiguration(true);
 		testCaseExecution.appendEvent(new TestEvent(result.toString(), Level.INFO.toString()));
 	}
 
@@ -75,31 +75,6 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
 		setConfigurationStatus(result, TestStatus.PASSED);
 		testCaseExecution.appendEvent(new TestEvent(result.toString(), Level.INFO.toString()));
 		testCaseExecution.saveEndTime();
-	}
-
-	/**
-	 * Get current test case execution object, create new one for new test case.
-	 * 
-	 * @param result TestNG test result object
-	 * @return current test case execution object
-	 */
-	private TestCaseExecution getCurrentTestCaseExecution(ITestResult result) {
-		TestCaseExecution current = administrator.getTestCaseExecution();
-		if (current == null || result.getMethod().isBeforeClassConfiguration()
-				|| result.getMethod().isBeforeTestConfiguration() || result.getMethod().isAfterClassConfiguration()
-				|| result.getMethod().isAfterTestConfiguration()
-				|| (result.getMethod().isBeforeMethodConfiguration() && !current.isBeforeMethod()) || // first
-																										// beforeMethod
-																										// only
-				result.getMethod().isTest() && !current.isBeforeMethod()) { // Test without beforeMethod
-			current = administrator.createTestCaseExecution();
-			current.setTestName(result.getTestClass().getName() + "." + result.getName());
-		}
-		if (result.getMethod().isBeforeMethodConfiguration())
-			current.setBeforeMethod();
-		else
-			current.unsetBeforeMethod();
-		return current;
 	}
 
 	/**
@@ -163,9 +138,7 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
 	@Override
 	public void onTestStart(ITestResult result) {
 		// Invoked each time before a test will be invoked.
-		TestCaseExecution testCaseExecution = getCurrentTestCaseExecution(result);
-		// save test name
-		testCaseExecution.setTestName(result.getTestClass().getName() + "." + result.getName());
+		administrator.createTestCaseExecution(result.getTestClass().getName() + "." + result.getName());
 	}
 
 	// IExecutionListener

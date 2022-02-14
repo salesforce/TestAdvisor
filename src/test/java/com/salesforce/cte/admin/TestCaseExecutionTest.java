@@ -29,7 +29,7 @@ import com.salesforce.cte.common.TestStatus;
  */
 public class TestCaseExecutionTest {
 
-    private TestCaseExecution testCaseExecution = new TestCaseExecution();
+    private TestCaseExecution testCaseExecution = new TestCaseExecution("Test X");
     private TestEvent event = new TestEvent("",Level.INFO.toString());
     
 	/**
@@ -51,19 +51,7 @@ public class TestCaseExecutionTest {
      */
 	@Test
 	public void testGetTestName() {
-		assertNull(testCaseExecution.getTestName());
-		
-		testCaseExecution.setTestName("Test X");
 		assertEquals("Test X", testCaseExecution.getTestName());
-	}
-	
-    /**
-     * Tests to make sure that the setTestName() method works as expected
-     */
-	@Test
-	public void testSetTestName() {
-		testCaseExecution.setTestName("Test A");
-		assertEquals("Test A", testCaseExecution.getTestName());
 	}
 	
     /**
@@ -112,7 +100,7 @@ public class TestCaseExecutionTest {
 		assertEquals(traceId, testCaseExecution.getTraceId());
 		assertEquals(traceId, testCaseExecution.generateTraceId());
 
-		String traceId2 = new TestCaseExecution().generateTraceId();
+		String traceId2 = new TestCaseExecution("").generateTraceId();
 		assertNotEquals(traceId, traceId2);
 	}
 

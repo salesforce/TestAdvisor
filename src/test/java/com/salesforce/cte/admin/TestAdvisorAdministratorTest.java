@@ -69,7 +69,7 @@ public class TestAdvisorAdministratorTest {
 	@Test
 	public void testCreateTestCaseExecution() {
 		assertEquals(0, taAdmin.getTestResult().testCaseExecutionList.size());
-		taAdmin.createTestCaseExecution();
+		taAdmin.createTestCaseExecution("");
 		assertEquals(1, taAdmin.getTestResult().testCaseExecutionList.size());
 	}
 
@@ -79,7 +79,7 @@ public class TestAdvisorAdministratorTest {
 	@Test
 	public void testGetTestCaseExecution() {
 		assertEquals(0, taAdmin.getTestResult().testCaseExecutionList.size());
-		taAdmin.createTestCaseExecution();
+		taAdmin.createTestCaseExecution("");
 		assertEquals(1, taAdmin.getTestResult().testCaseExecutionList.size());
 		assertEquals(TestCaseExecution.class, taAdmin.getTestCaseExecution().getClass());
 	}
@@ -93,18 +93,15 @@ public class TestAdvisorAdministratorTest {
 	public void testSaveTestCaseExecutionListMac() throws IOException {
 		System.setProperty("os.name", "Mac OS X");
 		TestAdvisorAdministrator taAdminMac = TestAdvisorAdministrator.getInstance();
-		TestCaseExecution testCaseOne = taAdminMac.createTestCaseExecution();
-		testCaseOne.setTestName("Test 1");
+		TestCaseExecution testCaseOne = taAdminMac.createTestCaseExecution("Test 1");
 		testCaseOne.saveEndTime();
 		assertEquals("Test 1", taAdminMac.getTestCaseExecution().getTestName());
 		
-		TestCaseExecution testCaseTwo = taAdminMac.createTestCaseExecution();
-		testCaseTwo.setTestName("Test 2");
+		TestCaseExecution testCaseTwo = taAdminMac.createTestCaseExecution("Test 2");
 		testCaseTwo.saveEndTime();
 		assertEquals("Test 2", taAdminMac.getTestCaseExecution().getTestName());
 		
-		TestCaseExecution testCaseThree = taAdminMac.createTestCaseExecution();
-		testCaseThree.setTestName("Test 3");
+		TestCaseExecution testCaseThree = taAdminMac.createTestCaseExecution("Test 3");
 		testCaseThree.saveEndTime();
 		assertEquals("Test 3", taAdminMac.getTestCaseExecution().getTestName());
 		
@@ -132,18 +129,15 @@ public class TestAdvisorAdministratorTest {
 	public void testSaveTestCaseExecutionListWindows() throws IOException {
 		System.setProperty("os.name", "Windows 10");
 		TestAdvisorAdministrator taAdminWindows = TestAdvisorAdministrator.getInstance();
-		TestCaseExecution testCaseOne = taAdminWindows.createTestCaseExecution();
-		testCaseOne.setTestName("Test 1");
+		TestCaseExecution testCaseOne = taAdminWindows.createTestCaseExecution("Test 1");
 		testCaseOne.saveEndTime();
 		assertEquals("Test 1", taAdminWindows.getTestCaseExecution().getTestName());
 
-		TestCaseExecution testCaseTwo = taAdminWindows.createTestCaseExecution();
-		testCaseTwo.setTestName("Test 2");
+		TestCaseExecution testCaseTwo = taAdminWindows.createTestCaseExecution("Test 2");
 		testCaseTwo.saveEndTime();
 		assertEquals("Test 2", taAdminWindows.getTestCaseExecution().getTestName());
 
-		TestCaseExecution testCaseThree = taAdminWindows.createTestCaseExecution();
-		testCaseThree.setTestName("Test 3");
+		TestCaseExecution testCaseThree = taAdminWindows.createTestCaseExecution("Test 3");
 		testCaseThree.saveEndTime();
 		assertEquals("Test 3", taAdminWindows.getTestCaseExecution().getTestName());
 

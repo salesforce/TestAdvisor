@@ -7,7 +7,6 @@
 
 package com.salesforce.cte.common;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.File;
@@ -27,7 +26,7 @@ import java.util.Random;
  *
  */
 public class TestCaseExecution {
-
+    
     @JsonProperty
 	public String testName;
 	
@@ -52,8 +51,11 @@ public class TestCaseExecution {
     @JsonProperty 
     public String screenResolution;
 
-    @JsonIgnore
-    private boolean isBeforeMethod = false;
+    @JsonProperty 
+    public boolean isConfiguration;
+
+    @JsonProperty 
+    public long threadId;
 
     private List<File> screenShotFileList = new ArrayList<>();
 
@@ -64,11 +66,17 @@ public class TestCaseExecution {
     /**
      * A default constructor for the TestCaseExecution class
      */
-    public TestCaseExecution () {
-        eventList = new ArrayList<>();
-        testStatus = TestStatus.PASSED;
-        startTime = Instant.now();
-        rand = new Random();
+    public TestCaseExecution (String testName) {
+        this.eventList = new ArrayList<>();
+        this.testStatus = TestStatus.PASSED;
+        this.startTime = Instant.now();
+        this.rand = new Random();
+        this.threadId = Thread.currentThread().getId();
+        this.testName = testName;
+    }
+
+    public void setIsConfiguration(boolean isConfiguration){
+        this.isConfiguration = isConfiguration;
     }
 
     /**
@@ -78,15 +86,6 @@ public class TestCaseExecution {
      */
     public String getTestName() {
     	return testName;
-    }
-    
-    /**
-     * This function will update the current test case's name to the value of 'testName'
-     * 
-     * @param testName represents the new test name for the current test case
-     */
-    public void setTestName(String testName) {
-    	this.testName = testName;
     }
 
     /**
@@ -125,31 +124,6 @@ public class TestCaseExecution {
 	 */
     public void saveEndTime() {
     	endTime = Instant.now();
-    }
-    
-    /**
-     * Checks if the current test case is a "Before" method
-     * 
-     * @return true if the current test case contains a "Before" annotation,
-     * otherwise returns false
-     */
-    @JsonIgnore
-    public boolean isBeforeMethod(){
-        return this.isBeforeMethod;
-    }
-
-    /**
-     * Sets the current test case as a "Before" method
-     */
-    public void setBeforeMethod(){
-        this.isBeforeMethod = true;
-    }
-
-    /**
-     * Un-sets the current test case as a "Before" method
-     */
-    public void unsetBeforeMethod(){
-        this.isBeforeMethod = false;
     }
 
     public List<File> getScreenShotFileList(){

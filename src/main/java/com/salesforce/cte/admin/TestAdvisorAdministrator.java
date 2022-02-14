@@ -57,6 +57,7 @@ public class TestAdvisorAdministrator {
                             :Paths.get(System.getProperty("user.dir"),retrieveRootDirectory()).normalize();   
 
         Path testRun = createTestRun(registryRoot);
+        LOGGER.log(Level.INFO, "Test Run created: {0}",testRun);
         jsonReporter = new JsonReporter(testRun);
         
         final Properties properties = new Properties();
@@ -147,8 +148,9 @@ public class TestAdvisorAdministrator {
      * 
      * @return TestCaseExecution object that represents the current test case
      */
-    public synchronized TestCaseExecution createTestCaseExecution() {
-    	TestCaseExecution testCaseExecution = new TestCaseExecution();
+    public synchronized TestCaseExecution createTestCaseExecution(String testName) {
+        LOGGER.log(Level.INFO, "create test case execution object {0}",testName);
+    	TestCaseExecution testCaseExecution = new TestCaseExecution(testName);
     	testResult.testCaseExecutionList.add(testCaseExecution);
 
         //only track the current test case executioni object for the running thread
