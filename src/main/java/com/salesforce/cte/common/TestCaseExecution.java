@@ -134,6 +134,14 @@ public class TestCaseExecution {
         return traceId;
     }
     
+    public long getThreadId(){
+        return threadId;
+    }
+
+    public Instant getStartTime(){
+        return startTime;
+    }
+
     /**
      * If trace id is emtpy, generate a random 16 character trace id 
      * @return trace id
