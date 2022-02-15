@@ -142,6 +142,10 @@ public class TestCaseExecution {
         return startTime;
     }
 
+    public boolean getIsConfiguration(){
+        return isConfiguration;
+    }
+    
     /**
      * If trace id is emtpy, generate a random 16 character trace id 
      * @return trace id
