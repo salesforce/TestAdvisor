@@ -13,6 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,7 +39,7 @@ public class TestAdvisorAdministrator {
     private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
     
     private TestAdvisorResult testResult = new TestAdvisorResult();
-    private Map<Long,TestCaseExecution> threadTestCaseMap = new HashMap<>();
+    private ConcurrentMap<Long,TestCaseExecution> threadTestCaseMap = new ConcurrentHashMap<>();
 	private Path registryRoot;
     private JsonReporter jsonReporter;
     private static TestAdvisorAdministrator taAdminInstance = null;
