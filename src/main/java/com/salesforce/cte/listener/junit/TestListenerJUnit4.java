@@ -49,7 +49,7 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
      * {@inheritDoc}
      */
 	@Override
-    public void testRunFinished(Result result) throws Exception {
+    public synchronized void testRunFinished(Result result) throws Exception {
 		// Invoked once all tests have been run.
 		administrator.endTestRun();
 		try {
@@ -65,9 +65,7 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
 	@Override
     public void testStarted(Description description) throws Exception {
 		// Initialize TestCaseExecution object
-		TestCaseExecution current = administrator.createTestCaseExecution();
-		// save test name
-		current.setTestName(description.getClassName() + "." + description.getMethodName());
+		administrator.createTestCaseExecution(description.getClassName() + "." + description.getMethodName());
     }
 
     /**

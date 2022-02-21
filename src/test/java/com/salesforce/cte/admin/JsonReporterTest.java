@@ -69,13 +69,9 @@ public class JsonReporterTest {
 	public void testSaveToRegistry() throws IOException {
 		System.setProperty("os.name", "Mac OS X");
 		List<TestCaseExecution> payloadList = new ArrayList<TestCaseExecution>();
-		TestCaseExecution testCaseOne = new TestCaseExecution();
-		TestCaseExecution testCaseTwo = new TestCaseExecution();
-		TestCaseExecution testCaseThree = new TestCaseExecution();
-		
-		testCaseOne.setTestName("Test 1");
-		testCaseTwo.setTestName("Test 2");
-		testCaseThree.setTestName("Test 3");
+		TestCaseExecution testCaseOne = new TestCaseExecution("Test 1");
+		TestCaseExecution testCaseTwo = new TestCaseExecution("Test 2");
+		TestCaseExecution testCaseThree = new TestCaseExecution("Test 3");
 		
 		testCaseOne.saveEndTime();
 		testCaseTwo.saveEndTime();
@@ -95,14 +91,13 @@ public class JsonReporterTest {
         testResult.version = TestAdvisorAdministrator.getInstance().getVersion();
         testResult.testCaseExecutionList = new ArrayList<TestCaseExecution>();
 
-        TestCaseExecution testCaseExecution = new TestCaseExecution();
+        TestCaseExecution testCaseExecution = new TestCaseExecution("TestCase1");
         testCaseExecution.browser = "Chrome";
         testCaseExecution.browserVersion = "90.1";
         testCaseExecution.screenResolution = "1920*1080";
         testCaseExecution.startTime = now;
         testCaseExecution.endTime = now.plusSeconds(5);
         testCaseExecution.testStatus = TestStatus.PASSED;
-        testCaseExecution.testName = "TestCase1";
         testCaseExecution.eventList = new ArrayList<>();
         testCaseExecution.eventList.add(new TestEvent("test content", "Info"));
 		testCaseExecution.eventList.add(new TestEvent("screentshot", "Info", "click", "null", "locator", 1, File.createTempFile("screenshot","")));

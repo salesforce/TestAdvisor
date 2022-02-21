@@ -32,7 +32,7 @@ public class TestTestNGListener {
                                 .getClass()
                                 .getEnclosingMethod()
                                 .getName();
-        System.out.println(methodName);
+        printMsg(methodName);
         //assertTrue("Failed before test", false);
     }
 
@@ -42,7 +42,7 @@ public class TestTestNGListener {
                                 .getClass()
                                 .getEnclosingMethod()
                                 .getName();
-        System.out.println(methodName);
+        printMsg(methodName);
         //assertTrue("Failed before class", false);
     }
 
@@ -52,7 +52,7 @@ public class TestTestNGListener {
                                 .getClass()
                                 .getEnclosingMethod()
                                 .getName();
-        System.out.println(methodName);
+        printMsg(methodName);
         //assertTrue("Failed before method", false);
     }
     
@@ -62,7 +62,7 @@ public class TestTestNGListener {
                                 .getClass()
                                 .getEnclosingMethod()
                                 .getName();
-        System.out.println(methodName);
+        printMsg(methodName);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class TestTestNGListener {
                                 .getClass()
                                 .getEnclosingMethod()
                                 .getName();
-        System.out.println(methodName);        
+        printMsg(methodName);        
         assertTrue("Passed test case", true);
     }
 
@@ -81,7 +81,7 @@ public class TestTestNGListener {
                                 .getClass()
                                 .getEnclosingMethod()
                                 .getName();
-        System.out.println(methodName);
+        printMsg(methodName);
         throw new IOException("Test NoSuchElement Exception");
         
     }
@@ -92,7 +92,7 @@ public class TestTestNGListener {
                                 .getClass()
                                 .getEnclosingMethod()
                                 .getName();
-        System.out.println(methodName);       
+        printMsg(methodName);       
     }
 
     @AfterMethod
@@ -101,7 +101,7 @@ public class TestTestNGListener {
                                 .getClass()
                                 .getEnclosingMethod()
                                 .getName();
-        System.out.println(methodName);
+        printMsg(methodName);
     }
 
     @AfterMethod
@@ -110,7 +110,7 @@ public class TestTestNGListener {
                                 .getClass()
                                 .getEnclosingMethod()
                                 .getName();
-        System.out.println(methodName);
+        printMsg(methodName);
     }
 
     @AfterClass 
@@ -119,7 +119,11 @@ public class TestTestNGListener {
                                 .getClass()
                                 .getEnclosingMethod()
                                 .getName();
-        System.out.println(methodName);
+        printMsg(methodName);
+    }
+
+    private void printMsg(String msg){
+        System.out.println(String.format("thread:%d -- %s",Thread.currentThread().getId(),msg));
     }
 
 }

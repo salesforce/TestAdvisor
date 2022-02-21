@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.salesforce.cte</groupId>
 	<artifactId>testadvisor-lib</artifactId>
-	<version>0.2.2-SNAPSHOT</version>
+	<version>0.2.3-SNAPSHOT</version>
 	<name>Test Advisor Library</name>
 	<description>UI test automation library to generate enhanced test logs</description>
 	<packaging>jar</packaging>
@@ -41,7 +41,7 @@
 	    <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
 	    <mockito.version>4.2.0</mockito.version>
 	    <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-	    <testng.version>7.4.0</testng.version>
+	    <testng.version>7.3.0</testng.version>
 	</properties>
 
 	<build>
@@ -57,6 +57,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
+					<parallel>methods</parallel>
+          			<threadCount>2</threadCount>
 					<excludes>
 					  <exclude>**/TestJUnitListener.java</exclude>
 					</excludes>
