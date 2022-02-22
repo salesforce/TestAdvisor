@@ -10,8 +10,6 @@ package com.salesforce.cte.admin;
 import java.time.LocalDateTime;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -107,7 +105,7 @@ public class TestAdvisorAdministrator {
     	 * 1) The environment variable's value has been set --> it can be entered via the CLI or read from a property's file
     	 * 2) If the value for the environment variable hasn't been set, you use a default value (utilizes the current function)
     	 */
-        String operatingSystem = TestAdvisorConfiguration.getOS();
+        String operatingSystem = TestAdvisorSwitch.getOS();
         String rootDirectory;
 
         if (operatingSystem.toLowerCase().contains("mac") || operatingSystem.toLowerCase().contains("linux")) {
@@ -152,8 +150,9 @@ public class TestAdvisorAdministrator {
      */
     public synchronized TestCaseExecution createTestCaseExecution(String testName) {
         LOGGER.log(Level.INFO, "create test case execution object {0}",testName);
-    	TestCaseExecution testCaseExecution = new TestCaseExecution(testName);
-    	testResult.testCaseExecutionList.add(testCaseExecution);
+    	TestCaseExecution testCaseExecution = new TestCaseExecution();
+        testCaseExecution.setTestName(testName);
+    	testResult.getTestCaseExecutionList().add(testCaseExecution);
 
         //only track the current test case executioni object for the running thread
         //every thread contains its own test case execution object
@@ -177,15 +176,15 @@ public class TestAdvisorAdministrator {
      * Start a test run, save start time
      */
     public void startTestRun(){
-        this.testResult.buildStartTime = Instant.now();
-        this.testResult.version = TestAdvisorAdministrator.getInstance().version;
+        this.testResult.setBuildStartTime(Instant.now());
+        this.testResult.setVersion(TestAdvisorAdministrator.getInstance().version);
     }
 
     /**
      * End a test run, save end time
      */
     public void endTestRun(){
-        this.testResult.buildEndTime = Instant.now();
+        this.testResult.setBuildEndTime(Instant.now());
     }
     
     /**

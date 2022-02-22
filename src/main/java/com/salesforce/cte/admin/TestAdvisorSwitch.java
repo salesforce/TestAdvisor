@@ -7,12 +7,12 @@
 
  package com.salesforce.cte.admin;
 
-public class TestAdvisorConfiguration {
+public class TestAdvisorSwitch {
 
     private static final String CAPTURE_SCREENHSOT_PROPERTY = "testadvisor.capturescreenshot";
 
     //private constructor to prevent instance
-    private TestAdvisorConfiguration() {}
+    private TestAdvisorSwitch() {}
 
     public static String getOS() {
         return System.getProperty("os.name");
@@ -22,7 +22,7 @@ public class TestAdvisorConfiguration {
         return System.getProperty("user.dir");
     }
 
-    public static boolean getIsScreenshotCaptureEnabled(){
+    public static boolean getScreenshotCaptureEnabled(){
         return Boolean.parseBoolean(System.getProperty(CAPTURE_SCREENHSOT_PROPERTY,"false"));
     }
     

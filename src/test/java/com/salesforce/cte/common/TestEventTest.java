@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-package com.salesforce.cte.admin;
+package com.salesforce.cte.common;
 
 import static org.junit.Assert.*;
 
@@ -13,8 +13,6 @@ import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.logging.Level;
-
-import com.salesforce.cte.common.TestEvent;
 
 import org.junit.Test;
 
@@ -36,7 +34,7 @@ public class TestEventTest {
 	 */
 	@Test
 	public void testEventGeneralAttributes() {
-		assertEquals("com.salesforce.cte.admin.TestEventTest", defaultEvent.getEventSource());
+		assertEquals("com.salesforce.cte.common.TestEventTest", defaultEvent.getEventSource());
 		assertEquals("", defaultEvent.getEventContent());
 		assertEquals(Level.INFO.toString(), defaultEvent.getEventLevel());
 		assertTrue(Duration.between(defaultEvent.getEventTime(),Instant.now()).toMillis()<1000);
@@ -47,7 +45,7 @@ public class TestEventTest {
 	 */
 	@Test
 	public void testEventAllAttributes() {
-		assertEquals("com.salesforce.cte.admin.TestEventTest", argsEvent.getEventSource());
+		assertEquals("com.salesforce.cte.common.TestEventTest", argsEvent.getEventSource());
 		assertEquals("Event X", argsEvent.getEventContent());
 		assertEquals(Level.INFO.toString(), argsEvent.getEventLevel());
 		assertTrue(Duration.between(defaultEvent.getEventTime(),Instant.now()).toMillis()<1000);

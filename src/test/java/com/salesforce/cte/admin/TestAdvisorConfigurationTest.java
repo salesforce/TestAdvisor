@@ -28,7 +28,7 @@ public class TestAdvisorConfigurationTest {
      */
 	@Test
 	public void testGetOS() {
-		assertEquals(System.getProperty("os.name"), TestAdvisorConfiguration.getOS());
+		assertEquals(System.getProperty("os.name"), TestAdvisorSwitch.getOS());
 	}
 
     /**
@@ -36,23 +36,23 @@ public class TestAdvisorConfigurationTest {
      */
 	@Test
 	public void testGetUserDirectory() {
-		assertEquals(System.getProperty("user.dir"), TestAdvisorConfiguration.getUserDirectory());
+		assertEquals(System.getProperty("user.dir"), TestAdvisorSwitch.getUserDirectory());
 	}
 
 	@Test
 	public void testGetIsScreenshotCaptureEnabled(){
 		//by default, screenshot capture is off
 		System.clearProperty("testadvisor.capturescreenshot");
-		assertTrue(!TestAdvisorConfiguration.getIsScreenshotCaptureEnabled());
+		assertTrue(!TestAdvisorSwitch.getScreenshotCaptureEnabled());
 
 		System.setProperty("testadvisor.capturescreenshot", "true");
-		assertTrue(TestAdvisorConfiguration.getIsScreenshotCaptureEnabled());
+		assertTrue(TestAdvisorSwitch.getScreenshotCaptureEnabled());
 
 		System.setProperty("testadvisor.capturescreenshot", "false");
-		assertTrue(!TestAdvisorConfiguration.getIsScreenshotCaptureEnabled());
+		assertTrue(!TestAdvisorSwitch.getScreenshotCaptureEnabled());
 
 		System.setProperty("testadvisor.capturescreenshot", "");
-		assertTrue(!TestAdvisorConfiguration.getIsScreenshotCaptureEnabled());
+		assertTrue(!TestAdvisorSwitch.getScreenshotCaptureEnabled());
 
 	}
 

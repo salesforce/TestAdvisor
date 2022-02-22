@@ -43,7 +43,7 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
 	@Override
 	public void beforeConfiguration(ITestResult result) {
 		TestCaseExecution testCaseExecution = administrator.createTestCaseExecution(result.getTestClass().getName() + "." + result.getName());
-		testCaseExecution.setIsConfiguration(true);
+		testCaseExecution.setConfiguration(true);
 		testCaseExecution.appendEvent(new TestEvent(result.toString(), Level.INFO.toString()));
 	}
 

@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-package com.salesforce.cte.admin;
+package com.salesforce.cte.common;
 
 import org.junit.Test;
 
@@ -15,9 +15,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.logging.Level;
 
-import com.salesforce.cte.common.TestCaseExecution;
-import com.salesforce.cte.common.TestEvent;
-import com.salesforce.cte.common.TestStatus;
 
 /**
  * 
@@ -29,7 +26,7 @@ import com.salesforce.cte.common.TestStatus;
  */
 public class TestCaseExecutionTest {
 
-    private TestCaseExecution testCaseExecution = new TestCaseExecution("Test X");
+    private TestCaseExecution testCaseExecution = new TestCaseExecution();
     private TestEvent event = new TestEvent("",Level.INFO.toString());
     
 	/**
@@ -37,13 +34,13 @@ public class TestCaseExecutionTest {
 	 */
 	@Test
 	public void testTestCaseExecution() {
-		assertEquals(0, testCaseExecution.eventList.size());
-		assertEquals(TestStatus.PASSED, testCaseExecution.testStatus);
+		assertEquals(0, testCaseExecution.getEventList().size());
+		assertEquals(TestStatus.PASSED, testCaseExecution.getTestStatus());
 		
 		Instant expectedTime = Instant.now();
 		testCaseExecution.saveEndTime();
 		
-		assertTrue(Duration.between(expectedTime, testCaseExecution.endTime).toMillis()<100);
+		assertTrue(Duration.between(expectedTime, testCaseExecution.getEndTime()).toMillis()<100);
 	}
 	
     /**
@@ -51,6 +48,7 @@ public class TestCaseExecutionTest {
      */
 	@Test
 	public void testGetTestName() {
+		testCaseExecution.setTestName("Test X");
 		assertEquals("Test X", testCaseExecution.getTestName());
 	}
 	
@@ -79,17 +77,17 @@ public class TestCaseExecutionTest {
      */
     @Test
     public void testAppendEvent() {
-        assertEquals(0, testCaseExecution.eventList.size());
+        assertEquals(0, testCaseExecution.getEventList().size());
 
         testCaseExecution.appendEvent(event);
 
-        assertEquals(1, testCaseExecution.eventList.size());
+        assertEquals(1, testCaseExecution.getEventList().size());
 
         for (int x = 0; x < 9; x ++) {
             testCaseExecution.appendEvent(event);
         }
 
-        assertEquals(10, testCaseExecution.eventList.size());
+        assertEquals(10, testCaseExecution.getEventList().size());
     }
 
 	@Test
@@ -100,7 +98,7 @@ public class TestCaseExecutionTest {
 		assertEquals(traceId, testCaseExecution.getTraceId());
 		assertEquals(traceId, testCaseExecution.generateTraceId());
 
-		String traceId2 = new TestCaseExecution("").generateTraceId();
+		String traceId2 = new TestCaseExecution().generateTraceId();
 		assertNotEquals(traceId, traceId2);
 	}
 
