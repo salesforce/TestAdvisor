@@ -37,7 +37,7 @@ public class TestAdvisorAdministratorTest {
 	@Before
 	public void beforeEachTestMethod() throws IOException {
 		taAdmin = TestAdvisorAdministrator.getInstance();
-		taAdmin.getTestResult().testCaseExecutionList.clear();
+		taAdmin.getTestResult().getTestCaseExecutionList().clear();
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class TestAdvisorAdministratorTest {
 	 */
 	@Test
 	public void testTestAdvisorAdministrator() {
-		assertEquals(0, taAdmin.getTestResult().testCaseExecutionList.size());
+		assertEquals(0, taAdmin.getTestResult().getTestCaseExecutionList().size());
 		assertTrue(taAdmin.getClass().toGenericString().startsWith("public class"));
 		assertTrue(taAdmin.getClass().toGenericString().endsWith("TestAdvisorAdministrator"));
 	}
@@ -68,9 +68,9 @@ public class TestAdvisorAdministratorTest {
 	 */
 	@Test
 	public void testCreateTestCaseExecution() {
-		assertEquals(0, taAdmin.getTestResult().testCaseExecutionList.size());
+		assertEquals(0, taAdmin.getTestResult().getTestCaseExecutionList().size());
 		taAdmin.createTestCaseExecution("");
-		assertEquals(1, taAdmin.getTestResult().testCaseExecutionList.size());
+		assertEquals(1, taAdmin.getTestResult().getTestCaseExecutionList().size());
 	}
 
 	/**
@@ -78,9 +78,9 @@ public class TestAdvisorAdministratorTest {
 	 */
 	@Test
 	public void testGetTestCaseExecution() {
-		assertEquals(0, taAdmin.getTestResult().testCaseExecutionList.size());
+		assertEquals(0, taAdmin.getTestResult().getTestCaseExecutionList().size());
 		taAdmin.createTestCaseExecution("");
-		assertEquals(1, taAdmin.getTestResult().testCaseExecutionList.size());
+		assertEquals(1, taAdmin.getTestResult().getTestCaseExecutionList().size());
 		assertEquals(TestCaseExecution.class, taAdmin.getTestCaseExecution().getClass());
 	}
 	

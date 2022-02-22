@@ -7,8 +7,6 @@
 
 package com.salesforce.cte.common;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.File;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -27,83 +25,99 @@ import java.util.Random;
  */
 public class TestCaseExecution {
     
-    @JsonProperty
-	public String testName;
-	
-    @JsonProperty
-    public List<TestEvent> eventList;
-    
-    @JsonProperty
-    public TestStatus testStatus;
-    
-    @JsonProperty
-    public Instant startTime;
-    
-    @JsonProperty
-    public Instant endTime;
-
-    @JsonProperty 
-    public String browser;
-
-    @JsonProperty 
-    public String browserVersion;
-
-    @JsonProperty 
-    public String screenResolution;
-
-    @JsonProperty 
-    public boolean isConfiguration;
-
-    @JsonProperty 
-    public long threadId;
+	private String testName;
+    private List<TestEvent> eventList = new ArrayList<>();
+    private TestStatus testStatus = TestStatus.PASSED;
+    private Instant startTime = Instant.now();
+    private Instant endTime = Instant.now();
+    private String browser = "";
+    private String browserVersion = "";
+    private String screenResolution = "";
+    private boolean isConfiguration = false;
+    private long threadId = Thread.currentThread().getId();
+    private String traceId = "";
 
     private List<File> screenShotFileList = new ArrayList<>();
+    private Random rand = new Random();
 
-    @JsonProperty
-    private String traceId="";
-
-    private Random rand;
-    /**
-     * A default constructor for the TestCaseExecution class
-     */
-    public TestCaseExecution (String testName) {
-        this.eventList = new ArrayList<>();
-        this.testStatus = TestStatus.PASSED;
-        this.startTime = Instant.now();
-        this.rand = new Random();
-        this.threadId = Thread.currentThread().getId();
-        this.testName = testName;
+    public List<TestEvent> getEventList(){
+        return eventList;
     }
 
-    public void setIsConfiguration(boolean isConfiguration){
+    public void setEventList(List<TestEvent> list){
+        eventList = list;
+    }
+    
+    public boolean isConfiguration() {
+        return isConfiguration;
+    }
+
+    public void setConfiguration(boolean isConfiguration) {
         this.isConfiguration = isConfiguration;
     }
 
-    /**
-     * This function will return the current test case's name
-     * 
-     * @return testName represents the current test case's name
-     */
-    public String getTestName() {
-    	return testName;
+    public void setStartTime(Instant startTime) {
+        this.startTime = startTime;
     }
 
-    /**
-     * This function will return the current test case's status
-     * 
-     * @return testStatus represents the current test case's status
-     */
+    public Instant getStartTime() {
+        return startTime;
+    }
+
+    public String getScreenResolution() {
+        return screenResolution;
+    }
+
+    public void setScreenResolution(String screenResolution) {
+        this.screenResolution = screenResolution;
+    }
+
+    public String getBrowserVersion() {
+        return browserVersion;
+    }
+
+    public void setBrowserVersion(String browserVersion) {
+        this.browserVersion = browserVersion;
+    }
+
+    public String getBrowser() {
+        return browser;
+    }
+
+    public void setBrowser(String browser) {
+        this.browser = browser;
+    }
+
+    public Instant getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Instant endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getTestName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
+
     public TestStatus getTestStatus() {
     	return testStatus;
     }
-    
-    /**
-     * This function will update the current test case's status to the value of 'status'
-     * 
-     * @param status represents the new test status for the current test case
-     */
+
     public void setTestStatus(TestStatus status) {
     	testStatus = status;
+    }
+    
+    public String getTraceId(){
+        return traceId;
+    }
+    
+    public long getThreadId(){
+        return threadId;
     }
     
     /**
@@ -115,7 +129,6 @@ public class TestCaseExecution {
      */
     public TestEvent appendEvent(TestEvent event) {
         eventList.add(event);
-
         return event;
     }
 
@@ -123,29 +136,13 @@ public class TestCaseExecution {
 	 * Saves the current test case's end time of execution
 	 */
     public void saveEndTime() {
-    	endTime = Instant.now();
+    	setEndTime(Instant.now());
     }
 
     public List<File> getScreenShotFileList(){
         return this.screenShotFileList;
     }
 
-    public String getTraceId(){
-        return traceId;
-    }
-    
-    public long getThreadId(){
-        return threadId;
-    }
-
-    public Instant getStartTime(){
-        return startTime;
-    }
-
-    public boolean getIsConfiguration(){
-        return isConfiguration;
-    }
-    
     /**
      * If trace id is emtpy, generate a random 16 character trace id 
      * @return trace id

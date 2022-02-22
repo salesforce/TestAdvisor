@@ -11,8 +11,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * Defines test result for a test run
  * 
@@ -20,13 +18,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TestAdvisorResult {
 
-    @JsonProperty
-    public List<TestCaseExecution> testCaseExecutionList = new ArrayList<>();
-    @JsonProperty
-    public String version = "";
-    @JsonProperty
-    public Instant buildStartTime;
-    @JsonProperty
-    public Instant buildEndTime;
+    private List<TestCaseExecution> testCaseExecutionList = new ArrayList<>();
+    private String version = "";
+    private Instant buildStartTime;
+    private Instant buildEndTime;
+    
+    public List<TestCaseExecution> getTestCaseExecutionList() {
+        return testCaseExecutionList;
+    }
+    public Instant getBuildEndTime() {
+        return buildEndTime;
+    }
+    public void setBuildEndTime(Instant buildEndTime) {
+        this.buildEndTime = buildEndTime;
+    }
+    public Instant getBuildStartTime() {
+        return buildStartTime;
+    }
+    public void setBuildStartTime(Instant buildStartTime) {
+        this.buildStartTime = buildStartTime;
+    }
+    public String getVersion() {
+        return version;
+    }
+    public void setVersion(String version) {
+        this.version = version;
+    }
+    public void setTestCaseExecutionList(List<TestCaseExecution> testCaseExecutionList) {
+        this.testCaseExecutionList = testCaseExecutionList;
+    }
     
 }

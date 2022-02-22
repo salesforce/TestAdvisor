@@ -43,16 +43,16 @@ public class TestAdvisorConfigurationTest {
 	public void testGetIsScreenshotCaptureEnabled(){
 		//by default, screenshot capture is off
 		System.clearProperty("testadvisor.capturescreenshot");
-		assertTrue(!TestAdvisorConfiguration.getIsScreenshotCaptureEnabled());
+		assertTrue(!TestAdvisorConfiguration.getScreenshotCaptureEnabled());
 
 		System.setProperty("testadvisor.capturescreenshot", "true");
-		assertTrue(TestAdvisorConfiguration.getIsScreenshotCaptureEnabled());
+		assertTrue(TestAdvisorConfiguration.getScreenshotCaptureEnabled());
 
 		System.setProperty("testadvisor.capturescreenshot", "false");
-		assertTrue(!TestAdvisorConfiguration.getIsScreenshotCaptureEnabled());
+		assertTrue(!TestAdvisorConfiguration.getScreenshotCaptureEnabled());
 
 		System.setProperty("testadvisor.capturescreenshot", "");
-		assertTrue(!TestAdvisorConfiguration.getIsScreenshotCaptureEnabled());
+		assertTrue(!TestAdvisorConfiguration.getScreenshotCaptureEnabled());
 
 	}
 

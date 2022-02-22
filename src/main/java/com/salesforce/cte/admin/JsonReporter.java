@@ -65,12 +65,12 @@ public class JsonReporter {
 			Path screenshotPath = testRunRoot.resolve("Screenshots");
 			if (!screenshotPath.toFile().exists())
 				screenshotPath.toFile().mkdirs();
-			for (TestCaseExecution test : testResult.testCaseExecutionList) {
-				for(TestEvent event : test.eventList){
+			for (TestCaseExecution test : testResult.getTestCaseExecutionList()) {
+				for(TestEvent event : test.getEventList()){
 					if (event.getScreenshotPath() == null || event.getScreenshotPath().trim().isEmpty()) continue;
 					String newName = String.format("%05d.png", event.getScreenshotRecordNumber());
 					Files.move(Paths.get(event.getScreenshotPath()), screenshotPath.resolve(newName), StandardCopyOption.REPLACE_EXISTING);
-					event.setStreenshotPath(screenshotPath.resolve(newName).toString());
+					event.setScreenshotPath(screenshotPath.resolve(newName).toString());
 				}
 			}
 

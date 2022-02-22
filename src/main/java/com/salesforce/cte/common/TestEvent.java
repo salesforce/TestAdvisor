@@ -19,22 +19,90 @@ import java.time.Instant;
  */
 public class TestEvent {
 	// General event attribute
-	public String eventSource;
-	public String eventLevel;
-	public String eventContent;
-	public Instant eventTime;
+	private String eventSource;
+	private String eventLevel;
+	private String eventContent;
+	private Instant eventTime;
 
 	// Selenium event attribute
-	public String seleniumCmd;
-	public String seleniumCmdParam;
-	public String seleniumLocator;
-	public int screenshotRecordNumber;
-	public String screenshotPath;
+	private String seleniumCmd;
+	private String seleniumCmdParam;
+	private String seleniumLocator;
+	private int screenshotRecordNumber;
+	private String screenshotPath;
 
-	/**
-	 * Default constructor for de-serialization
-	 */
-	public TestEvent() {
+	public TestEvent(){ /* default constructor for deserialization */ }
+
+	public String getScreenshotPath() {
+		return screenshotPath;
+	}
+
+	public void setScreenshotPath(String screenshotPath) {
+		this.screenshotPath = screenshotPath;
+	}
+
+	public int getScreenshotRecordNumber() {
+		return screenshotRecordNumber;
+	}
+
+	public void setScreenshotRecordNumber(int screenshotRecordNumber) {
+		this.screenshotRecordNumber = screenshotRecordNumber;
+	}
+
+	public String getSeleniumLocator() {
+		return seleniumLocator;
+	}
+
+	public void setSeleniumLocator(String seleniumLocator) {
+		this.seleniumLocator = seleniumLocator;
+	}
+
+	public String getSeleniumCmdParam() {
+		return seleniumCmdParam;
+	}
+
+	public void setSeleniumCmdParam(String seleniumCmdParam) {
+		this.seleniumCmdParam = seleniumCmdParam;
+	}
+
+	public String getSeleniumCmd() {
+		return seleniumCmd;
+	}
+
+	public void setSeleniumCmd(String seleniumCmd) {
+		this.seleniumCmd = seleniumCmd;
+	}
+
+	public Instant getEventTime() {
+		return eventTime;
+	}
+
+	public void setEventTime(Instant eventTime) {
+		this.eventTime = eventTime;
+	}
+
+	public String getEventContent() {
+		return eventContent;
+	}
+
+	public void setEventContent(String eventContent) {
+		this.eventContent = eventContent;
+	}
+
+	public String getEventLevel() {
+		return eventLevel;
+	}
+
+	public void setEventLevel(String eventLevel) {
+		this.eventLevel = eventLevel;
+	}
+
+	public String getEventSource() {
+		return eventSource;
+	}
+
+	public void setEventSource(String eventSource) {
+		this.eventSource = eventSource;
 	}
 
 	/**
@@ -45,10 +113,10 @@ public class TestEvent {
 	 * @param level        event level {@link java.util.logging.Level}
 	 */
 	public TestEvent(String eventContent, String level) {
-		this.eventSource = Thread.currentThread().getStackTrace()[2].getClassName();
-		this.eventContent = eventContent;
-		this.eventLevel = level;
-		this.eventTime = Instant.now();
+		this.setEventSource(Thread.currentThread().getStackTrace()[2].getClassName());
+		this.setEventContent(eventContent);
+		this.setEventLevel(level);
+		this.setEventTime(Instant.now());
 	}
 
 	/**
@@ -65,65 +133,16 @@ public class TestEvent {
 	public TestEvent(String eventContent, String level, String seleniumCommand, String seleniumParam, String locator,
 			int recordNumber, File screenshot) {
 		// do NOT use chained constructor to maintain same stacktrace
-		this.eventSource = Thread.currentThread().getStackTrace()[2].getClassName();
-		this.eventContent = eventContent;
-		this.eventLevel = level;
-		this.eventTime = Instant.now();
+		this.setEventSource(Thread.currentThread().getStackTrace()[2].getClassName());
+		this.setEventContent(eventContent);
+		this.setEventLevel(level);
+		this.setEventTime(Instant.now());
 
-		this.seleniumCmd = seleniumCommand;
-		this.seleniumCmdParam = seleniumParam;
-		this.seleniumLocator = locator;
-		this.screenshotRecordNumber = recordNumber;
-		this.screenshotPath = screenshot != null ? screenshot.getAbsolutePath() : "";
+		this.setSeleniumCmd(seleniumCommand);
+		this.setSeleniumCmdParam(seleniumParam);
+		this.setSeleniumLocator(locator);
+		this.setScreenshotRecordNumber(recordNumber);
+		this.setScreenshotPath(screenshot != null ? screenshot.getAbsolutePath() : "");
 	}
 
-	/**
-	 * Returns the event's source
-	 * 
-	 * @return eventSource represents who created current event
-	 */
-	public String getEventSource() {
-		return eventSource;
-	}
-
-	/**
-	 * Returns the event's content description
-	 * 
-	 * @return eventContent represents the content description of the current event
-	 */
-	public String getEventContent() {
-		return eventContent;
-	}
-
-	public String getScreenshotPath() {
-		return screenshotPath;
-	}
-
-	public void setStreenshotPath(String path) {
-		this.screenshotPath = path;
-	}
-
-	public int getScreenshotRecordNumber() {
-		return screenshotRecordNumber;
-	}
-
-	public String getSeleniumLocator() {
-		return seleniumLocator;
-	}
-
-	public String getSeleniumCmdParam() {
-		return seleniumCmdParam;
-	}
-
-	public String getSeleniumCmd() {
-		return seleniumCmd;
-	}
-
-	public Instant getEventTime() {
-		return eventTime;
-	}
-
-	public String getEventLevel() {
-		return eventLevel;
-	}
 }

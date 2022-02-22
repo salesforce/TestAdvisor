@@ -22,7 +22,7 @@ public class TestAdvisorConfiguration {
         return System.getProperty("user.dir");
     }
 
-    public static boolean getIsScreenshotCaptureEnabled(){
+    public static boolean getScreenshotCaptureEnabled(){
         return Boolean.parseBoolean(System.getProperty(CAPTURE_SCREENHSOT_PROPERTY,"false"));
     }
     
