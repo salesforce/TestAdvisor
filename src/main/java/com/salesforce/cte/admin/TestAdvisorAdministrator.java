@@ -105,7 +105,7 @@ public class TestAdvisorAdministrator {
     	 * 1) The environment variable's value has been set --> it can be entered via the CLI or read from a property's file
     	 * 2) If the value for the environment variable hasn't been set, you use a default value (utilizes the current function)
     	 */
-        String operatingSystem = TestAdvisorSwitch.getOS();
+        String operatingSystem = TestAdvisorConfiguration.getOS();
         String rootDirectory;
 
         if (operatingSystem.toLowerCase().contains("mac") || operatingSystem.toLowerCase().contains("linux")) {
