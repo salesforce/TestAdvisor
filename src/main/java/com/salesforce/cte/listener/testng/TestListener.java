@@ -8,21 +8,16 @@
 package com.salesforce.cte.listener.testng;
 
 import org.testng.ITestListener;
-import org.testng.ITestNGMethod;
 import org.testng.IConfigurationListener;
 import org.testng.IConfigurationListener2;
 import org.testng.IExecutionListener;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
-import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import com.salesforce.cte.admin.TestAdvisorAdministrator;
-import com.salesforce.cte.common.TestCaseExecution;
-import com.salesforce.cte.common.TestEvent;
 import com.salesforce.cte.common.TestStatus;
+import com.salesforce.cte.listener.GenericTestListener;
 
 /**
  * Listener will be triggered by test provider, collect execution data and use
@@ -34,62 +29,48 @@ import com.salesforce.cte.common.TestStatus;
  */
 public class TestListener implements ITestListener, IExecutionListener, IConfigurationListener, IConfigurationListener2 {
 	//add IConfigurationListener2 for TestNG 6 compatibility
-	private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
 	
-	// Singleton TestAdvisorAdministrator
-	private TestAdvisorAdministrator administrator;
+	GenericTestListener genericListener = new GenericTestListener();
+
+	// IExecutionListener
+	@Override
+	public void onExecutionStart() {
+		// Invoked before the TestNG run starts.
+		genericListener.onTestRunStart();
+	}
+
+	@Override
+	public void onExecutionFinish() {
+		// Invoked once all the suites have been run.
+		genericListener.onTestRunEnd();
+	}
 
 	// IConfigurationListener
 	@Override
 	public void beforeConfiguration(ITestResult result) {
-		TestCaseExecution testCaseExecution = administrator.createTestCaseExecution(result.getTestClass().getName() + "." + result.getName());
-		testCaseExecution.setConfiguration(true);
-		testCaseExecution.appendEvent(new TestEvent(result.toString(), Level.INFO.toString()));
+		genericListener.onTestConfigurationStart(result.getTestClass().getName() + "." + result.getName());
 	}
 
 	@Override
 	public void onConfigurationFailure(ITestResult result) {
 		// Invoked whenever a configuration method failed.
-		TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-		setConfigurationStatus(result, TestStatus.FAILED);
-		// append failure event with failed method name and exception class name
-		if (result.getThrowable() != null) {
-			testCaseExecution.appendEvent(new TestEvent(result.toString(), Level.SEVERE.toString()));
-		}
-		testCaseExecution.saveEndTime();
+		genericListener.onTestCaseStatus(TestStatus.FAILED);
+		genericListener.onTestCaseEvent(result.toString(), Level.SEVERE);
+		genericListener.onTestConfigurationEnd();
 	}
 
 	@Override
 	public void onConfigurationSkip(ITestResult result) {
 		// Invoked whenever a configuration method was skipped.
-		TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-		setConfigurationStatus(result, TestStatus.SKIPPED);
-		testCaseExecution.appendEvent(new TestEvent(result.toString(), Level.WARNING.toString()));
-		testCaseExecution.saveEndTime();
+		genericListener.onTestCaseStatus(TestStatus.SKIPPED);
+		genericListener.onTestConfigurationEnd();
 	}
 
 	@Override
 	public void onConfigurationSuccess(ITestResult result) {
 		// Invoked whenever a configuration method succeeded.
-		TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-		setConfigurationStatus(result, TestStatus.PASSED);
-		testCaseExecution.appendEvent(new TestEvent(result.toString(), Level.INFO.toString()));
-		testCaseExecution.saveEndTime();
-	}
-
-	/**
-	 * Set test configuration status based on configuration type.
-	 * 
-	 * @param result testng result object
-	 * @param status Test status
-	 */
-	private void setConfigurationStatus(ITestResult result, TestStatus status) {
-		TestCaseExecution current = administrator.getTestCaseExecution();
-		ITestNGMethod method = result.getMethod();
-		if (method.isBeforeClassConfiguration() || method.isBeforeTestConfiguration()
-				|| method.isAfterClassConfiguration() || method.isAfterTestConfiguration()) {
-			current.setTestStatus(status);
-		}
+		genericListener.onTestCaseStatus(TestStatus.PASSED);
+		genericListener.onTestConfigurationEnd();
 	}
 
 	// ITestListener
@@ -106,57 +87,34 @@ public class TestListener implements ITestListener, IExecutionListener, IConfigu
 	}
 
 	@Override
+	public void onTestStart(ITestResult result) {
+		// Invoked each time before a test will be invoked.
+		genericListener.onTestCaseStart(result.getTestClass().getName() + "." + result.getName());
+	}
+
+	@Override
 	public void onTestFailure(ITestResult result) {
 		// Invoked each time a test fails.
-		TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-		testCaseExecution.setTestStatus(TestStatus.FAILED);
+		genericListener.onTestCaseStatus(TestStatus.FAILED);
 		String eventContent = result.toString();
 		if (result.getThrowable() != null) {
 			eventContent += result.getThrowable().toString();
 		}
-
-		testCaseExecution.appendEvent(new TestEvent(eventContent, Level.SEVERE.toString()));
-		testCaseExecution.saveEndTime();
+		genericListener.onTestCaseEvent(eventContent, Level.SEVERE);
+		genericListener.onTestCaseEnd();
 	}
 
 	@Override
 	public void onTestSuccess(ITestResult result) {
 		// Invoked each time a test succeeds.
-		TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-		testCaseExecution.setTestStatus(TestStatus.PASSED);
-		testCaseExecution.saveEndTime();
+		genericListener.onTestCaseStatus(TestStatus.PASSED);
+		genericListener.onTestCaseEnd();
 	}
 
 	@Override
 	public void onTestSkipped(ITestResult result) {
 		// Invoked each time a test is skipped.
-		TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-		testCaseExecution.setTestStatus(TestStatus.SKIPPED);
-		testCaseExecution.saveEndTime();
-	}
-
-	@Override
-	public void onTestStart(ITestResult result) {
-		// Invoked each time before a test will be invoked.
-		administrator.createTestCaseExecution(result.getTestClass().getName() + "." + result.getName());
-	}
-
-	// IExecutionListener
-	@Override
-	public void onExecutionStart() {
-		// Invoked before the TestNG run starts.
-		administrator = TestAdvisorAdministrator.getInstance();
-		administrator.startTestRun();
-	}
-
-	@Override
-	public void onExecutionFinish() {
-		// Invoked once all the suites have been run.
-		administrator.endTestRun();
-		try {
-			administrator.saveTestResult();
-		} catch (IOException e) {
-			LOGGER.log(Level.WARNING, e.toString());
-		}
+		genericListener.onTestCaseStatus(TestStatus.SKIPPED);
+		genericListener.onTestCaseEnd();
 	}
 }

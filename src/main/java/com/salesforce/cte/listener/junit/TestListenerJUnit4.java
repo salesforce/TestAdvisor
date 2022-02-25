@@ -7,18 +7,14 @@
 
 package com.salesforce.cte.listener.junit;
 
-import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.runner.Description;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
-import com.salesforce.cte.admin.TestAdvisorAdministrator;
-import com.salesforce.cte.common.TestCaseExecution;
-import com.salesforce.cte.common.TestEvent;
 import com.salesforce.cte.common.TestStatus;
+import com.salesforce.cte.listener.GenericTestListener;
 
 /**
  * Listener will be triggered by test provider, collect execution data and use
@@ -30,19 +26,15 @@ import com.salesforce.cte.common.TestStatus;
  *
  */
 public class TestListenerJUnit4 extends org.junit.runner.notification.RunListener {
-	private static final Logger LOGGER = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
-
-	// Singleton TestAdvisorAdministrator
-	private TestAdvisorAdministrator administrator;
-
+	GenericTestListener genericListener = new GenericTestListener();
+	
 	/**
      * {@inheritDoc}
      */
 	@Override
     public void testRunStarted(Description description) throws Exception {
 		// Invoked before the JUnit run starts.
-		administrator = TestAdvisorAdministrator.getInstance();
-		administrator.startTestRun();
+		genericListener.onTestRunStart();
     }
 
 	/**
@@ -51,12 +43,7 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
 	@Override
     public synchronized void testRunFinished(Result result) throws Exception {
 		// Invoked once all tests have been run.
-		administrator.endTestRun();
-		try {
-			administrator.saveTestResult();
-		} catch (IOException e) {
-			LOGGER.log(Level.WARNING, e.toString());
-		}
+		genericListener.onTestRunEnd();
     }
 
     /**
@@ -65,7 +52,7 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
 	@Override
     public void testStarted(Description description) throws Exception {
 		// Initialize TestCaseExecution object
-		administrator.createTestCaseExecution(description.getClassName() + "." + description.getMethodName());
+		genericListener.onTestCaseStart(description.getClassName() + "." + description.getMethodName());
     }
 
     /**
@@ -73,10 +60,7 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
      */
 	@Override
     public void testFinished(Description description) throws Exception {
-		TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-		// test status is already set to correct value 
-		// i.e. don't set it here to PASS as it may override a FAIL
-		testCaseExecution.saveEndTime();
+		genericListener.onTestCaseEnd();
     }
 	
     /**
@@ -84,10 +68,9 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
      */
 	@Override
     public void testFailure(Failure failure) throws Exception {
-		TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-		testCaseExecution.setTestStatus(TestStatus.FAILED);
-		testCaseExecution.appendEvent(new TestEvent(failure.toString(), Level.SEVERE.toString()));
-		testCaseExecution.saveEndTime();
+		genericListener.onTestCaseStatus(TestStatus.FAILED);
+		genericListener.onTestCaseEvent(failure.toString(), Level.SEVERE);
+		genericListener.onTestCaseEnd();
     }
 	
     /**
@@ -96,9 +79,8 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
 	@Override
     public void testIgnored(Description description) throws Exception {
 		// Invoked each time a test is skipped.
-		TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-		testCaseExecution.setTestStatus(TestStatus.SKIPPED);
-		testCaseExecution.saveEndTime();
+		genericListener.onTestCaseStatus(TestStatus.SKIPPED);
+		genericListener.onTestCaseEnd();
     }
 
     /**
@@ -107,8 +89,7 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
 	@Override
     public void testAssumptionFailure(Failure failure) {
 		// Invoked each time a test is skipped.
-		TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-		testCaseExecution.setTestStatus(TestStatus.SKIPPED);
-		testCaseExecution.saveEndTime();
+		genericListener.onTestCaseStatus(TestStatus.SKIPPED);
+		genericListener.onTestCaseEnd();
     }
 }

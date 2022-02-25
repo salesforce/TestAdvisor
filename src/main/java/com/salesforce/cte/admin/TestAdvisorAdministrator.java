@@ -146,6 +146,7 @@ public class TestAdvisorAdministrator {
      * Creates an instance of the TestCaseExecution class and appends it to test result
      * update thread test case map and then returns the instance.
      * 
+     * @param testName test case name
      * @return TestCaseExecution object that represents the current test case
      */
     public synchronized TestCaseExecution createTestCaseExecution(String testName) {
