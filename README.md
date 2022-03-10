@@ -1,33 +1,31 @@
-# TestAdvisor-Lib 
+# TestAdvisor-Lib
 
-TestAdvisor-Lib test library is designed to help UI automation to generate better logs for Selenium
-based UI automation on the Salesforce platform.
+TestAdvisor-Lib is designed to help test automation to collect test signals on the Salesforce platform.
 
-## Development
+## Requirements
 
-1. Run `mvn eclipse:eclipse` to generate .project file and download required jars for development in Eclipse.
-2. Run `mvn clean` to install any dependencies.
-3. Start up eclipse, import project TestAdvisor-Lib.
-4. Compile project and create jar file:`mvn compile jar:jar` which creates jar file target/testadvisor-lib-0.0.1-SNAPSHOT.jar
-5. Deploy jar file to local repository:`mvn install:install-file -Dfile=target/testadvisor-lib-0.0.1-SNAPSHOT.jar -DpomFile=pom.xml`
+1. JDK 8+
+2. TestNG 6+ or JUnit 4.7+
 
-## How to publish to Nexus
+## Usage
 
-1. mvn clean package
-   This will ensure your module build and package correctly.
-2. mvn release:prepare
-   This will prepare the release, more doc here:
-   http://maven.apache.org/maven-release/maven-release-plugin/examples/prepare-release.html
-   You may choose your release version, the default will only a minor version upgrade.
-3. mvn release:perform
-   This step will build/publish to nexus and also tag release on git repository, more doc here
-   (http://maven.apache.org/maven-release/maven-release-plugin/examples/perform-release.html)
-4. mvn release:clean
-   Cleans up your local env
+##### TestNG User
 
-### Documenting a new release version
+Please add the following listener to your TestNG.xml 
 
-1. Go to the Releases [section](https://git.soma.salesforce.com/cqe/DrillBit-Lib/releases)
-2. Click on the "Draft a new release" button
-3. Enter the "tag version" and "Release title" value as testadvisor-lib-v0.0.\<new-version\>
-4. Write one or more sentences about the changes pushed ([example](https://git.soma.salesforce.com/cqe/DrillBit-Lib/releases/tag/drillbit-lib-v0.0.1)) and publish the release.
+```
+<listeners>
+ 	<listener class-name="com.salesforce.cte.listener.testng.TestListener"/>
+</listeners>
+```
+
+##### JUnit4 User
+
+No configuration necessary. JUnit listener will be automatically loaded
+
+## Configuration
+
+Please use the following environment variable to control the library behavior
+
+* TEST_ADVISOR_REGISTRY
+  The file path to the local test advisor registry folder
