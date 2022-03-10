@@ -151,6 +151,12 @@ public class TestAdvisorAdministrator {
      */
     public synchronized TestCaseExecution createTestCaseExecution(String testName) {
         LOGGER.log(Level.INFO, "create test case execution object {0}",testName);
+
+        if (testResult.getBuildStartTime() == null){
+            //test run hasn't start yet
+            startTestRun();
+        }
+
     	TestCaseExecution testCaseExecution = new TestCaseExecution();
         testCaseExecution.setTestName(testName);
     	testResult.getTestCaseExecutionList().add(testCaseExecution);
@@ -158,7 +164,7 @@ public class TestAdvisorAdministrator {
         //only track the current test case executioni object for the running thread
         //every thread contains its own test case execution object
     	threadTestCaseMap.put(Thread.currentThread().getId(), testCaseExecution);
-    	return testCaseExecution;
+    	return testCaseExecution; 
     }
     
     /**
@@ -176,7 +182,7 @@ public class TestAdvisorAdministrator {
     /**
      * Start a test run, save start time
      */
-    public void startTestRun(){
+    public synchronized void startTestRun(){
         this.testResult.setBuildStartTime(Instant.now());
         this.testResult.setVersion(TestAdvisorAdministrator.getInstance().version);
     }
@@ -184,7 +190,7 @@ public class TestAdvisorAdministrator {
     /**
      * End a test run, save end time
      */
-    public void endTestRun(){
+    public synchronized void endTestRun(){
         this.testResult.setBuildEndTime(Instant.now());
     }
     
@@ -196,7 +202,7 @@ public class TestAdvisorAdministrator {
      * @throws IOException
      * throws IOException when fail to write result file
      */
-    public File saveTestResult() throws IOException {
+    public synchronized File saveTestResult() throws IOException {
     	return jsonReporter.saveToRegistry(testResult);
     }
     
