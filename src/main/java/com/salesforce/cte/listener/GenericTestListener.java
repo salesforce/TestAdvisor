@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import com.salesforce.cte.admin.TestAdvisorAdministrator;
 import com.salesforce.cte.common.TestCaseExecution;
 import com.salesforce.cte.common.TestEvent;
+import com.salesforce.cte.common.TestEventType;
 import com.salesforce.cte.common.TestStatus;
 
 /**
@@ -93,7 +94,16 @@ public class GenericTestListener {
      */
     public void onTestCaseEvent(String eventContent, Level level){
         TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-        testCaseExecution.appendEvent(new TestEvent(eventContent, level.toString()));
+        testCaseExecution.appendEvent(new TestEvent(TestEventType.AUTOMATION, eventContent, level.toString()));
+    }
+
+    /**
+     * Callback when a test exception happens
+     * @param ex exception
+     */
+    public void onTestCaseException(Exception ex){
+        TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
+        testCaseExecution.appendEvent(new TestEvent(TestEventType.EXCEPTION, ex.toString(), Level.WARNING.toString()));
     }
 
     /**

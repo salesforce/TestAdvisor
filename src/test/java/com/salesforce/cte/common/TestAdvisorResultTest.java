@@ -36,8 +36,9 @@ public class TestAdvisorResultTest {
         result.setBuildStartTime(now.minusSeconds(200));
 
         result.getTestCaseExecutionList().add(new TestCaseExecution());
-        result.getTestCaseExecutionList().get(0).appendEvent(new TestEvent("event content","INFO"));
-        result.getTestCaseExecutionList().get(0).appendEvent(new TestEvent("event content","INFO","","","",0,new File("somefile")));
+        result.getTestCaseExecutionList().get(0).appendEvent(new TestEvent(TestEventType.AUTOMATION,"event content","INFO"));
+        result.getTestCaseExecutionList().get(0).appendEvent(
+            new TestEvent(TestEventType.AUTOMATION,"event content","INFO","","","",0,new File("somefile")));
 
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule())
                                         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -54,8 +55,10 @@ public class TestAdvisorResultTest {
         assertEquals(result.getBuildStartTime(), result2.getBuildStartTime());
         assertEquals(result.getTestCaseExecutionList().size(), result2.getTestCaseExecutionList().size());
         assertEquals(result.getTestCaseExecutionList().get(0).getBrowser(), result2.getTestCaseExecutionList().get(0).getBrowser());
-        assertEquals(result.getTestCaseExecutionList().get(0).getEventList().size(), result2.getTestCaseExecutionList().get(0).getEventList().size());
-        assertEquals(result.getTestCaseExecutionList().get(0).getEventList().get(0).getEventSource(), result2.getTestCaseExecutionList().get(0).getEventList().get(0).getEventSource());
+        assertEquals(result.getTestCaseExecutionList().get(0).getEventList().size(), 
+                    result2.getTestCaseExecutionList().get(0).getEventList().size());
+        assertEquals(result.getTestCaseExecutionList().get(0).getEventList().get(0).getEventType(), 
+                    result2.getTestCaseExecutionList().get(0).getEventList().get(0).getEventType());
 
     }
 }

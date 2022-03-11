@@ -26,15 +26,15 @@ import org.junit.Test;
  */
 public class TestEventTest {
 
-	public TestEvent defaultEvent = new TestEvent("",Level.INFO.toString());
-	public TestEvent argsEvent = new TestEvent("Event X", Level.INFO.toString(),"Clicked on Space Bar","","//locator",5, new File(".","test"));
+	public TestEvent defaultEvent = new TestEvent(TestEventType.AUTOMATION,"",Level.INFO.toString());
+	public TestEvent argsEvent = new TestEvent(TestEventType.REFERRAL_URL,"Event X", Level.INFO.toString(),"Clicked on Space Bar","","//locator",5, new File(".","test"));
 	
 	/**
 	 * Tests to make sure that the default constructor for the Event class works as expected
 	 */
 	@Test
 	public void testEventGeneralAttributes() {
-		assertEquals("com.salesforce.cte.common.TestEventTest", defaultEvent.getEventSource());
+		assertEquals(TestEventType.AUTOMATION, defaultEvent.getEventType());
 		assertEquals("", defaultEvent.getEventContent());
 		assertEquals(Level.INFO.toString(), defaultEvent.getEventLevel());
 		assertTrue(Duration.between(defaultEvent.getEventTime(),Instant.now()).toMillis()<1000);
@@ -45,7 +45,7 @@ public class TestEventTest {
 	 */
 	@Test
 	public void testEventAllAttributes() {
-		assertEquals("com.salesforce.cte.common.TestEventTest", argsEvent.getEventSource());
+		assertEquals(TestEventType.REFERRAL_URL, argsEvent.getEventType());
 		assertEquals("Event X", argsEvent.getEventContent());
 		assertEquals(Level.INFO.toString(), argsEvent.getEventLevel());
 		assertTrue(Duration.between(defaultEvent.getEventTime(),Instant.now()).toMillis()<1000);

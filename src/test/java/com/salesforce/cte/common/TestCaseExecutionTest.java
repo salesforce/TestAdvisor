@@ -27,7 +27,7 @@ import java.util.logging.Level;
 public class TestCaseExecutionTest {
 
     private TestCaseExecution testCaseExecution = new TestCaseExecution();
-    private TestEvent event = new TestEvent("",Level.INFO.toString());
+    private TestEvent event = new TestEvent(TestEventType.EXCEPTION,"",Level.INFO.toString());
     
 	/**
 	 * Tests to make sure that the default constructor for the TestCaseExecution class works as expected

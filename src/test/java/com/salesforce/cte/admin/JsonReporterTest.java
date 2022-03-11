@@ -18,6 +18,7 @@ import java.util.List;
 import com.salesforce.cte.common.TestAdvisorResult;
 import com.salesforce.cte.common.TestCaseExecution;
 import com.salesforce.cte.common.TestEvent;
+import com.salesforce.cte.common.TestEventType;
 import com.salesforce.cte.common.TestStatus;
 
 import org.junit.After;
@@ -102,8 +103,8 @@ public class JsonReporterTest {
         testCaseExecution.setStartTime(now);
         testCaseExecution.setEndTime(now.plusSeconds(5));
         testCaseExecution.setTestStatus(TestStatus.PASSED);
-        testCaseExecution.getEventList().add(new TestEvent("test content", "Info"));
-		testCaseExecution.getEventList().add(new TestEvent("screentshot", "Info", "click", "null", "locator", 1, File.createTempFile("screenshot","")));
+        testCaseExecution.getEventList().add(new TestEvent(TestEventType.AUTOMATION, "test content", "Info"));
+		testCaseExecution.getEventList().add(new TestEvent(TestEventType.SCREEN_SHOT, "screentshot", "Info", "click", "null", "locator", 1, File.createTempFile("screenshot","")));
 		
 		testResult.getTestCaseExecutionList().add(testCaseExecution);
 		File outputFile = jsonReporter.saveToRegistry(testResult);
