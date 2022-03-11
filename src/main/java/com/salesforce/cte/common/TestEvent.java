@@ -19,7 +19,7 @@ import java.time.Instant;
  */
 public class TestEvent {
 	// General event attribute
-	private String eventSource;
+	private TestEventType eventType;
 	private String eventLevel;
 	private String eventContent;
 	private Instant eventTime;
@@ -97,12 +97,12 @@ public class TestEvent {
 		this.eventLevel = eventLevel;
 	}
 
-	public String getEventSource() {
-		return eventSource;
+	public TestEventType getEventType() {
+		return eventType;
 	}
 
-	public void setEventSource(String eventSource) {
-		this.eventSource = eventSource;
+	public void setEventType(TestEventType eventType) {
+		this.eventType = eventType;
 	}
 
 	/**
@@ -112,8 +112,8 @@ public class TestEvent {
 	 *                     object
 	 * @param level        event level {@link java.util.logging.Level}
 	 */
-	public TestEvent(String eventContent, String level) {
-		this.setEventSource(Thread.currentThread().getStackTrace()[2].getClassName());
+	public TestEvent(TestEventType eventType, String eventContent, String level) {
+		this.setEventType(eventType);
 		this.setEventContent(eventContent);
 		this.setEventLevel(level);
 		this.setEventTime(Instant.now());
@@ -130,10 +130,10 @@ public class TestEvent {
 	 * @param recordNumber    screenshot sequence number
 	 * @param screenshot      screenshot file
 	 */
-	public TestEvent(String eventContent, String level, String seleniumCommand, String seleniumParam, String locator,
+	public TestEvent(TestEventType eventType, String eventContent, String level, String seleniumCommand, String seleniumParam, String locator,
 			int recordNumber, File screenshot) {
 		// do NOT use chained constructor to maintain same stacktrace
-		this.setEventSource(Thread.currentThread().getStackTrace()[2].getClassName());
+		this.setEventType(eventType);
 		this.setEventContent(eventContent);
 		this.setEventLevel(level);
 		this.setEventTime(Instant.now());
