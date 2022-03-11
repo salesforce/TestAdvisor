@@ -101,7 +101,7 @@ public class GenericTestListener {
      * Callback when a test exception happens
      * @param ex exception
      */
-    public void onTestCaseException(Exception ex){
+    public void onTestCaseException(Throwable ex){
         TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
         testCaseExecution.appendEvent(new TestEvent(TestEventType.EXCEPTION, ex.toString(), Level.WARNING.toString()));
     }
