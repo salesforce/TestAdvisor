@@ -8,13 +8,12 @@
  package com.salesforce.cte.common;
 
 /**
- * This enum defines potential test event type will be collected by all test listeners
- * SCREEN_SHOT: this event collected by screenshot listener when a screenshot was taken.
- * URL: this event collected by selenium action listener when a selenium action happened. 
- *               It will collected the current referral url for current selenium action.
- * EXCEPTION: this event could collected by any listener when a exception was throw during test execution.
- * AUTOMATION: this event could collected by any listener when any test event happened.
- * 
+ * This enum defines potential test event type that will be collected by all test listeners
+ * SCREEN_SHOT: this event is collected by screenshot listener when a screenshot was taken.
+ * URL: this event is collected by selenium action listener when a selenium action happened. 
+ *      It will collected the current referral url for current selenium action.
+ * EXCEPTION: this event could be collected by any listener when an exception was throw during test execution.
+ * AUTOMATION: this event could be collected by any listener when any test event happened.
  */
  public enum TestEventType {
     SCREEN_SHOT,
