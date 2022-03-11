@@ -27,7 +27,7 @@ import org.junit.Test;
 public class TestEventTest {
 
 	public TestEvent defaultEvent = new TestEvent(TestEventType.AUTOMATION,"",Level.INFO.toString());
-	public TestEvent argsEvent = new TestEvent(TestEventType.REFERRAL_URL,"Event X", Level.INFO.toString(),"Clicked on Space Bar","","//locator",5, new File(".","test"));
+	public TestEvent argsEvent = new TestEvent(TestEventType.URL,"Event X", Level.INFO.toString(),"Clicked on Space Bar","","//locator",5, new File(".","test"));
 	
 	/**
 	 * Tests to make sure that the default constructor for the Event class works as expected
@@ -45,7 +45,7 @@ public class TestEventTest {
 	 */
 	@Test
 	public void testEventAllAttributes() {
-		assertEquals(TestEventType.REFERRAL_URL, argsEvent.getEventType());
+		assertEquals(TestEventType.URL, argsEvent.getEventType());
 		assertEquals("Event X", argsEvent.getEventContent());
 		assertEquals(Level.INFO.toString(), argsEvent.getEventLevel());
 		assertTrue(Duration.between(defaultEvent.getEventTime(),Instant.now()).toMillis()<1000);

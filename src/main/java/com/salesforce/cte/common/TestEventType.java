@@ -10,7 +10,7 @@
 /**
  * This enum defines potential test event type will be collected by all test listeners
  * SCREEN_SHOT: this event collected by screenshot listener when a screenshot was taken.
- * REFERRAL_URL: this event collected by selenium action listener when a selenium action happened. 
+ * URL: this event collected by selenium action listener when a selenium action happened. 
  *               It will collected the current referral url for current selenium action.
  * EXCEPTION: this event could collected by any listener when a exception was throw during test execution.
  * AUTOMATION: this event could collected by any listener when any test event happened.
@@ -18,7 +18,7 @@
  */
  public enum TestEventType {
     SCREEN_SHOT,
-    REFERRAL_URL,
+    URL,
     EXCEPTION,
     AUTOMATION
 }
