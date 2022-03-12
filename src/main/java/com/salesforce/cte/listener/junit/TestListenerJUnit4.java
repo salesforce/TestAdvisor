@@ -26,15 +26,15 @@ import com.salesforce.cte.listener.GenericTestListener;
  *
  */
 public class TestListenerJUnit4 extends org.junit.runner.notification.RunListener {
-	GenericTestListener genericListener = new GenericTestListener();
+    GenericTestListener genericListener = new GenericTestListener();
 	
-	/**
+    /**
      * {@inheritDoc}
      */
-	@Override
+    @Override
     public void testRunStarted(Description description) throws Exception {
-		// Invoked before the JUnit run starts.
-		genericListener.onTestRunStart();
+        // Invoked before the JUnit run starts.
+        genericListener.onTestRunStart();
     }
 
 	/**
@@ -42,8 +42,8 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
      */
 	@Override
     public synchronized void testRunFinished(Result result) throws Exception {
-		// Invoked once all tests have been run.
-		genericListener.onTestRunEnd();
+        // Invoked once all tests have been run.
+        genericListener.onTestRunEnd();
     }
 
     /**
@@ -51,15 +51,15 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
      */
 	@Override
     public void testStarted(Description description) throws Exception {
-		// Initialize TestCaseExecution object
-		genericListener.onTestCaseStart(description.getClassName() + "." + description.getMethodName());
+        // Initialize TestCaseExecution object
+        genericListener.onTestCaseStart(description.getClassName() + "." + description.getMethodName());
     }
 
     /**
      * {@inheritDoc}
      */
 	@Override
-    public void testFinished(Description description) throws Exception {
+  public void testFinished(Description description) throws Exception {
 		genericListener.onTestCaseEnd();
     }
 	
@@ -68,9 +68,9 @@ public class TestListenerJUnit4 extends org.junit.runner.notification.RunListene
      */
 	@Override
     public void testFailure(Failure failure) throws Exception {
-		genericListener.onTestCaseStatus(TestStatus.FAILED);
-		genericListener.onTestCaseEvent(failure.toString(), Level.SEVERE);
-		genericListener.onTestCaseEnd();
+        genericListener.onTestCaseStatus(TestStatus.FAILED);
+        genericListener.onTestCaseEvent(failure.toString(), Level.SEVERE);
+        genericListener.onTestCaseEnd();
     }
 	
     /**
