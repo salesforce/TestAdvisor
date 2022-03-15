@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.salesforce.cte</groupId>
 	<artifactId>testadvisor-lib</artifactId>
-	<version>0.2.6</version>
+	<version>0.2.7-SNAPSHOT</version>
 	<name>Test Advisor Library</name>
 	<description>UI test automation library to generate enhanced test logs</description>
 	<packaging>jar</packaging>
@@ -226,7 +226,7 @@
 
 	<scm>
 		<developerConnection>scm:git:git@git.soma.salesforce.com:cqe/DrillBit-Lib.git</developerConnection>
-		<tag>v0.2.6</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
