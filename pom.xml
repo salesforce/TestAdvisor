@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.salesforce.cte</groupId>
 	<artifactId>testadvisor-lib</artifactId>
-	<version>0.2.11</version>
+	<version>0.2.12-SNAPSHOT</version>
 	<name>Test Advisor Library</name>
 	<description>UI test automation library to generate enhanced test logs</description>
 	<url>http://www.salesforce.com/</url>
@@ -23,7 +23,7 @@
 		<connection>scm:git:git@github.com:salesforce/TestAdvisor.git</connection>
 		<developerConnection>scm:git:git@github.com:salesforce/TestAdvisor.git</developerConnection>
 		<url>http://github.com/salesforce/TestAdvisor/tree/main</url>
-		<tag>v0.2.11</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
