@@ -1,3 +1,8 @@
+<!--
+ * Copyright (c) 2021, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.salesforce.cte</groupId>
@@ -6,6 +11,12 @@
 	<name>Test Advisor Library</name>
 	<description>UI test automation library to generate enhanced test logs</description>
 	<packaging>jar</packaging>
+	<licenses>
+		<license>
+			<name>BSD 3-Clause</name>
+			<url>file://${basedir}/LICENSE.txt</url>
+		</license>
+	</licenses>
 
 	<developers>
 		<developer>
@@ -32,6 +43,8 @@
 		<javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
 	    <jackson.version>2.13.1</jackson.version>
 	    <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+		<junit-jupiter-engine.version>5.8.2</junit-jupiter-engine.version>
+		<junit-platform-launcher.version>1.8.2</junit-platform-launcher.version>
 	    <junit.version>4.13.2</junit.version>
 	    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 	    <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
@@ -152,7 +165,9 @@
 					</execution>
 				</executions>
 				<configuration>
-					<skipStaging>true</skipStaging>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 
@@ -213,30 +228,31 @@
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-launcher</artifactId>
-			<version>1.8.2</version>
+			<version>${junit-platform-launcher.version}</version>
 		</dependency>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
+            <version>${junit-jupiter-engine.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
 	<scm>
-		<developerConnection>scm:git:git@git.soma.salesforce.com:cqe/DrillBit-Lib.git</developerConnection>
+		<connection>scm:git:git@github.com:salesforce/TestAdvisor.git</connection>
+		<developerConnection>scm:git:git@github.com:salesforce/TestAdvisor.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
-		<repository>
-			<id>nexus</id>
-			<url>https://nexus.soma.salesforce.com/nexus/content/repositories/releases</url>
-		</repository>
 		<snapshotRepository>
-			<id>nexus</id>
-			<url>https://nexus.soma.salesforce.com/nexus/content/repositories/snapshots</url>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
 	</distributionManagement>
 </project>
