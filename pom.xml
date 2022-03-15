@@ -10,6 +10,7 @@
 	<version>0.2.11-SNAPSHOT</version>
 	<name>Test Advisor Library</name>
 	<description>UI test automation library to generate enhanced test logs</description>
+	<url>http://www.salesforce.com/</url>
 	<packaging>jar</packaging>
 	<licenses>
 		<license>
@@ -18,6 +19,23 @@
 		</license>
 	</licenses>
 
+	<scm>
+		<connection>scm:git:git@github.com:salesforce/TestAdvisor.git</connection>
+		<developerConnection>scm:git:git@github.com:salesforce/TestAdvisor.git</developerConnection>
+		<url>http://github.com/salesforce/TestAdvisor/tree/main</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 	<developers>
 		<developer>
 			<name>Georg Neumann</name>
@@ -254,21 +272,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-	<scm>
-		<connection>scm:git:git@github.com:salesforce/TestAdvisor.git</connection>
-		<developerConnection>scm:git:git@github.com:salesforce/TestAdvisor.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
 </project>
