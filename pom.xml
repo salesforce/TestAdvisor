@@ -30,7 +30,7 @@
 		<jdk.version>1.8</jdk.version>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
-	    <jackson.version>2.13.1</jackson.version>
+	    <jackson.version>2.13.2</jackson.version>
 	    <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
 	    <junit.version>4.13.2</junit.version>
 	    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
