@@ -59,7 +59,7 @@
 		<jdk.version>1.8</jdk.version>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
-	    <jackson.version>2.13.1</jackson.version>
+	    <jackson.version>2.13.2</jackson.version>
 	    <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
 		<junit-jupiter-engine.version>5.8.2</junit-jupiter-engine.version>
 		<junit-platform-launcher.version>1.8.2</junit-platform-launcher.version>
