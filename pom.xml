@@ -1,12 +1,41 @@
+<!--
+ * Copyright (c) 2021, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.salesforce.cte</groupId>
 	<artifactId>testadvisor-lib</artifactId>
-	<version>0.2.5-SNAPSHOT</version>
+	<version>0.2.12-SNAPSHOT</version>
 	<name>Test Advisor Library</name>
 	<description>UI test automation library to generate enhanced test logs</description>
+	<url>http://www.salesforce.com/</url>
 	<packaging>jar</packaging>
+	<licenses>
+		<license>
+			<name>BSD 3-Clause</name>
+			<url>file://${basedir}/LICENSE.txt</url>
+		</license>
+	</licenses>
 
+	<scm>
+		<connection>scm:git:git@github.com:salesforce/TestAdvisor.git</connection>
+		<developerConnection>scm:git:git@github.com:salesforce/TestAdvisor.git</developerConnection>
+		<url>http://github.com/salesforce/TestAdvisor/tree/main</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 	<developers>
 		<developer>
 			<name>Georg Neumann</name>
@@ -32,16 +61,19 @@
 		<javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
 	    <jackson.version>2.13.2</jackson.version>
 	    <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+		<junit-jupiter-engine.version>5.8.2</junit-jupiter-engine.version>
+		<junit-platform-launcher.version>1.8.2</junit-platform-launcher.version>
 	    <junit.version>4.13.2</junit.version>
-	    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+	    <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
 	    <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
-	    <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
-	    <maven-release-plugin.version>3.0.0-M4</maven-release-plugin.version>
+		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+	    <maven-javadoc-plugin.version>3.3.2</maven-javadoc-plugin.version>
+	    <maven-release-plugin.version>3.0.0-M5</maven-release-plugin.version>
 	    <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
 	    <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
 	    <mockito.version>4.2.0</mockito.version>
-	    <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-	    <testng.version>7.3.0</testng.version>
+	    <nexus-staging-maven-plugin.version>1.6.12</nexus-staging-maven-plugin.version>
+	    <testng.version>7.5</testng.version>
 	</properties>
 
 	<build>
@@ -142,6 +174,7 @@
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
 				<version>${nexus-staging-maven-plugin.version}</version>
+				<extensions>true</extensions>
 				<executions>
 					<execution>
 						<id>default-deploy</id>
@@ -152,7 +185,9 @@
 					</execution>
 				</executions>
 				<configuration>
-					<skipStaging>true</skipStaging>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 
@@ -170,6 +205,20 @@
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 					<arguments>-B</arguments>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>${maven-gpg-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -213,13 +262,13 @@
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-launcher</artifactId>
-			<version>1.8.2</version>
+			<version>${junit-platform-launcher.version}</version>
 		</dependency>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
+            <version>${junit-jupiter-engine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -235,20 +284,4 @@
             </exclusions>
         </dependency>
     </dependencies>
-
-	<scm>
-		<developerConnection>scm:git:git@git.soma.salesforce.com:cqe/DrillBit-Lib.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
-
-	<distributionManagement>
-		<repository>
-			<id>nexus</id>
-			<url>https://nexus.soma.salesforce.com/nexus/content/repositories/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>nexus</id>
-			<url>https://nexus.soma.salesforce.com/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
 </project>

@@ -18,6 +18,6 @@
  public enum TestEventType {
     SCREEN_SHOT,
     URL,
-    EXCEPTION,
+    TEST_EXCEPTION,
     AUTOMATION
 }

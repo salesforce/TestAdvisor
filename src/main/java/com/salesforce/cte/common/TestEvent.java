@@ -107,7 +107,8 @@ public class TestEvent {
 
 	/**
 	 * A constructor to set general attributes
-	 * 
+	 *
+	 * @param eventType    type of the event
 	 * @param eventContent represents the content description of the new event
 	 *                     object
 	 * @param level        event level {@link java.util.logging.Level}
@@ -121,7 +122,8 @@ public class TestEvent {
 
 	/**
 	 * A constructor to set all attributes
-	 * 
+	 *
+	 * @param eventType       type of the event
 	 * @param eventContent    event content
 	 * @param level           event level {@link java.util.logging.Level}
 	 * @param seleniumCommand this event's Selenium command

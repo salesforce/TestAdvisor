@@ -103,7 +103,7 @@ public class GenericTestListener {
      */
     public void onTestCaseException(Throwable ex){
         TestCaseExecution testCaseExecution = administrator.getTestCaseExecution();
-        testCaseExecution.appendEvent(new TestEvent(TestEventType.EXCEPTION, ex.toString(), Level.WARNING.toString()));
+        testCaseExecution.appendEvent(new TestEvent(TestEventType.TEST_EXCEPTION, ex.toString(), Level.WARNING.toString()));
     }
 
     /**
