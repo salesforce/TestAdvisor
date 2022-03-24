@@ -29,6 +29,9 @@
 	<profiles>
         <profile>
             <id>internal</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
             </properties>
             <distributionManagement>
